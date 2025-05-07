@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import SandboxPage from "./pages/SandboxPage";
 import NotFound from "./pages/NotFound";
+import BrandSetupPage from "./pages/BrandSetupPage";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/sandbox" element={<SandboxPage />} />
+          <Route path="/setup" element={<BrandSetupPage />} />
           {/* Placeholder routes that will be implemented later */}
           <Route path="/audit" element={<Index />} />
           <Route path="/monitoring" element={<Index />} />

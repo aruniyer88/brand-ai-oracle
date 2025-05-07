@@ -9,6 +9,7 @@ import { TopicsCard } from "@/components/dashboard/TopicsCard";
 import { RecommendationsCard } from "@/components/dashboard/RecommendationsCard";
 import { Button } from "@/components/ui/button";
 import { FileText } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // Mock data
 const mockTopics = [
@@ -18,6 +19,7 @@ const mockTopics = [
   { id: "4", name: "Sustainability", percentage: 45 },
 ];
 
+// Fixed the type by removing 'readonly'
 const mockRecommendations = [
   {
     id: "1",
@@ -40,7 +42,7 @@ const mockRecommendations = [
       "Add more comprehensive schema.org markup to your website to help AI models better understand your brand relationships and product hierarchy.",
     priority: "medium",
   },
-] as const;
+];
 
 const Index = () => {
   const [selectedBrand, setSelectedBrand] = useState("TechPulse");
@@ -61,6 +63,14 @@ const Index = () => {
             Export Report
           </Button>
         </div>
+      </div>
+
+      <div className="flex justify-end mb-6">
+        <Button asChild variant="default">
+          <Link to="/setup">
+            Setup New Brand
+          </Link>
+        </Button>
       </div>
 
       <div className="dashboard-grid mb-8">
