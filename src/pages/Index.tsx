@@ -8,7 +8,7 @@ import { SentimentChart } from "@/components/dashboard/SentimentChart";
 import { TopicsCard } from "@/components/dashboard/TopicsCard";
 import { RecommendationsCard } from "@/components/dashboard/RecommendationsCard";
 import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
+import { FileText, PlusCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 // Mock data
@@ -65,10 +65,16 @@ const Index = () => {
         </div>
       </div>
 
-      <div className="flex justify-end mb-6">
-        <Button asChild variant="default">
+      <div className="flex justify-end space-x-3 mb-6">
+        <Button asChild variant="outline">
           <Link to="/setup">
-            Setup New Brand
+            Manual Setup
+          </Link>
+        </Button>
+        <Button asChild variant="default">
+          <Link to="/search">
+            <PlusCircle className="mr-2 h-4 w-4" />
+            New Brand Analysis
           </Link>
         </Button>
       </div>

@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import SandboxPage from "./pages/SandboxPage";
 import NotFound from "./pages/NotFound";
 import BrandSetupPage from "./pages/BrandSetupPage";
+import BrandSearchPage from "./pages/BrandSearchPage";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/sandbox" element={<SandboxPage />} />
           <Route path="/setup" element={<BrandSetupPage />} />
+          <Route path="/search" element={<BrandSearchPage />} />
           {/* Placeholder routes that will be implemented later */}
           <Route path="/audit" element={<Index />} />
           <Route path="/monitoring" element={<Index />} />
