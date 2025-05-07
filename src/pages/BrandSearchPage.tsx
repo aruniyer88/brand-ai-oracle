@@ -1,8 +1,8 @@
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
+import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -29,6 +29,7 @@ const BrandSearchPage = () => {
   const [search, setSearch] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
 
+  // Always initialize as an array, never undefined
   const filteredBrands = search
     ? mockBrands.filter(brand => 
         brand.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -36,17 +37,15 @@ const BrandSearchPage = () => {
       )
     : [];
 
-  const handleSelectBrand = (brand: Brand) => {
+  const handleSelectBrand = useCallback((brand: Brand) => {
     setSelectedBrand(brand);
-  };
+  }, []);
 
-  const handleAnalyze = () => {
+  const handleAnalyze = useCallback(() => {
     if (selectedBrand) {
-      // In a real application, we would store this brand in context or state management
-      // For now, we'll simply navigate to the setup wizard
       navigate("/setup", { state: { selectedBrand } });
     }
-  };
+  }, [navigate, selectedBrand]);
 
   return (
     <MainLayout>
@@ -59,44 +58,49 @@ const BrandSearchPage = () => {
         <div className="border rounded-xl p-6 shadow-sm bg-white">
           <div className="mb-6">
             {!selectedBrand ? (
-              <Command className="rounded-lg border shadow-md">
-                <CommandInput 
-                  placeholder="Search for a brand..." 
-                  value={search}
-                  onValueChange={setSearch}
-                />
-                <CommandEmpty>No brands found</CommandEmpty>
-                <CommandGroup heading="Brands">
-                  {filteredBrands.map((brand) => (
-                    <CommandItem 
-                      key={brand.id} 
-                      value={brand.name}
-                      onSelect={() => handleSelectBrand(brand)}
-                      className="flex items-center py-3 cursor-pointer"
-                    >
-                      <div className="flex items-center gap-3 flex-1">
-                        <div className="w-8 h-8 bg-slate-100 rounded-md flex items-center justify-center overflow-hidden">
-                          {brand.logo ? (
-                            <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
-                          ) : (
-                            <span className="text-xs font-medium">{brand.name.substring(0, 2)}</span>
-                          )}
-                        </div>
-                        <div>
-                          <p className="font-medium">{brand.name}</p>
-                          <p className="text-sm text-muted-foreground">{brand.domain}</p>
-                        </div>
-                      </div>
-                      <Check 
-                        className={cn(
-                          "h-4 w-4",
-                          selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </Command>
+              // Complete redesign of the Command component usage
+              <div className="relative">
+                <Command className="rounded-lg border shadow-md">
+                  <CommandInput 
+                    placeholder="Search for a brand..." 
+                    value={search}
+                    onValueChange={setSearch}
+                  />
+                  <CommandList>
+                    <CommandEmpty>No brands found</CommandEmpty>
+                    <CommandGroup>
+                      {filteredBrands.map((brand) => (
+                        <CommandItem 
+                          key={brand.id} 
+                          value={brand.name}
+                          onSelect={() => handleSelectBrand(brand)}
+                          className="flex items-center py-3 cursor-pointer"
+                        >
+                          <div className="flex items-center gap-3 flex-1">
+                            <div className="w-8 h-8 bg-slate-100 rounded-md flex items-center justify-center overflow-hidden">
+                              {brand.logo ? (
+                                <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
+                              ) : (
+                                <span className="text-xs font-medium">{brand.name.substring(0, 2)}</span>
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-medium">{brand.name}</p>
+                              <p className="text-sm text-muted-foreground">{brand.domain}</p>
+                            </div>
+                          </div>
+                          <Check 
+                            className={cn(
+                              "h-4 w-4",
+                              selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-8">
                 <div className="w-24 h-24 bg-slate-100 rounded-md flex items-center justify-center overflow-hidden mb-4">
