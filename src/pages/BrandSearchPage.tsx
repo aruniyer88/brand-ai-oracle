@@ -29,7 +29,6 @@ const BrandSearchPage = () => {
   const [search, setSearch] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
 
-  // Ensure filteredBrands is always an array (never undefined)
   const filteredBrands = search
     ? mockBrands.filter(brand => 
         brand.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -67,38 +66,36 @@ const BrandSearchPage = () => {
                   onValueChange={setSearch}
                 />
                 <CommandEmpty>No brands found</CommandEmpty>
-                {filteredBrands.length > 0 && (
-                  <CommandGroup heading="Brands">
-                    {filteredBrands.map((brand) => (
-                      <CommandItem 
-                        key={brand.id} 
-                        value={brand.name}
-                        onSelect={() => handleSelectBrand(brand)}
-                        className="flex items-center py-3 cursor-pointer"
-                      >
-                        <div className="flex items-center gap-3 flex-1">
-                          <div className="w-8 h-8 bg-slate-100 rounded-md flex items-center justify-center overflow-hidden">
-                            {brand.logo ? (
-                              <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <span className="text-xs font-medium">{brand.name.substring(0, 2)}</span>
-                            )}
-                          </div>
-                          <div>
-                            <p className="font-medium">{brand.name}</p>
-                            <p className="text-sm text-muted-foreground">{brand.domain}</p>
-                          </div>
-                        </div>
-                        <Check 
-                          className={cn(
-                            "h-4 w-4",
-                            selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0"
+                <CommandGroup heading="Brands">
+                  {filteredBrands.map((brand) => (
+                    <CommandItem 
+                      key={brand.id} 
+                      value={brand.name}
+                      onSelect={() => handleSelectBrand(brand)}
+                      className="flex items-center py-3 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3 flex-1">
+                        <div className="w-8 h-8 bg-slate-100 rounded-md flex items-center justify-center overflow-hidden">
+                          {brand.logo ? (
+                            <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-xs font-medium">{brand.name.substring(0, 2)}</span>
                           )}
-                        />
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                )}
+                        </div>
+                        <div>
+                          <p className="font-medium">{brand.name}</p>
+                          <p className="text-sm text-muted-foreground">{brand.domain}</p>
+                        </div>
+                      </div>
+                      <Check 
+                        className={cn(
+                          "h-4 w-4",
+                          selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
               </Command>
             ) : (
               <div className="flex flex-col items-center justify-center py-8">
