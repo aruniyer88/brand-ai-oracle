@@ -9,6 +9,8 @@ import SandboxPage from "./pages/SandboxPage";
 import NotFound from "./pages/NotFound";
 import BrandSetupPage from "./pages/BrandSetupPage";
 import BrandSearchPage from "./pages/BrandSearchPage";
+import ReportsPage from "./pages/ReportsPage";
+import ReportViewPage from "./pages/ReportViewPage";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/sandbox" element={<SandboxPage />} />
           <Route path="/setup" element={<BrandSetupPage />} />
           <Route path="/search" element={<BrandSearchPage />} />
+          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/reports/:reportId" element={<ReportViewPage />} />
           {/* Placeholder routes that will be implemented later */}
           <Route path="/audit" element={<Index />} />
           <Route path="/monitoring" element={<Index />} />
