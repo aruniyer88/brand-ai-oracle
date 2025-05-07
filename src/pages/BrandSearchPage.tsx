@@ -29,7 +29,7 @@ const BrandSearchPage = () => {
   const [search, setSearch] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
 
-  // Initialize filteredBrands as an empty array instead of undefined
+  // Ensure filteredBrands is always an array (never undefined)
   const filteredBrands = search
     ? mockBrands.filter(brand => 
         brand.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -67,7 +67,7 @@ const BrandSearchPage = () => {
                   onValueChange={setSearch}
                 />
                 <CommandEmpty>No brands found</CommandEmpty>
-                {search.length > 0 && (
+                {filteredBrands.length > 0 && (
                   <CommandGroup heading="Brands">
                     {filteredBrands.map((brand) => (
                       <CommandItem 
