@@ -149,7 +149,7 @@ export const QuestionsStep = ({
                 <SelectValue placeholder="Select a persona" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
+                <SelectItem value="none">None</SelectItem>
                 {personas.map((persona) => (
                   <SelectItem key={persona.id} value={persona.id as string}>
                     {persona.name}

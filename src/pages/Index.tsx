@@ -19,28 +19,28 @@ const mockTopics = [
   { id: "4", name: "Sustainability", percentage: 45 },
 ];
 
-// Fixed the type by removing 'readonly'
+// Fixed the type to use string literals for priority
 const mockRecommendations = [
   {
     id: "1",
     title: "Update product descriptions for better AI visibility",
     description:
       "Current product descriptions lack detailed features which affects how AI models represent your offerings. Add more specific technical specs and use cases.",
-    priority: "high",
+    priority: "high" as "high",
   },
   {
     id: "2",
     title: "Address sustainability narrative gap",
     description:
       "AI models have limited information about your sustainability initiatives. Consider publishing an ESG report or highlighting green practices on your website.",
-    priority: "medium",
+    priority: "medium" as "medium",
   },
   {
     id: "3",
     title: "Improve structured data markup",
     description:
       "Add more comprehensive schema.org markup to your website to help AI models better understand your brand relationships and product hierarchy.",
-    priority: "medium",
+    priority: "medium" as "medium",
   },
 ];
 
