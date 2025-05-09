@@ -2,8 +2,47 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
+import { Link } from "react-router-dom";
+
 export const LandingHero = () => {
-  return <div className="relative bg-primary text-primary-foreground overflow-hidden">
+  return (
+    <div className="relative bg-primary text-primary-foreground overflow-hidden">
+      {/* Header Navigation */}
+      <header className="container mx-auto px-4 py-4 flex items-center justify-between">
+        {/* Logo on the left */}
+        <div className="flex items-center">
+          <Link to="/" className="flex items-center gap-2">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-accent">
+              <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2zm0 5a3 3 0 110 6 3 3 0 010-6zm5 15c-2.757 0-5-2.243-5-5a1 1 0 012 0c0 1.654 1.346 3 3 3s3-1.346 3-3a1 1 0 012 0c0 2.757-2.243 5-5 5zm-5-4a1 1 0 01-1-1v-3a1 1 0 012 0v3a1 1 0 01-1 1z" fill="currentColor" />
+            </svg>
+            <span className="font-bold text-xl">Rabbit Hole</span>
+          </Link>
+        </div>
+
+        {/* Navigation links in center */}
+        <nav className="hidden md:flex items-center space-x-6">
+          <a href="#features" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors">
+            How it Works
+          </a>
+          <a href="#testimonials" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors">
+            Testimonials
+          </a>
+          <Link to="/blog" className="text-primary-foreground/90 hover:text-primary-foreground transition-colors">
+            Blog
+          </Link>
+        </nav>
+
+        {/* Buttons on the right */}
+        <div className="flex items-center space-x-4">
+          <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
+            Login
+          </Button>
+          <Button className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full">
+            Get Started
+          </Button>
+        </div>
+      </header>
+
       <div className="container mx-auto px-4 py-20 md:py-32">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
@@ -26,8 +65,6 @@ export const LandingHero = () => {
                 Watch 90-sec video
               </Button>
             </div>
-
-            
           </div>
 
           <div className="relative">
@@ -37,5 +74,6 @@ export const LandingHero = () => {
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
