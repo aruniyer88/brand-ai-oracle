@@ -1,12 +1,9 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { Link } from "react-router-dom";
-
 export const LandingHero = () => {
-  return (
-    <div className="relative bg-primary text-primary-foreground overflow-hidden">
+  return <div className="relative bg-primary text-primary-foreground overflow-hidden">
       {/* Header Navigation */}
       <header className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo on the left */}
@@ -15,7 +12,7 @@ export const LandingHero = () => {
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-accent">
               <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2zm0 5a3 3 0 110 6 3 3 0 010-6zm5 15c-2.757 0-5-2.243-5-5a1 1 0 012 0c0 1.654 1.346 3 3 3s3-1.346 3-3a1 1 0 012 0c0 2.757-2.243 5-5 5zm-5-4a1 1 0 01-1-1v-3a1 1 0 012 0v3a1 1 0 01-1 1z" fill="currentColor" />
             </svg>
-            <span className="font-bold text-xl">Rabbit Hole</span>
+            <span className="font-bold text-xl">Rabbit Hole Analytics</span>
           </Link>
         </div>
 
@@ -74,6 +71,5 @@ export const LandingHero = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
