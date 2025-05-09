@@ -79,6 +79,15 @@ export const BrandInfoStep = ({
     }
   };
 
+  // Handle custom product input change
+  const handleCustomProductChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomProduct(e.target.value);
+    // Auto-select the custom radio button when user starts typing
+    if (e.target.value.trim() && selectedProductId !== "custom") {
+      setSelectedProductId("custom");
+    }
+  };
+
   // Add custom product when user leaves the input field if custom is selected
   const handleCustomProductBlur = () => {
     if (selectedProductId === "custom" && customProduct.trim()) {
@@ -136,26 +145,24 @@ export const BrandInfoStep = ({
           </div>
         </RadioGroup>
         
-        {/* Custom product input field - only enabled when "Other" is selected */}
-        {selectedProductId === "custom" && (
-          <div className="mt-3 pl-6">
-            <div className="flex space-x-2">
-              <Input 
-                placeholder="Enter custom product name" 
-                value={customProduct} 
-                onChange={(e) => setCustomProduct(e.target.value)} 
-                onBlur={handleCustomProductBlur}
-                className="flex-grow"
-              />
-              <Button 
-                onClick={handleCustomProductAdd} 
-                disabled={!customProduct.trim()}
-              >
-                <PlusCircle className="h-4 w-4 mr-2" /> Add
-              </Button>
-            </div>
+        {/* Custom product input field - always visible */}
+        <div className="mt-3 pl-6">
+          <div className="flex space-x-2">
+            <Input 
+              placeholder="Enter custom product name" 
+              value={customProduct} 
+              onChange={handleCustomProductChange} 
+              onBlur={handleCustomProductBlur}
+              className="flex-grow"
+            />
+            <Button 
+              onClick={handleCustomProductAdd} 
+              disabled={!customProduct.trim()}
+            >
+              <PlusCircle className="h-4 w-4 mr-2" /> Add
+            </Button>
           </div>
-        )}
+        </div>
       </div>
     </div>;
 };
