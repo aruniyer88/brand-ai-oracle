@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Play, CheckCircle, BarChart2, LineChart, AlertTriangle, MessageSquare } from "lucide-react";
@@ -11,70 +10,50 @@ import { LandingSection } from "@/components/landing/LandingSection";
 import { LandingTestimonial } from "@/components/landing/LandingTestimonial";
 import { LandingWalkthrough } from "@/components/landing/LandingWalkthrough";
 import { AnnouncementBar } from "@/components/landing/AnnouncementBar";
-
 export default function Index() {
-  const features = [
-    {
-      title: "AI Visibility + Influence Score",
-      description: "Our proprietary 0-100 metric shows exactly where your brand stands in AI-generated content across platforms.",
-      icon: BarChart2,
-    },
-    {
-      title: "Multi-Model Dashboard",
-      description: "Compare side-by-side how ChatGPT, Claude, and Perplexity perceive and present your brand.",
-      icon: LineChart,
-    },
-    {
-      title: "Hallucination & Outdated Info Alerts",
-      description: "Automatically flag incorrect or outdated information about your brand before customers see it.",
-      icon: AlertTriangle,
-    },
-    {
-      title: "Action-Plan Generator",
-      description: "Get prioritized, AI-focused SEO recommendations ranked by potential impact on visibility.",
-      icon: MessageSquare,
-    },
-  ];
-
-  const faqs = [
-    {
-      question: "How much does Rabbit Hole Analytics cost?",
-      answer: "We offer flexible pricing plans starting with a free trial for qualified brands. Enterprise plans include custom integrations and dedicated support. Contact our sales team for detailed pricing information.",
-    },
-    {
-      question: "What AI models do you support?",
-      answer: "We currently support ChatGPT (3.5 & 4), Claude (Instant & 2), and Perplexity. We're constantly expanding our model coverage based on market demand and customer needs.",
-    },
-    {
-      question: "How do you collect and handle data?",
-      answer: "We prioritize data privacy and security. We query AI models using standardized prompts, store only aggregated metrics and relevant responses, and never share your brand's data with third parties.",
-    },
-    {
-      question: "How often is data updated?",
-      answer: "Our platform refreshes data weekly by default, with daily updates available on premium plans. Custom monitoring frequencies are available for enterprise customers.",
-    },
-    {
-      question: "Can I integrate with my existing marketing tools?",
-      answer: "Yes! We offer API access and direct integrations with popular marketing platforms. Our team can help set up custom workflows for your specific tech stack.",
-    },
-    {
-      question: "How quickly can I expect to see results?",
-      answer: "Most customers see meaningful AI visibility improvements within 30 days of implementing our recommendations. Your initial brand audit is ready within 48 hours of setup.",
-    },
-  ];
-
-  return (
-    <div className="bg-background min-h-screen flex flex-col">
+  const features = [{
+    title: "AI Visibility + Influence Score",
+    description: "Our proprietary 0-100 metric shows exactly where your brand stands in AI-generated content across platforms.",
+    icon: BarChart2
+  }, {
+    title: "Multi-Model Dashboard",
+    description: "Compare side-by-side how ChatGPT, Claude, and Perplexity perceive and present your brand.",
+    icon: LineChart
+  }, {
+    title: "Hallucination & Outdated Info Alerts",
+    description: "Automatically flag incorrect or outdated information about your brand before customers see it.",
+    icon: AlertTriangle
+  }, {
+    title: "Action-Plan Generator",
+    description: "Get prioritized, AI-focused SEO recommendations ranked by potential impact on visibility.",
+    icon: MessageSquare
+  }];
+  const faqs = [{
+    question: "How much does Rabbit Hole Analytics cost?",
+    answer: "We offer flexible pricing plans starting with a free trial for qualified brands. Enterprise plans include custom integrations and dedicated support. Contact our sales team for detailed pricing information."
+  }, {
+    question: "What AI models do you support?",
+    answer: "We currently support ChatGPT (3.5 & 4), Claude (Instant & 2), and Perplexity. We're constantly expanding our model coverage based on market demand and customer needs."
+  }, {
+    question: "How do you collect and handle data?",
+    answer: "We prioritize data privacy and security. We query AI models using standardized prompts, store only aggregated metrics and relevant responses, and never share your brand's data with third parties."
+  }, {
+    question: "How often is data updated?",
+    answer: "Our platform refreshes data weekly by default, with daily updates available on premium plans. Custom monitoring frequencies are available for enterprise customers."
+  }, {
+    question: "Can I integrate with my existing marketing tools?",
+    answer: "Yes! We offer API access and direct integrations with popular marketing platforms. Our team can help set up custom workflows for your specific tech stack."
+  }, {
+    question: "How quickly can I expect to see results?",
+    answer: "Most customers see meaningful AI visibility improvements within 30 days of implementing our recommendations. Your initial brand audit is ready within 48 hours of setup."
+  }];
+  return <div className="bg-background min-h-screen flex flex-col">
       <AnnouncementBar />
 
       <main className="flex-1">
         <LandingHero />
 
-        <LandingSection
-          title="The AI Blind Spot"
-          description="Traditional SEO doesn't account for how AI generates answers. Without specialized tools, you're flying blind while AI models potentially misrepresent your brand, send traffic to competitors, or share outdated information."
-          className="bg-white"
-        >
+        <LandingSection title="The AI Blind Spot" description="Traditional SEO doesn't account for how AI generates answers. Without specialized tools, you're flying blind while AI models potentially misrepresent your brand, send traffic to competitors, or share outdated information." className="bg-white">
           <div className="grid gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3">
             <Card className="border-none shadow-md bg-gray-50">
               <CardContent className="p-6">
@@ -99,14 +78,7 @@ export default function Index() {
 
         <LandingSection title="Take Control of Your AI Presence" className="bg-muted">
           <div className="grid gap-6 mt-8 md:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature, index) => (
-              <LandingFeature 
-                key={index}
-                title={feature.title}
-                description={feature.description}
-                icon={feature.icon}
-              />
-            ))}
+            {features.map((feature, index) => <LandingFeature key={index} title={feature.title} description={feature.description} icon={feature.icon} />)}
           </div>
         </LandingSection>
 
@@ -114,36 +86,19 @@ export default function Index() {
 
         <LandingSection title="What Our Early Users Say" className="bg-white">
           <div className="grid gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3">
-            <LandingTestimonial
-              quote="We discovered our competitors were being recommended 4x more often by AI. After 30 days with Rabbit Hole, we're now the top recommendation."
-              author="Sarah K."
-              role="CMO at TechFlow"
-              company="techflow"
-            />
-            <LandingTestimonial
-              quote="The action plan generator alone is worth the investment. It gave us clear, practical steps that improved our AI visibility score by 35%."
-              author="Mike T."
-              role="Head of Growth at FitLife"
-              company="fitlife"
-            />
-            <LandingTestimonial
-              quote="We caught a major product misinformation issue through the alerts system before it impacted our launch. Invaluable tool for modern marketers."
-              author="Jessica W."
-              role="Brand Director at EcoHome"
-              company="ecohome"
-            />
+            <LandingTestimonial quote="We discovered our competitors were being recommended 4x more often by AI. After 30 days with Rabbit Hole, we're now the top recommendation." author="Sarah K." role="CMO at TechFlow" company="techflow" />
+            <LandingTestimonial quote="The action plan generator alone is worth the investment. It gave us clear, practical steps that improved our AI visibility score by 35%." author="Mike T." role="Head of Growth at FitLife" company="fitlife" />
+            <LandingTestimonial quote="We caught a major product misinformation issue through the alerts system before it impacted our launch. Invaluable tool for modern marketers." author="Jessica W." role="Brand Director at EcoHome" company="ecohome" />
           </div>
         </LandingSection>
 
         <LandingSection title="Frequently Asked Questions" className="bg-muted">
           <div className="max-w-3xl mx-auto mt-8">
             <Accordion type="single" collapsible className="w-full">
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`}>
+              {faqs.map((faq, index) => <AccordionItem key={index} value={`item-${index}`}>
                   <AccordionTrigger className="text-lg font-medium">{faq.question}</AccordionTrigger>
                   <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
-                </AccordionItem>
-              ))}
+                </AccordionItem>)}
             </Accordion>
           </div>
         </LandingSection>
@@ -154,16 +109,13 @@ export default function Index() {
       <footer className="bg-primary text-primary-foreground py-12">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid gap-8 md:grid-cols-4">
-            <div>
-              <h3 className="font-bold mb-4">Rabbit Hole Analytics</h3>
-              <p className="text-sm text-primary-foreground/80">See how AI sees you—and turn it into sales.</p>
-            </div>
+            
             <div>
               <h4 className="font-semibold mb-4">Product</h4>
               <ul className="space-y-2 text-sm">
                 <li><Link to="/features" className="hover:underline">Features</Link></li>
                 <li><Link to="/pricing" className="hover:underline">Pricing</Link></li>
-                <li><Link to="/case-studies" className="hover:underline">Case Studies</Link></li>
+                
               </ul>
             </div>
             <div>
@@ -178,7 +130,7 @@ export default function Index() {
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-sm">
                 <li><Link to="/about" className="hover:underline">About</Link></li>
-                <li><Link to="/careers" className="hover:underline">Careers</Link></li>
+                
                 <li><Link to="/contact" className="hover:underline">Contact</Link></li>
               </ul>
             </div>
@@ -202,6 +154,5 @@ export default function Index() {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 }
