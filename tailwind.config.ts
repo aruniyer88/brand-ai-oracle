@@ -19,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Inter', 'sans-serif'],
+				heading: ['Space Grotesk', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -55,10 +59,10 @@ export default {
 				},
 				brand: {
 					blue: '#2563eb',
-					purple: '#7c3aed',
+					purple: '#7F5AF0',
 					cyan: '#06b6d4',
-					dark: '#1e293b',
-					light: '#f8fafc',
+					dark: '#111827',
+					light: '#F9FAFB',
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',

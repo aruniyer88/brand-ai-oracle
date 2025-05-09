@@ -1,0 +1,57 @@
+
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Play } from "lucide-react";
+
+export const LandingHero = () => {
+  return (
+    <div className="relative bg-primary text-primary-foreground overflow-hidden">
+      <div className="container mx-auto px-4 py-20 md:py-32">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+                See How AI Sees You — <br />
+                <span className="gradient-text">and Turn It Into Sales</span>
+              </h1>
+              <p className="text-xl text-primary-foreground/90 max-w-lg">
+                Rabbit Hole Analytics audits ChatGPT, Claude & Perplexity to show exactly what they say about your brand, scores your AI share-of-voice, and tells you how to rank first in machine-generated recommendations.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-4">
+              <Button size="lg" className="rounded-full bg-accent hover:bg-accent/90 text-accent-foreground">
+                Book Demo
+              </Button>
+              <Button size="lg" variant="link" className="text-primary-foreground flex items-center gap-2">
+                <Play className="h-4 w-4" />
+                Watch 90-sec video
+              </Button>
+            </div>
+
+            <div className="pt-4">
+              <p className="text-sm text-primary-foreground/70 mb-4">Trusted by leading brands</p>
+              <div className="flex flex-wrap gap-6 items-center opacity-70">
+                {["Nike", "Adobe", "Shopify", "Stripe", "Figma", "Slack"].map((brand) => (
+                  <div key={brand} className="text-primary-foreground font-semibold">
+                    {brand}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="animate-float shadow-2xl rounded-xl overflow-hidden border border-white/20">
+              <img 
+                src="/placeholder.svg" 
+                alt="Rabbit Hole Analytics Dashboard" 
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
