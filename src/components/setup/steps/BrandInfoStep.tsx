@@ -5,17 +5,21 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { PlusCircle, X } from "lucide-react";
-import { BrandEntity, SocialLink } from "@/types/brandTypes";
+import { BrandEntity, SocialLink, Product } from "@/types/brandTypes";
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface BrandInfoStepProps {
   brandInfo: BrandEntity;
   setBrandInfo: (brandInfo: BrandEntity) => void;
+  products: Product[];
+  setProducts: (products: Product[]) => void;
 }
 
 export const BrandInfoStep = ({
   brandInfo,
   setBrandInfo,
+  products,
+  setProducts,
 }: BrandInfoStepProps) => {
   const [newAlias, setNewAlias] = useState("");
   const [newSocialPlatform, setNewSocialPlatform] = useState("");
