@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,12 +8,14 @@ import { PlusCircle, X } from "lucide-react";
 import { BrandEntity, SocialLink, Product } from "@/types/brandTypes";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
 interface BrandInfoStepProps {
   brandInfo: BrandEntity;
   setBrandInfo: (brandInfo: BrandEntity) => void;
   products: Product[];
   setProducts: (products: Product[]) => void;
 }
+
 export const BrandInfoStep = ({
   brandInfo,
   setBrandInfo,
@@ -44,6 +47,7 @@ export const BrandInfoStep = ({
     name: "Analytics Platform",
     category: "SaaS"
   }];
+
   const handleProductSelection = (productId: string) => {
     setSelectedProductId(productId);
 
@@ -57,8 +61,12 @@ export const BrandInfoStep = ({
         category: selectedProduct.category,
         valueProps: []
       }]);
+    } else if (productId === "custom") {
+      // Handle custom product selection (without adding it yet)
+      setCustomProduct(customProduct || "");
     }
   };
+
   const handleCustomProductAdd = () => {
     if (customProduct.trim()) {
       setProducts([{
@@ -68,9 +76,16 @@ export const BrandInfoStep = ({
         valueProps: []
       }]);
       setSelectedProductId("custom");
-      setCustomProduct("");
     }
   };
+
+  // Add custom product when user leaves the input field if custom is selected
+  const handleCustomProductBlur = () => {
+    if (selectedProductId === "custom" && customProduct.trim()) {
+      handleCustomProductAdd();
+    }
+  };
+
   return <div className="space-y-6">
       <div>
         <h2 className="text-xl font-semibold mb-2">Brand Information</h2>
@@ -113,15 +128,34 @@ export const BrandInfoStep = ({
                 </span>
               </Label>
             </div>)}
+            
+          {/* Custom product option as a radio button */}
+          <div className="flex items-center space-x-2 rounded-md border p-3">
+            <RadioGroupItem value="custom" id="custom" />
+            <Label htmlFor="custom" className="font-medium flex-grow">Other</Label>
+          </div>
         </RadioGroup>
         
-        <div className="mt-6">
-          <Label htmlFor="custom-product">Other</Label>
-          <div className="flex space-x-2 mt-1">
-            <Input id="custom-product" placeholder="Enter custom product name" value={customProduct} onChange={e => setCustomProduct(e.target.value)} />
-            
+        {/* Custom product input field - only enabled when "Other" is selected */}
+        {selectedProductId === "custom" && (
+          <div className="mt-3 pl-6">
+            <div className="flex space-x-2">
+              <Input 
+                placeholder="Enter custom product name" 
+                value={customProduct} 
+                onChange={(e) => setCustomProduct(e.target.value)} 
+                onBlur={handleCustomProductBlur}
+                className="flex-grow"
+              />
+              <Button 
+                onClick={handleCustomProductAdd} 
+                disabled={!customProduct.trim()}
+              >
+                <PlusCircle className="h-4 w-4 mr-2" /> Add
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>;
 };
