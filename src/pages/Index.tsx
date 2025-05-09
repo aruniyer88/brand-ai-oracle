@@ -1,10 +1,12 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
-import { Check } from "lucide-react";
+import { Check, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
 interface Brand {
   id: string;
   name: string;
@@ -44,16 +46,22 @@ const mockBrands: Brand[] = [{
   domain: "ecosmart.com",
   logo: "https://placehold.co/100x100?text=Eco"
 }];
+
 const Index = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
 
   // Always initialize as an array, never undefined
-  const filteredBrands = search ? mockBrands.filter(brand => brand.name.toLowerCase().includes(search.toLowerCase()) || brand.domain.toLowerCase().includes(search.toLowerCase())) : [];
+  const filteredBrands = search ? mockBrands.filter(brand => 
+    brand.name.toLowerCase().includes(search.toLowerCase()) || 
+    brand.domain.toLowerCase().includes(search.toLowerCase())
+  ) : [];
+
   const handleSelectBrand = (brand: Brand) => {
     setSelectedBrand(brand);
   };
+  
   const handleAnalyze = () => {
     if (selectedBrand) {
       navigate("/setup", {
@@ -63,7 +71,15 @@ const Index = () => {
       });
     }
   };
-  return <MainLayout>
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && filteredBrands.length > 0 && search) {
+      handleSelectBrand(filteredBrands[0]);
+    }
+  };
+
+  return (
+    <MainLayout>
       <div className="max-w-3xl mx-auto text-center mt-16 mb-12">
         <h1 className="text-4xl font-bold mb-6">Stay Ahead in AI Search</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -75,16 +91,36 @@ const Index = () => {
       <div className="max-w-2xl mx-auto">
         <div className="border rounded-xl p-6 shadow-sm bg-white">
           <div className="mb-6">
-            {!selectedBrand ? <div className="relative">
+            {!selectedBrand ? (
+              <div className="relative">
                 <Command className="rounded-lg border shadow-md">
-                  <CommandInput placeholder="Search for a brand..." value={search} onValueChange={setSearch} />
+                  <div className="relative">
+                    <CommandInput 
+                      placeholder="Search for a brand..." 
+                      value={search} 
+                      onValueChange={setSearch}
+                      onKeyDown={handleKeyDown}
+                      className="pr-10"
+                    />
+                    <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  </div>
                   <CommandList>
-                    
+                    <CommandEmpty>No brands found</CommandEmpty>
                     <CommandGroup>
-                      {filteredBrands.map(brand => <CommandItem key={brand.id} value={brand.name} onSelect={() => handleSelectBrand(brand)} className="flex items-center py-3 cursor-pointer">
+                      {filteredBrands.map(brand => (
+                        <CommandItem 
+                          key={brand.id} 
+                          value={brand.name} 
+                          onSelect={() => handleSelectBrand(brand)} 
+                          className="flex items-center py-3 cursor-pointer"
+                        >
                           <div className="flex items-center gap-3 flex-1">
                             <div className="w-8 h-8 bg-slate-100 rounded-md flex items-center justify-center overflow-hidden">
-                              {brand.logo ? <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" /> : <span className="text-xs font-medium">{brand.name.substring(0, 2)}</span>}
+                              {brand.logo ? (
+                                <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
+                              ) : (
+                                <span className="text-xs font-medium">{brand.name.substring(0, 2)}</span>
+                              )}
                             </div>
                             <div>
                               <p className="font-medium">{brand.name}</p>
@@ -92,13 +128,20 @@ const Index = () => {
                             </div>
                           </div>
                           <Check className={cn("h-4 w-4", selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0")} />
-                        </CommandItem>)}
+                        </CommandItem>
+                      ))}
                     </CommandGroup>
                   </CommandList>
                 </Command>
-              </div> : <div className="flex flex-col items-center justify-center py-8">
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-8">
                 <div className="w-24 h-24 bg-slate-100 rounded-md flex items-center justify-center overflow-hidden mb-4">
-                  {selectedBrand.logo ? <img src={selectedBrand.logo} alt={selectedBrand.name} className="w-full h-full object-cover" /> : <span className="text-2xl font-medium">{selectedBrand.name.substring(0, 2)}</span>}
+                  {selectedBrand.logo ? (
+                    <img src={selectedBrand.logo} alt={selectedBrand.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-2xl font-medium">{selectedBrand.name.substring(0, 2)}</span>
+                  )}
                 </div>
                 <h2 className="text-xl font-bold mb-1">{selectedBrand.name}</h2>
                 <p className="text-sm text-muted-foreground mb-8">{selectedBrand.domain}</p>
@@ -106,12 +149,13 @@ const Index = () => {
                 <Button onClick={handleAnalyze} className="w-full text-lg py-6">
                   Analyze {selectedBrand.name}
                 </Button>
-              </div>}
+              </div>
+            )}
           </div>
-
-          {!selectedBrand}
         </div>
       </div>
-    </MainLayout>;
+    </MainLayout>
+  );
 };
+
 export default Index;
