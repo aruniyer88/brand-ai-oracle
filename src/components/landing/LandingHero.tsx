@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
@@ -8,11 +9,11 @@ export const LandingHero = () => {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-                See How AI Sees You — <br />
-                <span className="gradient-text">and Turn It Into Sales</span>
+                AI Has Opinions. <br />
+                <span className="gradient-text">Shape Them.</span>
               </h1>
               <p className="text-xl text-primary-foreground/90 max-w-lg">
-                Rabbit Hole Analytics audits ChatGPT, Claude & Perplexity to show exactly what they say about your brand, scores your AI share-of-voice, and tells you how to rank first in machine-generated recommendations.
+                Audit your brand's AI presence, measure your share of voice, and learn how to top the ranks in machine-generated content.
               </p>
             </div>
 
