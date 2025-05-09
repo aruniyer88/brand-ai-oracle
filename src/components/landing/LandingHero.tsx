@@ -31,7 +31,7 @@ export const LandingHero = () => {
 
         {/* Buttons on the right */}
         <div className="flex items-center space-x-4">
-          <Button variant="outline" className="border-white/20 text-white bg-gray-600 hover:bg-gray-500">
+          <Button variant="outline" className="border-white/20 text-white bg-slate-900 hover:bg-slate-800">
             Login
           </Button>
           <Button className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full">
