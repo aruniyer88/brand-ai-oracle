@@ -116,7 +116,7 @@ export const BrandInfoStep = ({
         </RadioGroup>
         
         <div className="mt-6">
-          <Label htmlFor="custom-product">Or add your own product</Label>
+          <Label htmlFor="custom-product">Other</Label>
           <div className="flex space-x-2 mt-1">
             <Input id="custom-product" placeholder="Enter custom product name" value={customProduct} onChange={e => setCustomProduct(e.target.value)} />
             <Button onClick={handleCustomProductAdd} type="button">
