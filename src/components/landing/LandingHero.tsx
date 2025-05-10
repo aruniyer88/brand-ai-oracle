@@ -1,8 +1,13 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+
 export const LandingHero = () => {
+  const { user, signOut } = useAuth();
+
   return <div className="relative bg-primary text-primary-foreground overflow-hidden">
       {/* Header Navigation */}
       <header className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -31,12 +36,35 @@ export const LandingHero = () => {
 
         {/* Buttons on the right */}
         <div className="flex items-center space-x-4">
-          <Button variant="outline" className="border-white/20 text-white bg-slate-900 hover:bg-slate-800">
-            Login
-          </Button>
-          <Button className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full">
-            Get Started
-          </Button>
+          {user ? (
+            <>
+              <Link to="/reports">
+                <Button variant="outline" className="border-white/20 text-white bg-slate-900 hover:bg-slate-800">
+                  Dashboard
+                </Button>
+              </Link>
+              <Button 
+                onClick={() => signOut()} 
+                variant="outline" 
+                className="border-white/20 text-white bg-slate-900 hover:bg-slate-800"
+              >
+                Log Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/auth">
+                <Button variant="outline" className="border-white/20 text-white bg-slate-900 hover:bg-slate-800">
+                  Login
+                </Button>
+              </Link>
+              <Link to="/auth?tab=signup">
+                <Button className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full">
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </header>
 
