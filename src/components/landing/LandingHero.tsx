@@ -1,12 +1,20 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { AuthDialog } from "./AuthDialog";
 
 export const LandingHero = () => {
   const { user, signOut } = useAuth();
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
+  const [authDialogTab, setAuthDialogTab] = useState<"login" | "signup">("login");
+
+  const handleAuthClick = (tab: "login" | "signup") => {
+    setAuthDialogTab(tab);
+    setAuthDialogOpen(true);
+  };
 
   return <div className="relative bg-primary text-primary-foreground overflow-hidden">
       {/* Header Navigation */}
@@ -53,16 +61,19 @@ export const LandingHero = () => {
             </>
           ) : (
             <>
-              <Link to="/auth">
-                <Button variant="outline" className="border-white/20 text-white bg-slate-900 hover:bg-slate-800">
-                  Login
-                </Button>
-              </Link>
-              <Link to="/auth?tab=signup">
-                <Button className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full">
-                  Get Started
-                </Button>
-              </Link>
+              <Button 
+                variant="outline"
+                className="border-white/20 text-white bg-slate-900 hover:bg-slate-800"
+                onClick={() => handleAuthClick("login")}
+              >
+                Login
+              </Button>
+              <Button 
+                className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full"
+                onClick={() => handleAuthClick("signup")}
+              >
+                Get Started
+              </Button>
             </>
           )}
         </div>
@@ -82,7 +93,11 @@ export const LandingHero = () => {
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="rounded-full bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Button 
+                size="lg" 
+                className="rounded-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                onClick={() => handleAuthClick("signup")}
+              >
                 Book Demo
               </Button>
               <Button size="lg" variant="link" className="text-primary-foreground flex items-center gap-2">
@@ -99,5 +114,12 @@ export const LandingHero = () => {
           </div>
         </div>
       </div>
+
+      {/* Auth Dialog */}
+      <AuthDialog 
+        isOpen={authDialogOpen} 
+        onOpenChange={setAuthDialogOpen} 
+        defaultTab={authDialogTab} 
+      />
     </div>;
 };

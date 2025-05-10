@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Play, CheckCircle, BarChart2, LineChart, AlertTriangle, MessageSquare } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,7 +12,25 @@ import { LandingSection } from "@/components/landing/LandingSection";
 import { LandingTestimonial } from "@/components/landing/LandingTestimonial";
 import { LandingWalkthrough } from "@/components/landing/LandingWalkthrough";
 import { AnnouncementBar } from "@/components/landing/AnnouncementBar";
+import { AuthDialog } from "@/components/landing/AuthDialog";
+
 export default function Index() {
+  const location = useLocation();
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
+  const [authDialogTab, setAuthDialogTab] = useState<"login" | "signup">("login");
+  
+  // Check for auth dialog state from navigation
+  useEffect(() => {
+    if (location.state && location.state.openAuthDialog) {
+      setAuthDialogTab(location.state.authTab || "login");
+      setAuthDialogOpen(true);
+      
+      // Clear the state so it doesn't reopen on page refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
+  // Features section data
   const features = [{
     title: "AI Visibility + Influence Score",
     description: "Our proprietary 0-100 metric shows exactly where your brand stands in AI-generated content across platforms.",
@@ -28,6 +48,8 @@ export default function Index() {
     description: "Get prioritized, AI-focused SEO recommendations ranked by potential impact on visibility.",
     icon: MessageSquare
   }];
+  
+  // FAQs section data
   const faqs = [{
     question: "How much does Rabbit Hole Analytics cost?",
     answer: "We offer flexible pricing plans starting with a free trial for qualified brands. Enterprise plans include custom integrations and dedicated support. Contact our sales team for detailed pricing information."
@@ -47,6 +69,7 @@ export default function Index() {
     question: "How quickly can I expect to see results?",
     answer: "Most customers see meaningful AI visibility improvements within 30 days of implementing our recommendations. Your initial brand audit is ready within 48 hours of setup."
   }];
+  
   return <div className="bg-background min-h-screen flex flex-col">
       <AnnouncementBar />
 
@@ -113,25 +136,25 @@ export default function Index() {
             <div>
               <h4 className="font-semibold mb-4">Product</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/features" className="hover:underline">Features</Link></li>
-                <li><Link to="/pricing" className="hover:underline">Pricing</Link></li>
+                <li><a href="/features" className="hover:underline">Features</a></li>
+                <li><a href="/pricing" className="hover:underline">Pricing</a></li>
                 
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Resources</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/blog" className="hover:underline">Blog</Link></li>
-                <li><Link to="/support" className="hover:underline">Support</Link></li>
-                <li><Link to="/documentation" className="hover:underline">Documentation</Link></li>
+                <li><a href="/blog" className="hover:underline">Blog</a></li>
+                <li><a href="/support" className="hover:underline">Support</a></li>
+                <li><a href="/documentation" className="hover:underline">Documentation</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/about" className="hover:underline">About</Link></li>
+                <li><a href="/about" className="hover:underline">About</a></li>
                 
-                <li><Link to="/contact" className="hover:underline">Contact</Link></li>
+                <li><a href="/contact" className="hover:underline">Contact</a></li>
               </ul>
             </div>
           </div>
@@ -154,5 +177,12 @@ export default function Index() {
           </div>
         </div>
       </footer>
+
+      {/* Global Auth Dialog */}
+      <AuthDialog 
+        isOpen={authDialogOpen}
+        onOpenChange={setAuthDialogOpen}
+        defaultTab={authDialogTab}
+      />
     </div>;
 }
