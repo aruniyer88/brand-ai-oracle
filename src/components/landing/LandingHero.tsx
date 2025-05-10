@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
@@ -79,6 +78,7 @@ export const LandingHero = () => {
         </div>
       </header>
 
+      {/* Main hero content */}
       <div className="container mx-auto px-4 py-20 md:py-32">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">

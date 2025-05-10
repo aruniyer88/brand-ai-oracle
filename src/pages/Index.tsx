@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -76,6 +75,7 @@ export default function Index() {
       <main className="flex-1">
         <LandingHero />
 
+        {/* Sections */}
         <LandingSection title="The AI Blind Spot" description="Traditional SEO doesn't account for how AI generates answers. Without specialized tools, you're flying blind while AI models potentially misrepresent your brand, send traffic to competitors, or share outdated information." className="bg-white">
           <div className="grid gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3">
             <Card className="border-none shadow-md bg-gray-50">
