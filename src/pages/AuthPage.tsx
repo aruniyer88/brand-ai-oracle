@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,6 +31,7 @@ const AuthPage = () => {
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
   const [authError, setAuthError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -55,6 +56,7 @@ const AuthPage = () => {
     setIsSubmitting(true);
     try {
       await signIn(values.email, values.password);
+      navigate("/search"); // Redirect to search page after login
     } catch (error: any) {
       setAuthError(error.message || "Sign in failed");
     } finally {
@@ -67,6 +69,7 @@ const AuthPage = () => {
     setIsSubmitting(true);
     try {
       await signUp(values.email, values.password, { full_name: values.full_name });
+      navigate("/search"); // Redirect to search page after signup
     } catch (error: any) {
       setAuthError(error.message || "Sign up failed");
     } finally {
@@ -74,9 +77,9 @@ const AuthPage = () => {
     }
   };
 
-  // If already logged in, redirect to home page
+  // If already logged in, redirect to search page
   if (user && !loading) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/search" replace />;
   }
 
   return (

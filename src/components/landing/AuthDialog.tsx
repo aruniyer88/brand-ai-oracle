@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -41,6 +42,7 @@ export const AuthDialog = ({ isOpen, onOpenChange, defaultTab = "login" }: AuthD
   const [authMode, setAuthMode] = useState<"login" | "signup">(defaultTab);
   const [authError, setAuthError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -66,6 +68,7 @@ export const AuthDialog = ({ isOpen, onOpenChange, defaultTab = "login" }: AuthD
     try {
       await signIn(values.email, values.password);
       onOpenChange(false); // Close dialog after successful login
+      navigate("/search"); // Redirect to search page after login
     } catch (error: any) {
       setAuthError(error.message || "Sign in failed");
     } finally {
@@ -79,6 +82,7 @@ export const AuthDialog = ({ isOpen, onOpenChange, defaultTab = "login" }: AuthD
     try {
       await signUp(values.email, values.password, { full_name: values.full_name });
       onOpenChange(false); // Close dialog after successful signup
+      navigate("/search"); // Redirect to search page after signup
     } catch (error: any) {
       setAuthError(error.message || "Sign up failed");
     } finally {
