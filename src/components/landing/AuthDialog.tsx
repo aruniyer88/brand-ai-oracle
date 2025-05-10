@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -10,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useNavigate } from "react-router-dom";
+import { Check } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -61,6 +61,11 @@ export const AuthDialog = ({ isOpen, onOpenChange, defaultTab = "login" }: AuthD
       confirmPassword: "",
     },
   });
+
+  // Track if passwords match for showing the check mark
+  const password = signupForm.watch("password");
+  const confirmPassword = signupForm.watch("confirmPassword");
+  const passwordsMatch = password && confirmPassword && password === confirmPassword;
 
   const handleLogin = async (values: z.infer<typeof loginSchema>) => {
     setAuthError(null);
@@ -181,9 +186,16 @@ export const AuthDialog = ({ isOpen, onOpenChange, defaultTab = "login" }: AuthD
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input type="password" placeholder="********" {...field} />
-                      </FormControl>
+                      <div className="relative">
+                        <FormControl>
+                          <Input type="password" placeholder="********" {...field} />
+                        </FormControl>
+                        {passwordsMatch && password && (
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500">
+                            <Check size={16} />
+                          </div>
+                        )}
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -194,9 +206,16 @@ export const AuthDialog = ({ isOpen, onOpenChange, defaultTab = "login" }: AuthD
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Confirm Password</FormLabel>
-                      <FormControl>
-                        <Input type="password" placeholder="********" {...field} />
-                      </FormControl>
+                      <div className="relative">
+                        <FormControl>
+                          <Input type="password" placeholder="********" {...field} />
+                        </FormControl>
+                        {passwordsMatch && confirmPassword && (
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500">
+                            <Check size={16} />
+                          </div>
+                        )}
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
