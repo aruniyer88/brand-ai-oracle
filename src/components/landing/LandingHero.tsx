@@ -4,17 +4,17 @@ import { Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthDialog } from "./AuthDialog";
-
 export function LandingHero() {
-  const { user, signOut } = useAuth();
+  const {
+    user,
+    signOut
+  } = useAuth();
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [authTab, setAuthTab] = useState<"login" | "book">("book");
-
   const handleAuthClick = (tab: "login" | "book") => {
     setAuthTab(tab);
     setAuthDialogOpen(true);
   };
-
   return <div className="relative bg-primary text-primary-foreground overflow-hidden">
       {/* Header Navigation */}
       <header className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -43,38 +43,21 @@ export function LandingHero() {
 
         {/* Buttons on the right */}
         <div className="flex items-center space-x-4">
-          {user ? (
-            <>
+          {user ? <>
               <Link to="/reports">
                 <Button variant="outline" className="border-white/20 text-white bg-slate-900 hover:bg-slate-800">
                   Dashboard
                 </Button>
               </Link>
-              <Button 
-                onClick={() => signOut()} 
-                variant="outline" 
-                className="border-white/20 text-white bg-slate-900 hover:bg-slate-800"
-              >
+              <Button onClick={() => signOut()} variant="outline" className="border-white/20 text-white bg-slate-900 hover:bg-slate-800">
                 Log Out
               </Button>
-            </>
-          ) : (
-            <>
-              <Button 
-                variant="outline"
-                className="border-white/20 text-white bg-slate-900 hover:bg-slate-800"
-                onClick={() => handleAuthClick("login")}
-              >
+            </> : <>
+              <Button variant="outline" className="border-white/20 text-white bg-slate-900 hover:bg-slate-800" onClick={() => handleAuthClick("login")}>
                 Login
               </Button>
-              <Button 
-                className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full"
-                onClick={() => handleAuthClick("book")}
-              >
-                Get Started
-              </Button>
-            </>
-          )}
+              <Button className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full" onClick={() => handleAuthClick("book")}>Book a meeting</Button>
+            </>}
         </div>
       </header>
 
@@ -93,11 +76,7 @@ export function LandingHero() {
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <Button 
-                size="lg" 
-                className="rounded-full bg-accent hover:bg-accent/90 text-accent-foreground"
-                onClick={() => handleAuthClick("book")}
-              >
+              <Button size="lg" className="rounded-full bg-accent hover:bg-accent/90 text-accent-foreground" onClick={() => handleAuthClick("book")}>
                 Book Demo
               </Button>
               <Button size="lg" variant="link" className="text-primary-foreground flex items-center gap-2">
@@ -116,10 +95,7 @@ export function LandingHero() {
       </div>
 
       {/* Auth Dialog */}
-      <AuthDialog 
-        isOpen={authDialogOpen} 
-        onOpenChange={setAuthDialogOpen} 
-        defaultTab={authTab} 
-      />
+      <AuthDialog isOpen={authDialogOpen} onOpenChange={setAuthDialogOpen} defaultTab={authTab} />
     </div>;
-};
+}
+;
