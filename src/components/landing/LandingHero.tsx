@@ -76,9 +76,7 @@ export function LandingHero() {
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="rounded-full bg-accent hover:bg-accent/90 text-accent-foreground" onClick={() => handleAuthClick("book")}>
-                Book Demo
-              </Button>
+              <Button size="lg" className="rounded-full bg-accent hover:bg-accent/90 text-accent-foreground" onClick={() => handleAuthClick("book")}>Book a meeting</Button>
               <Button size="lg" variant="link" className="text-primary-foreground flex items-center gap-2">
                 <Play className="h-4 w-4" />
                 Watch 90-sec video
