@@ -60,9 +60,7 @@ export const AuthDialog = ({
   return <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl font-extrabold">
-            {showForgotPassword ? "Reset Your Password" : "Get Started with Rabbit Hole Analytics"}
-          </DialogTitle>
+          
           
         </DialogHeader>
         
