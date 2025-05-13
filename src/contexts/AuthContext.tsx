@@ -51,11 +51,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const checkEmailApproved = async (email: string): Promise<boolean> => {
     try {
+      // We need to properly type the query to avoid TypeScript errors
       const { data, error } = await supabase
         .from('approved_emails')
         .select('*')
         .eq('email', email.toLowerCase())
-        .single();
+        .maybeSingle();
       
       if (error) {
         console.error("Error checking approved email:", error);

@@ -30,6 +30,30 @@ export type Database = {
         }
         Relationships: []
       }
+      approved_emails: {
+        Row: {
+          added_by: string | null
+          created_at: string | null
+          email: string
+          id: string
+          notes: string | null
+        }
+        Insert: {
+          added_by?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          notes?: string | null
+        }
+        Update: {
+          added_by?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          notes?: string | null
+        }
+        Relationships: []
+      }
       audit: {
         Row: {
           advertiser_id: string | null

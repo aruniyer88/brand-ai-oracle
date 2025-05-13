@@ -1,3 +1,4 @@
+
 import React from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -7,14 +8,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { ArrowLeft, LockKeyhole } from "lucide-react";
+
 const resetSchema = z.object({
   email: z.string().email("Please enter a valid email address")
 });
+
 interface ForgotPasswordFormProps {
   onBack: () => void;
   onSuccess: (email: string) => void;
   onError: (error: Error) => void;
 }
+
 export const ForgotPasswordForm = ({
   onBack,
   onSuccess,
@@ -24,12 +28,14 @@ export const ForgotPasswordForm = ({
     resetPassword
   } = useAuth();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+
   const form = useForm<z.infer<typeof resetSchema>>({
     resolver: zodResolver(resetSchema),
     defaultValues: {
       email: ""
     }
   });
+
   const handleResetPassword = async (values: z.infer<typeof resetSchema>) => {
     setIsSubmitting(true);
     try {
@@ -41,9 +47,18 @@ export const ForgotPasswordForm = ({
       setIsSubmitting(false);
     }
   };
+
   return <>
       <div className="mb-4">
-        
+        <Button 
+          type="button" 
+          variant="ghost" 
+          onClick={onBack} 
+          className="p-0 h-auto flex items-center text-sm text-primary"
+        >
+          <ArrowLeft className="mr-1 h-4 w-4" />
+          Back to Login
+        </Button>
       </div>
       
       <div className="flex flex-col items-center mb-6">
@@ -71,12 +86,6 @@ export const ForgotPasswordForm = ({
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? "Sending reset link..." : "Send Reset Link"}
           </Button>
-          
-          <div className="mt-6 text-center">
-            <Button type="button" variant="link" className="text-primary" onClick={onBack}>
-              Back to Login
-            </Button>
-          </div>
         </form>
       </Form>
     </>;
