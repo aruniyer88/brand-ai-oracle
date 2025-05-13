@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -9,13 +8,11 @@ import { LoginForm } from "./auth/LoginForm";
 import { ForgotPasswordForm } from "./auth/ForgotPasswordForm";
 import { BookMeetingForm } from "./BookMeetingForm";
 import { toast } from "@/hooks/use-toast";
-
 interface AuthDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   defaultTab: 'login' | 'book';
 }
-
 export const AuthDialog = ({
   isOpen,
   onOpenChange,
@@ -42,57 +39,50 @@ export const AuthDialog = ({
       setResetSuccessEmail(null);
     }
   }, [isOpen]);
-  
   const handleAuthSuccess = () => {
     onOpenChange(false); // Close dialog after successful login
     navigate("/search"); // Redirect to search page
   };
-  
   const handleAuthError = (error: Error) => {
     setAuthError(error.message || "Authentication failed");
   };
-  
   const handleForgotPassword = () => {
     setAuthError(null);
     setShowForgotPassword(true);
   };
-  
   const handleBackToLogin = () => {
     setAuthError(null);
     setShowForgotPassword(false);
     setResetSuccessEmail(null);
   };
-  
   const handleResetSuccess = (email: string) => {
     setResetSuccessEmail(email);
   };
-  
   const handleBookingSuccess = () => {
     toast({
       title: "Meeting request submitted",
-      description: "We'll be in touch shortly to schedule your meeting.",
+      description: "We'll be in touch shortly to schedule your meeting."
     });
     onOpenChange(false); // Close dialog after successful booking
   };
-
   return <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex justify-center mb-4">
-            <img src="/logo.png" alt="Rabbit Hole Analytics" className="h-12 object-contain" />
+            
           </div>
         </DialogHeader>
         
-        {showForgotPassword ? (
-          // Forgot password flow
-          <>
+        {showForgotPassword ?
+      // Forgot password flow
+      <>
             {authError && <Alert variant="destructive" className="mb-6">
                 <AlertDescription>{authError}</AlertDescription>
               </Alert>}
             
-            {resetSuccessEmail ? (
-              // Success message after sending reset email
-              <div className="space-y-4">
+            {resetSuccessEmail ?
+        // Success message after sending reset email
+        <div className="space-y-4">
                 <Alert className="mb-6 bg-green-50 border-green-200">
                   <AlertDescription className="text-green-700">
                     A password reset link has been sent to <strong>{resetSuccessEmail}</strong>. Please check your email.
@@ -101,18 +91,14 @@ export const AuthDialog = ({
                 <Button onClick={handleBackToLogin} className="w-full">
                   Back to Login
                 </Button>
-              </div>
-            ) : (
-              // Forgot password form
-              <ForgotPasswordForm onBack={handleBackToLogin} onSuccess={handleResetSuccess} onError={handleAuthError} />
-            )}
-          </>
-        ) : authMode === "book" ? (
-          // Book a meeting form
-          <BookMeetingForm onBack={handleBackToLogin} onSuccess={handleBookingSuccess} />
-        ) : (
-          // Login form
-          <div className="space-y-6">
+              </div> :
+        // Forgot password form
+        <ForgotPasswordForm onBack={handleBackToLogin} onSuccess={handleResetSuccess} onError={handleAuthError} />}
+          </> : authMode === "book" ?
+      // Book a meeting form
+      <BookMeetingForm onBack={handleBackToLogin} onSuccess={handleBookingSuccess} /> :
+      // Login form
+      <div className="space-y-6">
             {authError && <Alert variant="destructive" className="mb-6">
                 <AlertDescription>{authError}</AlertDescription>
               </Alert>}
@@ -133,8 +119,7 @@ export const AuthDialog = ({
             <Button onClick={() => setAuthMode("book")} variant="outline" className="w-full">
               Book a Meeting
             </Button>
-          </div>
-        )}
+          </div>}
       </DialogContent>
     </Dialog>;
 };
