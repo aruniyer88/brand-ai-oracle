@@ -27,7 +27,7 @@ const signupSchema = loginSchema.extend({
 });
 
 const AuthPage = () => {
-  const { user, loading, signIn, signUp } = useAuth();
+  const { user, loading, signIn, signUp, checkEmailApproved } = useAuth();
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
   const [authError, setAuthError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,6 +55,12 @@ const AuthPage = () => {
     setAuthError(null);
     setIsSubmitting(true);
     try {
+      // Check if email is approved
+      const isApproved = await checkEmailApproved(values.email);
+      if (!isApproved) {
+        throw new Error("Access denied. Your email is not approved to use this application.");
+      }
+      
       await signIn(values.email, values.password);
       navigate("/search"); // Redirect to search page after login
     } catch (error: any) {
@@ -68,6 +74,12 @@ const AuthPage = () => {
     setAuthError(null);
     setIsSubmitting(true);
     try {
+      // Check if email is approved for signup
+      const isApproved = await checkEmailApproved(values.email);
+      if (!isApproved) {
+        throw new Error("Access denied. Your email is not approved to register for this application.");
+      }
+      
       await signUp(values.email, values.password, { full_name: values.full_name });
       navigate("/search"); // Redirect to search page after signup
     } catch (error: any) {

@@ -12,6 +12,7 @@ type AuthContextType = {
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  checkEmailApproved: (email: string) => Promise<boolean>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -48,6 +49,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, []);
 
+  const checkEmailApproved = async (email: string): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase
+        .from('approved_emails')
+        .select('*')
+        .eq('email', email.toLowerCase())
+        .single();
+      
+      if (error) {
+        console.error("Error checking approved email:", error);
+        return false;
+      }
+      
+      return !!data;
+    } catch (error) {
+      console.error("Error in checkEmailApproved:", error);
+      return false;
+    }
+  };
+
   const signUp = async (email: string, password: string, userData?: { full_name?: string }) => {
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -80,6 +101,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signIn = async (email: string, password: string) => {
     try {
+      // Check if email is in approved list
+      const isApproved = await checkEmailApproved(email);
+      
+      if (!isApproved) {
+        throw new Error("Access denied. Your email is not approved to use this application.");
+      }
+      
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -151,6 +179,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signIn,
         signOut,
         resetPassword,
+        checkEmailApproved,
       }}
     >
       {children}

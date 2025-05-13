@@ -86,6 +86,17 @@ export const ForgotPasswordForm = ({
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? "Sending reset link..." : "Send Reset Link"}
           </Button>
+          
+          <div className="mt-6 text-center">
+            <Button 
+              type="button"
+              variant="link" 
+              className="text-primary"
+              onClick={onBack}
+            >
+              Back to Login
+            </Button>
+          </div>
         </form>
       </Form>
     </>

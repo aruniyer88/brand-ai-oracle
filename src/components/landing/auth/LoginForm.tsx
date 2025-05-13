@@ -20,7 +20,7 @@ interface LoginFormProps {
 }
 
 export const LoginForm = ({ onSuccess, onError, onForgotPassword }: LoginFormProps) => {
-  const { signIn } = useAuth();
+  const { signIn, checkEmailApproved } = useAuth();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -34,6 +34,12 @@ export const LoginForm = ({ onSuccess, onError, onForgotPassword }: LoginFormPro
   const handleLogin = async (values: z.infer<typeof loginSchema>) => {
     setIsSubmitting(true);
     try {
+      // Pre-check if email is approved before attempting login
+      const isApproved = await checkEmailApproved(values.email);
+      if (!isApproved) {
+        throw new Error("Access denied. Your email is not approved to use this application.");
+      }
+      
       await signIn(values.email, values.password);
       onSuccess();
     } catch (error: any) {
