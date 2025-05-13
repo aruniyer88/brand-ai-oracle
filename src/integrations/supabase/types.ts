@@ -9,29 +9,404 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      advertiser: {
+        Row: {
+          advertiser_description: string | null
+          advertiser_domain_name: string | null
+          advertiser_id: string
+          advertiser_name: string
+        }
+        Insert: {
+          advertiser_description?: string | null
+          advertiser_domain_name?: string | null
+          advertiser_id?: string
+          advertiser_name: string
+        }
+        Update: {
+          advertiser_description?: string | null
+          advertiser_domain_name?: string | null
+          advertiser_id?: string
+          advertiser_name?: string
+        }
+        Relationships: []
+      }
+      audit: {
+        Row: {
+          advertiser_id: string | null
+          audit_id: string
+          brand_id: string | null
+          created_timestamp: string
+          product_id: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          advertiser_id?: string | null
+          audit_id?: string
+          brand_id?: string | null
+          created_timestamp?: string
+          product_id?: string | null
+          status: string
+          user_id: string
+        }
+        Update: {
+          advertiser_id?: string | null
+          audit_id?: string
+          brand_id?: string | null
+          created_timestamp?: string
+          product_id?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_advertiser_id_fkey"
+            columns: ["advertiser_id"]
+            isOneToOne: false
+            referencedRelation: "advertiser"
+            referencedColumns: ["advertiser_id"]
+          },
+          {
+            foreignKeyName: "audit_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brand"
+            referencedColumns: ["brand_id"]
+          },
+          {
+            foreignKeyName: "audit_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "audit_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      brand: {
+        Row: {
+          advertiser_id: string
+          brand_description: string | null
+          brand_id: string
+          brand_name: string
+        }
+        Insert: {
+          advertiser_id: string
+          brand_description?: string | null
+          brand_id?: string
+          brand_name: string
+        }
+        Update: {
+          advertiser_id?: string
+          brand_description?: string | null
+          brand_id?: string
+          brand_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brand_advertiser_id_fkey"
+            columns: ["advertiser_id"]
+            isOneToOne: false
+            referencedRelation: "advertiser"
+            referencedColumns: ["advertiser_id"]
+          },
+        ]
+      }
+      personas: {
+        Row: {
+          advertiser_id: string | null
+          audit_id: string | null
+          brand_id: string | null
+          persona_characteristics: string | null
+          persona_description: string | null
+          persona_id: string
+          persona_type: string
+          product_id: string | null
+        }
+        Insert: {
+          advertiser_id?: string | null
+          audit_id?: string | null
+          brand_id?: string | null
+          persona_characteristics?: string | null
+          persona_description?: string | null
+          persona_id?: string
+          persona_type: string
+          product_id?: string | null
+        }
+        Update: {
+          advertiser_id?: string | null
+          audit_id?: string | null
+          brand_id?: string | null
+          persona_characteristics?: string | null
+          persona_description?: string | null
+          persona_id?: string
+          persona_type?: string
+          product_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personas_advertiser_id_fkey"
+            columns: ["advertiser_id"]
+            isOneToOne: false
+            referencedRelation: "advertiser"
+            referencedColumns: ["advertiser_id"]
+          },
+          {
+            foreignKeyName: "personas_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "audit"
+            referencedColumns: ["audit_id"]
+          },
+          {
+            foreignKeyName: "personas_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brand"
+            referencedColumns: ["brand_id"]
+          },
+          {
+            foreignKeyName: "personas_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["product_id"]
+          },
+        ]
+      }
+      product: {
+        Row: {
+          brand_id: string
+          product_description: string | null
+          product_id: string
+          product_name: string
+        }
+        Insert: {
+          brand_id: string
+          product_description?: string | null
+          product_id?: string
+          product_name: string
+        }
+        Update: {
+          brand_id?: string
+          product_description?: string | null
+          product_id?: string
+          product_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brand"
+            referencedColumns: ["brand_id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
           full_name: string | null
-          id: string
           updated_at: string | null
+          user_id: string
           username: string | null
         }
         Insert: {
           avatar_url?: string | null
           full_name?: string | null
-          id: string
           updated_at?: string | null
+          user_id: string
           username?: string | null
         }
         Update: {
           avatar_url?: string | null
           full_name?: string | null
-          id?: string
           updated_at?: string | null
+          user_id?: string
           username?: string | null
         }
         Relationships: []
+      }
+      queries: {
+        Row: {
+          audit_id: string
+          persona: string
+          query_id: string
+          query_text: string
+          query_type: string | null
+          topic_name: string | null
+          topic_type: string | null
+        }
+        Insert: {
+          audit_id: string
+          persona: string
+          query_id?: string
+          query_text: string
+          query_type?: string | null
+          topic_name?: string | null
+          topic_type?: string | null
+        }
+        Update: {
+          audit_id?: string
+          persona?: string
+          query_id?: string
+          query_text?: string
+          query_type?: string | null
+          topic_name?: string | null
+          topic_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "queries_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "audit"
+            referencedColumns: ["audit_id"]
+          },
+        ]
+      }
+      recommendations: {
+        Row: {
+          audit_id: string
+          category: string | null
+          recommendation_id: string
+          text: string
+        }
+        Insert: {
+          audit_id: string
+          category?: string | null
+          recommendation_id?: string
+          text: string
+        }
+        Update: {
+          audit_id?: string
+          category?: string | null
+          recommendation_id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendations_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "audit"
+            referencedColumns: ["audit_id"]
+          },
+        ]
+      }
+      responses: {
+        Row: {
+          model: string
+          query_id: string
+          response_id: string
+          response_text: string
+        }
+        Insert: {
+          model: string
+          query_id: string
+          response_id?: string
+          response_text: string
+        }
+        Update: {
+          model?: string
+          query_id?: string
+          response_id?: string
+          response_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "responses_query_id_fkey"
+            columns: ["query_id"]
+            isOneToOne: false
+            referencedRelation: "queries"
+            referencedColumns: ["query_id"]
+          },
+        ]
+      }
+      score_breakdown: {
+        Row: {
+          audit_id: string
+          brand_mentions: Json | null
+          score_id: string
+          value: number
+        }
+        Insert: {
+          audit_id: string
+          brand_mentions?: Json | null
+          score_id?: string
+          value: number
+        }
+        Update: {
+          audit_id?: string
+          brand_mentions?: Json | null
+          score_id?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "score_breakdown_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "audit"
+            referencedColumns: ["audit_id"]
+          },
+        ]
+      }
+      Test_Table: {
+        Row: {
+          "Brand name": string | null
+          created_at: string
+          id: number
+        }
+        Insert: {
+          "Brand name"?: string | null
+          created_at?: string
+          id?: number
+        }
+        Update: {
+          "Brand name"?: string | null
+          created_at?: string
+          id?: number
+        }
+        Relationships: []
+      }
+      topics: {
+        Row: {
+          audit_id: string
+          topic_id: string
+          topic_name: string
+          topic_type: string | null
+          visibility: number | null
+        }
+        Insert: {
+          audit_id: string
+          topic_id?: string
+          topic_name: string
+          topic_type?: string | null
+          visibility?: number | null
+        }
+        Update: {
+          audit_id?: string
+          topic_id?: string
+          topic_name?: string
+          topic_type?: string | null
+          visibility?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "topics_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "audit"
+            referencedColumns: ["audit_id"]
+          },
+        ]
       }
     }
     Views: {

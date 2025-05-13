@@ -16,9 +16,10 @@ const loginSchema = z.object({
 interface LoginFormProps {
   onSuccess: () => void;
   onError: (error: Error) => void;
+  onForgotPassword: () => void;
 }
 
-export const LoginForm = ({ onSuccess, onError }: LoginFormProps) => {
+export const LoginForm = ({ onSuccess, onError, onForgotPassword }: LoginFormProps) => {
   const { signIn } = useAuth();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   
@@ -71,6 +72,16 @@ export const LoginForm = ({ onSuccess, onError }: LoginFormProps) => {
             </FormItem>
           )}
         />
+        <div className="flex justify-end">
+          <Button 
+            type="button" 
+            variant="link" 
+            className="p-0 h-auto text-sm text-primary"
+            onClick={() => onForgotPassword()}
+          >
+            Forgot password?
+          </Button>
+        </div>
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? "Signing in..." : "Sign In"}
         </Button>
