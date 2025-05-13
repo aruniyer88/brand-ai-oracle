@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -6,24 +7,29 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar, Clock, User, Mail, Building, ArrowRight, MessageSquare } from "lucide-react";
+import { Calendar, Clock, User, Mail, Building, ArrowRight, MessageSquare, ArrowLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+
 const meetingSchema = z.object({
   fullName: z.string().min(2, "Please enter your full name"),
   email: z.string().email("Please enter a valid email address"),
   company: z.string().min(1, "Please enter your company name"),
   message: z.string().optional()
 });
+
 type MeetingFormValues = z.infer<typeof meetingSchema>;
+
 interface BookMeetingFormProps {
   onSuccess?: () => void;
   onBack?: () => void;
 }
+
 export const BookMeetingForm = ({
   onSuccess,
   onBack
 }: BookMeetingFormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const form = useForm<MeetingFormValues>({
     resolver: zodResolver(meetingSchema),
     defaultValues: {
@@ -33,6 +39,7 @@ export const BookMeetingForm = ({
       message: ""
     }
   });
+
   const handleSubmit = async (data: MeetingFormValues) => {
     setIsSubmitting(true);
     try {
@@ -57,6 +64,7 @@ export const BookMeetingForm = ({
       setIsSubmitting(false);
     }
   };
+
   return <div className="space-y-6">
       <div className="text-center space-y-2">
         <div className="mx-auto bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center">
@@ -121,11 +129,17 @@ export const BookMeetingForm = ({
               </FormItem>} />
 
           <div className="flex gap-3 pt-2">
-            {onBack}
-            <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting..." : <>
+            {onBack && (
+              <Button type="button" variant="outline" onClick={onBack}>
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back
+              </Button>
+            )}
+            <Button type="submit" className={`${onBack ? 'flex-1' : 'w-full'} bg-purple-600 hover:bg-purple-700`} disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : (
+                <>
                   Book Meeting <ArrowRight className="ml-2 h-4 w-4" />
-                </>}
+                </>
+              )}
             </Button>
           </div>
         </form>
