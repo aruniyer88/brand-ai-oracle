@@ -12,64 +12,43 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { OtpVerificationForm } from "@/components/landing/auth/OtpVerificationForm";
+import { LoginForm } from "@/components/landing/auth/LoginForm";
 
-const loginSchema = z.object({
+// Schema for the signup form
+const signupSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-const signupSchema = loginSchema.extend({
-  full_name: z.string().min(2, "Full name must be at least 2 characters"),
-  confirmPassword: z.string().min(6, "Password must be at least 6 characters"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
+  full_name: z.string().min(2, "Full name must be at least 2 characters")
 });
 
 const AuthPage = () => {
-  const { user, loading, signIn, signUp, checkEmailApproved } = useAuth();
+  const { user, loading, signUp, checkEmailApproved, signInWithOtp } = useAuth();
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
   const [authError, setAuthError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sentOtpEmail, setSentOtpEmail] = useState<string | null>(null);
   const navigate = useNavigate();
-
-  const loginForm = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
 
   const signupForm = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
       email: "",
       full_name: "",
-      password: "",
-      confirmPassword: "",
     },
   });
 
-  const handleLogin = async (values: z.infer<typeof loginSchema>) => {
+  // Handle login with OTP
+  const handleLoginWithOtp = async (email: string) => {
     setAuthError(null);
-    setIsSubmitting(true);
-    try {
-      // Check if email is approved
-      const isApproved = await checkEmailApproved(values.email);
-      if (!isApproved) {
-        throw new Error("Access denied. Your email is not approved to use this application.");
-      }
-      
-      await signIn(values.email, values.password);
-      navigate("/search"); // Redirect to search page after login
-    } catch (error: any) {
-      setAuthError(error.message || "Sign in failed");
-    } finally {
-      setIsSubmitting(false);
-    }
+    setSentOtpEmail(email);
   };
 
+  // Handle OTP verification success
+  const handleVerificationSuccess = () => {
+    navigate("/search");
+  };
+
+  // Handle signup
   const handleSignup = async (values: z.infer<typeof signupSchema>) => {
     setAuthError(null);
     setIsSubmitting(true);
@@ -80,10 +59,25 @@ const AuthPage = () => {
         throw new Error("Access denied. Your email is not approved to register for this application.");
       }
       
-      await signUp(values.email, values.password, { full_name: values.full_name });
-      navigate("/search"); // Redirect to search page after signup
+      await signUp(values.email, { full_name: values.full_name });
+      setSentOtpEmail(values.email);
     } catch (error: any) {
       setAuthError(error.message || "Sign up failed");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Handle resending OTP
+  const handleResendOtp = async () => {
+    if (!sentOtpEmail) return;
+    
+    setAuthError(null);
+    setIsSubmitting(true);
+    try {
+      await signInWithOtp(sentOtpEmail);
+    } catch (error: any) {
+      setAuthError(error.message || "Failed to resend verification code");
     } finally {
       setIsSubmitting(false);
     }
@@ -99,119 +93,79 @@ const AuthPage = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl">Welcome</CardTitle>
-          <CardDescription>Sign in to your account or create a new one</CardDescription>
+          <CardDescription>
+            {sentOtpEmail ? "Verify your email" : "Sign in or create a new account"}
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="login" value={authMode} onValueChange={(value) => setAuthMode(value as "login" | "signup")}>
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
-            </TabsList>
-            
-            {authError && (
-              <Alert variant="destructive" className="mb-6">
-                <AlertDescription>{authError}</AlertDescription>
-              </Alert>
-            )}
+          {sentOtpEmail ? (
+            // Show OTP verification form if OTP has been sent
+            <OtpVerificationForm
+              email={sentOtpEmail}
+              onSuccess={handleVerificationSuccess}
+              onError={(error) => setAuthError(error.message)}
+              onBack={() => setSentOtpEmail(null)}
+              onResend={handleResendOtp}
+            />
+          ) : (
+            // Show login/signup tabs
+            <Tabs defaultValue="login" value={authMode} onValueChange={(value) => setAuthMode(value as "login" | "signup")}>
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="login">Login</TabsTrigger>
+                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              </TabsList>
+              
+              {authError && (
+                <Alert variant="destructive" className="mb-6">
+                  <AlertDescription>{authError}</AlertDescription>
+                </Alert>
+              )}
 
-            <TabsContent value="login">
-              <Form {...loginForm}>
-                <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4">
-                  <FormField
-                    control={loginForm.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="email@example.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={loginForm.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" placeholder="********" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? "Signing in..." : "Sign In"}
-                  </Button>
-                </form>
-              </Form>
-            </TabsContent>
-            
-            <TabsContent value="signup">
-              <Form {...signupForm}>
-                <form onSubmit={signupForm.handleSubmit(handleSignup)} className="space-y-4">
-                  <FormField
-                    control={signupForm.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="email@example.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={signupForm.control}
-                    name="full_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="John Doe" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={signupForm.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" placeholder="********" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={signupForm.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Confirm Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" placeholder="********" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? "Signing up..." : "Sign Up"}
-                  </Button>
-                </form>
-              </Form>
-            </TabsContent>
-          </Tabs>
+              <TabsContent value="login">
+                <LoginForm
+                  onSuccess={handleLoginWithOtp}
+                  onError={(error) => setAuthError(error.message)}
+                  onForgotPassword={() => {}} // We can remove this or keep it for password reset
+                />
+              </TabsContent>
+              
+              <TabsContent value="signup">
+                <Form {...signupForm}>
+                  <form onSubmit={signupForm.handleSubmit(handleSignup)} className="space-y-4">
+                    <FormField
+                      control={signupForm.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input placeholder="email@example.com" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={signupForm.control}
+                      name="full_name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Full Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="John Doe" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                      {isSubmitting ? "Creating account..." : "Create Account"}
+                    </Button>
+                  </form>
+                </Form>
+              </TabsContent>
+            </Tabs>
+          )}
         </CardContent>
       </Card>
     </div>

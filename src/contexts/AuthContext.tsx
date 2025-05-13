@@ -8,8 +8,9 @@ type AuthContextType = {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, userData?: { full_name?: string }) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, userData?: { full_name?: string }) => Promise<void>;
+  signInWithOtp: (email: string) => Promise<void>;
+  verifyOtp: (email: string, token: string) => Promise<void>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   checkEmailApproved: (email: string) => Promise<boolean>;
@@ -51,7 +52,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const checkEmailApproved = async (email: string): Promise<boolean> => {
     try {
-      // We need to properly type the query to avoid TypeScript errors
       const { data, error } = await supabase
         .from('approved_emails')
         .select('*')
@@ -70,11 +70,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signUp = async (email: string, password: string, userData?: { full_name?: string }) => {
+  const signUp = async (email: string, userData?: { full_name?: string }) => {
     try {
-      const { data, error } = await supabase.auth.signUp({
+      // Check if email is in approved list
+      const isApproved = await checkEmailApproved(email);
+      
+      if (!isApproved) {
+        throw new Error("Access denied. Your email is not approved to register for this application.");
+      }
+
+      const { data, error } = await supabase.auth.signInWithOtp({
         email,
-        password,
         options: {
           data: userData,
         }
@@ -84,12 +90,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw error;
       }
 
-      if (data.user) {
-        toast({
-          title: "Account created",
-          description: "Please check your email for the verification link.",
-        });
-      }
+      toast({
+        title: "Verification email sent",
+        description: "Please check your email for the login link or OTP code.",
+      });
     } catch (error: any) {
       toast({
         title: "Sign up failed",
@@ -100,7 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signInWithOtp = async (email: string) => {
     try {
       // Check if email is in approved list
       const isApproved = await checkEmailApproved(email);
@@ -109,9 +113,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error("Access denied. Your email is not approved to use this application.");
       }
       
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithOtp({
         email,
-        password,
+        options: {
+          shouldCreateUser: false, // Don't create a new user if one doesn't exist
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Verification code sent",
+        description: "Please check your email for the one-time password.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
+
+  const verifyOtp = async (email: string, token: string) => {
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'email'
       });
 
       if (error) {
@@ -123,7 +155,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     } catch (error: any) {
       toast({
-        title: "Sign in failed",
+        title: "Verification failed",
         description: error.message,
         variant: "destructive",
       });
@@ -177,7 +209,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         session,
         loading,
         signUp,
-        signIn,
+        signInWithOtp,
+        verifyOtp,
         signOut,
         resetPassword,
         checkEmailApproved,

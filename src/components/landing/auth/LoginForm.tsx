@@ -7,27 +7,26 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { mail } from "lucide-react";
 
 const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters")
+  email: z.string().email("Please enter a valid email address")
 });
 
 interface LoginFormProps {
-  onSuccess: () => void;
+  onSuccess: (email: string) => void;
   onError: (error: Error) => void;
   onForgotPassword: () => void;
 }
 
 export const LoginForm = ({ onSuccess, onError, onForgotPassword }: LoginFormProps) => {
-  const { signIn, checkEmailApproved } = useAuth();
+  const { signInWithOtp, checkEmailApproved } = useAuth();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: ""
+      email: ""
     }
   });
 
@@ -40,8 +39,8 @@ export const LoginForm = ({ onSuccess, onError, onForgotPassword }: LoginFormPro
         throw new Error("Access denied. Your email is not approved to use this application.");
       }
       
-      await signIn(values.email, values.password);
-      onSuccess();
+      await signInWithOtp(values.email);
+      onSuccess(values.email);
     } catch (error: any) {
       onError(error);
     } finally {
@@ -65,19 +64,7 @@ export const LoginForm = ({ onSuccess, onError, onForgotPassword }: LoginFormPro
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="********" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        
         <div className="flex justify-end">
           <Button 
             type="button" 
@@ -88,8 +75,9 @@ export const LoginForm = ({ onSuccess, onError, onForgotPassword }: LoginFormPro
             Forgot password?
           </Button>
         </div>
+        
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Signing in..." : "Sign In"}
+          {isSubmitting ? "Sending verification code..." : "Send Verification Code"}
         </Button>
       </form>
     </Form>
