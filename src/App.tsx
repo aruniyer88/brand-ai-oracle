@@ -29,7 +29,7 @@ const AuthRedirect = () => {
     navigate('/', { 
       state: { 
         openAuthDialog: true, 
-        authTab: tab === 'signup' ? 'signup' : 'login' 
+        authTab: tab === 'book' ? 'book' : 'login' 
       } 
     });
   }, [navigate, tab]);
