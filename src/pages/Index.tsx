@@ -16,7 +16,7 @@ import { AuthDialog } from "@/components/landing/AuthDialog";
 export default function Index() {
   const location = useLocation();
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
-  const [authDialogTab, setAuthDialogTab] = useState<"login" | "signup">("login");
+  const [authDialogTab, setAuthDialogTab] = useState<"login" | "book">("login");
   
   // Check for auth dialog state from navigation
   useEffect(() => {

@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthDialog } from "./AuthDialog";
 
-export const LandingHero = () => {
+export function LandingHero() {
   const { user, signOut } = useAuth();
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
-  const [authDialogTab, setAuthDialogTab] = useState<"login" | "signup">("login");
+  const [authTab, setAuthTab] = useState<"login" | "book">("book");
 
-  const handleAuthClick = (tab: "login" | "signup") => {
-    setAuthDialogTab(tab);
+  const handleAuthClick = (tab: "login" | "book") => {
+    setAuthTab(tab);
     setAuthDialogOpen(true);
   };
 
@@ -69,7 +69,7 @@ export const LandingHero = () => {
               </Button>
               <Button 
                 className="bg-accent hover:bg-accent/90 text-accent-foreground rounded-full"
-                onClick={() => handleAuthClick("signup")}
+                onClick={() => handleAuthClick("book")}
               >
                 Get Started
               </Button>
@@ -96,7 +96,7 @@ export const LandingHero = () => {
               <Button 
                 size="lg" 
                 className="rounded-full bg-accent hover:bg-accent/90 text-accent-foreground"
-                onClick={() => handleAuthClick("signup")}
+                onClick={() => handleAuthClick("book")}
               >
                 Book Demo
               </Button>
@@ -119,7 +119,7 @@ export const LandingHero = () => {
       <AuthDialog 
         isOpen={authDialogOpen} 
         onOpenChange={setAuthDialogOpen} 
-        defaultTab={authDialogTab} 
+        defaultTab={authTab} 
       />
     </div>;
 };

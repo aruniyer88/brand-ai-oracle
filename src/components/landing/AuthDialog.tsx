@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -11,8 +10,8 @@ import { BookMeetingForm } from "./BookMeetingForm";
 
 interface AuthDialogProps {
   isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  defaultTab?: "login" | "book";
+  onOpenChange: (isOpen: boolean) => void;
+  defaultTab: 'login' | 'book';
 }
 
 export const AuthDialog = ({
