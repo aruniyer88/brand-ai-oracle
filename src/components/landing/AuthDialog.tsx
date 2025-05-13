@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button"; // Added the missing Button import
 import { LoginForm } from "./auth/LoginForm";
 import { SignupForm } from "./auth/SignupForm";
 import { ForgotPasswordForm } from "./auth/ForgotPasswordForm";
