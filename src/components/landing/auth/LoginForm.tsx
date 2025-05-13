@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { mail } from "lucide-react";
+import { Mail } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address")
