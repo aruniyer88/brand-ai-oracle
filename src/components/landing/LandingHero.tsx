@@ -1,9 +1,11 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthDialog } from "./AuthDialog";
+
 export function LandingHero() {
   const {
     user,
@@ -11,10 +13,12 @@ export function LandingHero() {
   } = useAuth();
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [authTab, setAuthTab] = useState<"login" | "book">("book");
+  
   const handleAuthClick = (tab: "login" | "book") => {
     setAuthTab(tab);
     setAuthDialogOpen(true);
   };
+
   return <div className="relative bg-primary text-primary-foreground overflow-hidden">
       {/* Header Navigation */}
       <header className="container mx-auto px-4 py-4 flex items-center justify-between">
