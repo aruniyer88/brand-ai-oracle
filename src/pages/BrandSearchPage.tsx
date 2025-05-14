@@ -1,5 +1,5 @@
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
@@ -51,6 +51,7 @@ const BrandSearchPage = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
+  const [animateGrid, setAnimateGrid] = useState(false);
 
   // Always initialize as an array, never undefined
   const filteredBrands = search ? mockBrands.filter(brand => brand.name.toLowerCase().includes(search.toLowerCase()) || brand.domain.toLowerCase().includes(search.toLowerCase())) : [];
@@ -76,22 +77,52 @@ const BrandSearchPage = () => {
       handleSelectBrand(filteredBrands[0]);
     }
   };
+
+  // Animation trigger for grid
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimateGrid(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Check for reduced motion preference
+  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && 
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   
   return (
     <MainLayout>
-      <div className="max-w-3xl mx-auto pt-8 px-4">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold mb-3 gradient-text">Brand Audit</h1>
+      <div className="max-w-3xl mx-auto h-[calc(100vh-6rem)] flex flex-col justify-center items-center px-4 relative">
+        {/* Grid background - ultra-subtle */}
+        <div className="absolute inset-0 grid grid-cols-12 grid-rows-12 pointer-events-none">
+          {Array.from({length: 144}).map((_, i) => (
+            <div 
+              key={i} 
+              className={cn(
+                "border border-accent/5 opacity-0 transition-opacity duration-500",
+                animateGrid && !prefersReducedMotion && "opacity-8"
+              )}
+              style={{
+                transitionDelay: `${Math.random() * 1000}ms`
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="text-center mb-10 relative z-10">
+          <h1 className="font-heading font-mono text-4xl font-bold mb-3 text-white tracking-tighter">
+            Brand Audit
+          </h1>
           <p className="text-lg text-muted-foreground">
             Search for a brand to analyze its presence in AI systems
           </p>
         </div>
 
-        <div className="border rounded-xl p-8 shadow-md bg-white">
+        <div className="border border-border/30 rounded-xl p-8 shadow-md bg-darkgray w-full max-w-2xl animate-fade-in transition-all relative z-10">
           {!selectedBrand ? (
             <div className="flex flex-col items-center">
               <div className="w-full max-w-lg mx-auto relative">
-                <Command className="rounded-lg overflow-hidden border-2 shadow-md">
+                <Command className="rounded-lg overflow-hidden border-2 bg-background shadow-md">
                   <div className="flex items-center border-b px-4 py-2">
                     <CommandInput 
                       placeholder="Type a brand name..." 
@@ -124,7 +155,7 @@ const BrandSearchPage = () => {
                             className="flex items-center py-3 cursor-pointer hover:bg-accent/10"
                           >
                             <div className="flex items-center gap-3 flex-1">
-                              <div className="w-10 h-10 bg-slate-100 rounded-md flex items-center justify-center overflow-hidden">
+                              <div className="w-10 h-10 bg-slate-800 rounded-md flex items-center justify-center overflow-hidden">
                                 {brand.logo ? (
                                   <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
                                 ) : (
@@ -140,7 +171,7 @@ const BrandSearchPage = () => {
                             </div>
                             <Check 
                               className={cn(
-                                "h-4 w-4", 
+                                "h-4 w-4 text-accent", 
                                 selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0"
                               )} 
                             />
@@ -160,7 +191,7 @@ const BrandSearchPage = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-8">
-              <div className="w-24 h-24 bg-slate-100 rounded-lg flex items-center justify-center overflow-hidden mb-4 shadow-sm">
+              <div className="w-24 h-24 bg-slate-800 rounded-lg flex items-center justify-center overflow-hidden mb-4 shadow-sm">
                 {selectedBrand.logo ? (
                   <img src={selectedBrand.logo} alt={selectedBrand.name} className="w-full h-full object-cover" />
                 ) : (
@@ -169,14 +200,14 @@ const BrandSearchPage = () => {
                   </span>
                 )}
               </div>
-              <h2 className="text-2xl font-bold mb-1">{selectedBrand.name}</h2>
+              <h2 className="text-2xl font-bold mb-1 font-mono tracking-tight">{selectedBrand.name}</h2>
               <p className="text-sm text-muted-foreground mb-8">{selectedBrand.domain}</p>
               
               <Button 
                 onClick={handleAnalyze} 
                 className="w-full max-w-md text-lg py-6 bg-accent hover:bg-accent/90 text-accent-foreground"
               >
-                Analyze {selectedBrand.name}
+                Run Audit
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               

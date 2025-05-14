@@ -47,7 +47,7 @@ export default {
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				accent: {
-					DEFAULT: 'hsl(var(--accent))',
+					DEFAULT: 'hsl(var(--accent))', // Updated to use CSS variable
 					foreground: 'hsl(var(--accent-foreground))'
 				},
 				popover: {
@@ -64,11 +64,11 @@ export default {
 					cyan: '#06b6d4',
 					dark: '#111827',
 					light: '#F9FAFB',
-					neon: '#3BFFD3',
+					neon: '#3BFFD3', // Neon Turquoise accent color
 				},
 				charcoal: '#14161B',
 				navy: '#0D1B2A',
-				darkgray: '#1E2128',
+				darkgray: '#1E2128', // Used for section surfaces
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -146,6 +146,14 @@ export default {
 					'100%': {
 						transform: 'scale(1) translate(0px, 0px)'
 					}
+				},
+				'grid-appear': {
+					'0%': {
+						opacity: '0',
+					},
+					'100%': {
+						opacity: '0.08',
+					}
 				}
 			},
 			animation: {
@@ -155,6 +163,7 @@ export default {
 				'fade-in': 'fade-in 0.8s ease-out forwards',
 				'scale-in': 'scale-in 0.3s ease-out',
 				'blob': 'blob 8s infinite ease-in-out',
+				'grid-appear': 'grid-appear 0.2s ease-out forwards',
 			}
 		}
 	},
