@@ -109,19 +109,19 @@ const BrandSearchPage = () => {
 
         <div className="border border-border/30 rounded-xl p-8 shadow-md bg-darkgray w-full max-w-2xl animate-fade-in transition-all relative z-10">
           {!selectedBrand ? <div className="flex flex-col items-center">
-              <div className="w-full max-w-lg mx-auto relative">
+              <div className="w-full max-w-lg mx-auto">
                 <Command className="rounded-lg overflow-hidden border-2 bg-background shadow-md">
-                  <div className="flex items-center border-b relative">
+                  <div className="flex items-center border-b">
                     <CommandInput 
                       placeholder="Type a brand name..." 
                       value={search} 
                       onValueChange={setSearch} 
-                      className="text-base flex-1" 
+                      className="flex-1" 
                       onKeyDown={e => {
                         if (e.key === 'Enter') handleSearchSubmit();
                       }}
                     />
-                    <div className="absolute right-0 top-0 h-full flex items-center pr-2">
+                    <div className="flex items-center pr-2">
                       <Button 
                         size="sm" 
                         className="bg-accent hover:bg-accent/90 text-accent-foreground" 
