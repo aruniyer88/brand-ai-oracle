@@ -18,12 +18,16 @@ const BrandSetupPage = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Brand Setup</h1>
-        <p className="text-muted-foreground mb-8">
+      <div className="max-w-4xl mx-auto py-8 px-4">
+        <h1 className="text-3xl font-heading font-bold mb-3 text-white tracking-tight">Brand Setup</h1>
+        <p className="text-text-secondary mb-8">
           Define your brand's information to generate a comprehensive AI perception report.
         </p>
-        <BrandSetupWizard />
+        <div className="relative">
+          {/* Grid background overlay */}
+          <div className="absolute inset-0 grid-background opacity-[0.06] rounded-lg pointer-events-none"></div>
+          <BrandSetupWizard />
+        </div>
       </div>
     </MainLayout>
   );

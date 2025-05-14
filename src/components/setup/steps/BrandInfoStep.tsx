@@ -97,67 +97,81 @@ export const BrandInfoStep = ({
 
   return <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-2">Brand Information</h2>
-        <p className="text-muted-foreground">
+        <h2 className="text-xl font-heading tracking-tight font-semibold mb-2">Brand Information</h2>
+        <p className="text-text-secondary">
           Review your brand's information and select a product.
         </p>
       </div>
 
       {/* Non-editable brand information */}
-      <div className="p-6 bg-slate-50 rounded-lg border">
+      <div className="p-6 bg-charcoal rounded-lg border border-black/20">
         <div className="flex items-center space-x-4 mb-4">
           {/* We could add a logo here if available */}
-          <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center text-2xl font-bold">
+          <div className="w-16 h-16 bg-card-dark rounded-full flex items-center justify-center text-2xl font-heading">
             {brandInfo.name.charAt(0)}
           </div>
           <div>
             <h3 className="font-semibold text-lg">{brandInfo.name}</h3>
-            <p className="text-muted-foreground">{brandInfo.website}</p>
+            <p className="text-text-secondary">{brandInfo.website}</p>
           </div>
         </div>
         
-        <p className="text-sm text-muted-foreground">Nike is a global sportswear and athletic footwear company known for its innovative designs, high-performance products, and iconic &quot;swoosh&quot; logo. Founded in 1964, it has become one of the world's leading brands in sports apparel, footwear, and equipment, endorsed by top athletes and widely recognized for its marketing and cultural influence.</p>
+        <p className="text-text-secondary">Nike is a global sportswear and athletic footwear company known for its innovative designs, high-performance products, and iconic &quot;swoosh&quot; logo. Founded in 1964, it has become one of the world's leading brands in sports apparel, footwear, and equipment, endorsed by top athletes and widely recognized for its marketing and cultural influence.</p>
       </div>
 
-      <Separator />
+      <Separator className="bg-black/20" />
       
       <div className="space-y-4">
-        <h3 className="font-medium text-lg">Select a Product</h3>
-        <p className="text-muted-foreground">
+        <h3 className="font-medium font-heading tracking-tight text-lg">Select a Product</h3>
+        <p className="text-text-secondary">
           Choose one product or service you want to analyze consumer perception for.
         </p>
         
-        <RadioGroup value={selectedProductId || ""} onValueChange={handleProductSelection} className="space-y-3">
-          {sampleProducts.map(product => <div key={product.id} className="flex items-center space-x-2 rounded-md border p-3">
-              <RadioGroupItem value={product.id} id={product.id} />
-              <Label htmlFor={product.id} className="font-medium flex-grow">
+        <RadioGroup value={selectedProductId || ""} onValueChange={handleProductSelection} className="space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0">
+          {sampleProducts.map(product => (
+            <div key={product.id} className="flex items-center space-x-2 rounded-md border border-black/20 bg-charcoal p-4 transition-all hover:border-accent/30 group">
+              <RadioGroupItem value={product.id} id={product.id} className="radio-accent" />
+              <Label htmlFor={product.id} className="font-medium flex-grow cursor-pointer">
                 {product.name}
-                <span className="ml-2 text-sm text-muted-foreground">
+                <span className="ml-2 text-xs font-heading text-text-secondary py-0.5 px-2 rounded bg-black/20">
                   {product.category}
                 </span>
               </Label>
-            </div>)}
+            </div>
+          ))}
             
           {/* Custom product option as a radio button */}
-          <div className="flex items-center space-x-2 rounded-md border p-3">
-            <RadioGroupItem value="custom" id="custom" />
-            <Label htmlFor="custom" className="font-medium flex-grow">Other</Label>
+          <div className="flex items-center space-x-2 rounded-md border border-black/20 bg-charcoal p-4 transition-all hover:border-accent/30">
+            <RadioGroupItem value="custom" id="custom" className="radio-accent" />
+            <Label htmlFor="custom" className="font-medium flex-grow cursor-pointer">Other</Label>
           </div>
         </RadioGroup>
         
         {/* Custom product input field - always visible */}
-        <div className="mt-3 pl-6">
+        <div className="relative mt-3 pl-6">
           <div className="flex space-x-2">
-            <Input 
-              placeholder="Enter custom product name" 
-              value={customProduct} 
-              onChange={handleCustomProductChange} 
-              onBlur={handleCustomProductBlur}
-              className="flex-grow"
-            />
+            <div className="relative flex-grow">
+              <Input 
+                placeholder="Enter custom product name" 
+                value={customProduct} 
+                onChange={handleCustomProductChange} 
+                onBlur={handleCustomProductBlur}
+                className="bg-charcoal border-black/20 focus:border-accent"
+                id="custom-product"
+              />
+              <Label
+                htmlFor="custom-product"
+                className={`absolute left-2 transition-all duration-200 pointer-events-none ${
+                  customProduct ? 'text-xs -top-2 text-accent' : 'text-text-secondary top-2.5'
+                }`}
+              >
+                Custom Product
+              </Label>
+            </div>
             <Button 
               onClick={handleCustomProductAdd} 
               disabled={!customProduct.trim()}
+              className="ripple-effect"
             >
               <PlusCircle className="h-4 w-4 mr-2" /> Add
             </Button>

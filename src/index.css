@@ -32,7 +32,7 @@
     --input: 217 33% 18%;
     --ring: 158 100% 62%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 222 47% 11%;
     --sidebar-foreground: 210 40% 98%;
@@ -42,6 +42,17 @@
     --sidebar-accent-foreground: 240 5% 96%;
     --sidebar-border: 240 4% 16%;
     --sidebar-ring: 166 100% 62%;
+
+    /* TunnelGrid specific brand variables */
+    --bg-charcoal: #14161B;
+    --panel-navy: #0D1B2A;
+    --card-dark: #1E2128;
+    --accent-color: #3BFFD3;
+    --text-primary: #FFFFFF;
+    --text-secondary: #C1CAD7;
+    --radius-value: 12px;
+    --heading-font: "IBM Plex Mono", monospace;
+    --body-font: "Inter", system-ui, sans-serif;
   }
 }
 
@@ -53,7 +64,7 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
-    font-family: 'Inter', sans-serif;
+    font-family: var(--body-font);
   }
   
   html {
@@ -61,14 +72,126 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--heading-font);
     letter-spacing: -0.02em;
   }
 
   .font-heading, .font-mono {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--heading-font);
     letter-spacing: -0.02em;
   }
+}
+
+/* Brand-specific utility classes */
+.bg-charcoal {
+  background-color: var(--bg-charcoal);
+}
+
+.bg-panel-navy {
+  background-color: var(--panel-navy);
+}
+
+.bg-card-dark {
+  background-color: var(--card-dark);
+}
+
+.text-accent-color {
+  color: var(--accent-color);
+}
+
+.text-text-primary {
+  color: var(--text-primary);
+}
+
+.text-text-secondary {
+  color: var(--text-secondary);
+}
+
+/* Grid background for brand identity */
+.grid-background {
+  background-image: 
+    linear-gradient(to right, rgba(59, 255, 211, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 255, 211, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: -1px -1px;
+}
+
+/* Animation for radio ripple effect */
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 255, 211, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 12px rgba(59, 255, 211, 0);
+  }
+}
+
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(59, 255, 211, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.ripple-effect:focus:after {
+  animation: ripple 600ms;
+  opacity: 0;
+}
+
+/* RadioGroupItem accent styling */
+.radio-accent[data-state="checked"] {
+  border-color: var(--accent-color);
+  background-color: var(--accent-color);
+  color: black;
+}
+
+.radio-accent:hover {
+  border-color: var(--accent-color);
+}
+
+/* Subtle pulse animation for step transitions */
+@keyframes pulse-subtle {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 0.5s ease-in-out;
+}
+
+/* Scale in animation for radio buttons */
+@keyframes scale-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.2s ease-out forwards;
 }
 
 .gradient-text {

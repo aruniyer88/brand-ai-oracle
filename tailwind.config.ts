@@ -69,6 +69,8 @@ export default {
 				charcoal: '#14161B',
 				navy: '#0D1B2A',
 				darkgray: '#1E2128', // Used for section surfaces
+				'card-dark': '#1E2128',
+				'text-secondary': '#C1CAD7',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -154,6 +156,25 @@ export default {
 					'100%': {
 						opacity: '0.08',
 					}
+				},
+				'ripple': {
+					'0%': {
+						boxShadow: '0 0 0 0 rgba(59, 255, 211, 0.3)',
+					},
+					'100%': {
+						boxShadow: '0 0 0 12px rgba(59, 255, 211, 0)',
+					}
+				},
+				'pulse-subtle': {
+					'0%': {
+						opacity: '1',
+					},
+					'50%': {
+						opacity: '0.8',
+					},
+					'100%': {
+						opacity: '1',
+					}
 				}
 			},
 			animation: {
@@ -164,6 +185,8 @@ export default {
 				'scale-in': 'scale-in 0.3s ease-out',
 				'blob': 'blob 8s infinite ease-in-out',
 				'grid-appear': 'grid-appear 0.2s ease-out forwards',
+				'ripple': 'ripple 0.6s ease-out',
+				'pulse-subtle': 'pulse-subtle 0.5s ease-in-out',
 			}
 		}
 	},

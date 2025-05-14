@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { SetupStep } from "../constants/wizardSteps";
 
 interface WizardNavigationProps {
@@ -19,22 +19,24 @@ export const WizardNavigation = ({
   onSubmit
 }: WizardNavigationProps) => {
   return (
-    <div className="p-6 border-t flex justify-between">
+    <div className="p-6 border-t border-black/20 flex justify-between">
       <Button
-        variant="outline"
+        variant="ghost"
+        size="sm"
         onClick={onPrevious}
         disabled={getCurrentStepIndex() === 0}
+        className="text-text-secondary hover:text-white"
       >
         <ChevronLeft className="mr-2 h-4 w-4" /> Previous
       </Button>
 
       {currentStep !== "review" ? (
-        <Button onClick={onNext}>
+        <Button onClick={onNext} className="min-w-[160px]">
           Next <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       ) : (
-        <Button onClick={onSubmit}>
-          Submit
+        <Button onClick={onSubmit} className="min-w-[160px]">
+          Submit <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       )}
     </div>
