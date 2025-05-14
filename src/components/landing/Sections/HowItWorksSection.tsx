@@ -33,10 +33,7 @@ export const HowItWorksSection = ({ onAuthClick }: HowItWorksSectionProps) => {
   ];
 
   return (
-    <section id="how-it-works" className="py-20 md:py-24 bg-navy relative">
-      {/* Top section divider */}
-      <div className="section-divider bg-charcoal before:from-charcoal before:to-navy absolute top-0 left-0 w-full"></div>
-      
+    <section id="how-it-works" className="py-20 md:py-24 bg-navy">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-12 scroll-fade-in">
           <h2 className="text-3xl md:text-4xl font-mono font-bold mb-4">From Maze to Control Room</h2>
@@ -45,8 +42,8 @@ export const HowItWorksSection = ({ onAuthClick }: HowItWorksSectionProps) => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
           {howItWorksSteps.map((step, index) => (
-            <div key={index} className={`scroll-fade-in stagger-${index + 1}`} data-delay={index * 100}>
-              <div className="flex flex-col items-center text-center space-y-4 p-6 bg-darkgray rounded-lg enhanced-card">
+            <div key={index} className={`scroll-fade-in stagger-${index + 1}`}>
+              <div className="flex flex-col items-center text-center space-y-4 p-6 bg-darkgray rounded-lg border border-muted hover:border-accent/50 transition-colors">
                 {step.icon}
                 <h3 className="text-xl font-mono font-bold">{step.title}</h3>
                 <p className="text-foreground/70">{step.description}</p>
@@ -55,9 +52,9 @@ export const HowItWorksSection = ({ onAuthClick }: HowItWorksSectionProps) => {
           ))}
         </div>
         
-        <div className="mt-12 text-center scroll-fade-in" data-delay="400">
+        <div className="mt-12 text-center">
           <Button 
-            className="bg-accent hover:bg-accent/90 text-primary-foreground font-mono hover-scale"
+            className="bg-accent hover:bg-accent/90 text-primary-foreground font-mono"
             onClick={() => onAuthClick("book")}
           >
             Map your brand today
@@ -65,9 +62,6 @@ export const HowItWorksSection = ({ onAuthClick }: HowItWorksSectionProps) => {
           </Button>
         </div>
       </div>
-      
-      {/* Bottom section divider */}
-      <div className="section-divider bg-navy before:from-navy before:to-charcoal absolute bottom-0 left-0 w-full transform rotate-180"></div>
     </section>
   );
 };
