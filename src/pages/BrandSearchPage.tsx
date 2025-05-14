@@ -3,9 +3,10 @@ import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
-import { Check, ArrowRight, Search as SearchIcon } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
 interface Brand {
   id: string;
   name: string;
@@ -45,6 +46,7 @@ const mockBrands: Brand[] = [{
   domain: "ecosmart.com",
   logo: "https://placehold.co/100x100?text=Eco"
 }];
+
 const BrandSearchPage = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -55,9 +57,11 @@ const BrandSearchPage = () => {
   const filteredBrands = search ? mockBrands.filter(brand => brand.name.toLowerCase().includes(search.toLowerCase()) || brand.domain.toLowerCase().includes(search.toLowerCase())) : [];
   const hasSearchResults = search !== "" && filteredBrands.length > 0;
   const noResultsFound = search !== "" && filteredBrands.length === 0;
+
   const handleSelectBrand = useCallback((brand: Brand) => {
     setSelectedBrand(brand);
   }, []);
+
   const handleAnalyze = useCallback(() => {
     if (selectedBrand) {
       navigate("/setup", {
@@ -67,6 +71,7 @@ const BrandSearchPage = () => {
       });
     }
   }, [navigate, selectedBrand]);
+
   const handleSearchSubmit = () => {
     if (filteredBrands.length > 0 && !selectedBrand) {
       handleSelectBrand(filteredBrands[0]);
@@ -83,6 +88,7 @@ const BrandSearchPage = () => {
 
   // Check for reduced motion preference
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   return <MainLayout>
       <div className="max-w-3xl mx-auto h-[calc(100vh-6rem)] flex flex-col justify-center items-center px-4 relative">
         {/* Grid background - ultra-subtle */}
@@ -105,26 +111,26 @@ const BrandSearchPage = () => {
           {!selectedBrand ? <div className="flex flex-col items-center">
               <div className="w-full max-w-lg mx-auto relative">
                 <Command className="rounded-lg overflow-hidden border-2 bg-background shadow-md">
-                  <div className="flex items-center border-b px-3 py-2 justify-between">
-                    <CommandInput 
-                      placeholder="Type a brand name..." 
-                      value={search} 
-                      onValueChange={setSearch} 
-                      className="flex-1 border-0 text-base focus:outline-none focus:ring-0" 
-                      onKeyDown={e => {
-                        if (e.key === 'Enter') handleSearchSubmit();
-                      }} 
-                    />
+                  <CommandInput 
+                    placeholder="Type a brand name..." 
+                    value={search} 
+                    onValueChange={setSearch} 
+                    className="flex-1 border-0 text-base" 
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') handleSearchSubmit();
+                    }}
+                  />
+                  <div className="flex items-center px-3 py-2 border-t">
                     <Button 
                       size="sm" 
-                      className="bg-accent hover:bg-accent/90 text-accent-foreground ml-2" 
+                      className="bg-accent hover:bg-accent/90 text-accent-foreground ml-auto" 
                       onClick={handleSearchSubmit}
                     >
                       <span className="mr-1">Go</span>
                       <ArrowRight className="h-4 w-4" />
                     </Button>
                   </div>
-                  
+
                   {(hasSearchResults || noResultsFound) && <CommandList>
                       {noResultsFound && <CommandEmpty>No brands found</CommandEmpty>}
                       <CommandGroup>
@@ -174,4 +180,5 @@ const BrandSearchPage = () => {
       </div>
     </MainLayout>;
 };
+
 export default BrandSearchPage;
