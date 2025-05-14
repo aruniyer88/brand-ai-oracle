@@ -1,9 +1,9 @@
+
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
-import { Check, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { SearchBar } from "@/components/brand/SearchBar";
+import { BrandCard } from "@/components/brand/BrandCard";
 import { cn } from "@/lib/utils";
 
 interface Brand {
@@ -55,19 +55,9 @@ const mockBrands: Brand[] = [
 
 const BrandSearchPage = () => {
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
   const [animateGrid, setAnimateGrid] = useState(false);
 
-  // Always initialize as an array, never undefined
-  const filteredBrands = search ? mockBrands.filter(brand => 
-    brand.name.toLowerCase().includes(search.toLowerCase()) || 
-    brand.domain.toLowerCase().includes(search.toLowerCase())
-  ) : [];
-  
-  const hasSearchResults = search !== "" && filteredBrands.length > 0;
-  const noResultsFound = search !== "" && filteredBrands.length === 0;
-  
   const handleSelectBrand = useCallback((brand: Brand) => {
     setSelectedBrand(brand);
   }, []);
@@ -81,12 +71,6 @@ const BrandSearchPage = () => {
       });
     }
   }, [navigate, selectedBrand]);
-  
-  const handleSearchSubmit = () => {
-    if (filteredBrands.length > 0 && !selectedBrand) {
-      handleSelectBrand(filteredBrands[0]);
-    }
-  };
 
   // Animation trigger for grid
   useEffect(() => {
@@ -130,100 +114,22 @@ const BrandSearchPage = () => {
         <div className="border border-border/30 rounded-xl p-8 shadow-md bg-darkgray w-full max-w-2xl animate-fade-in transition-all relative z-10">
           {!selectedBrand ? (
             <div className="flex flex-col items-center">
-              <div className="w-full max-w-lg mx-auto">
-                <div className="relative">
-                  <div className="rounded-lg overflow-hidden border-2 bg-background shadow-md">
-                    <Command className="rounded-lg overflow-visible border-none">
-                      <div className="relative">
-                        <CommandInput 
-                          placeholder="Type a brand name..." 
-                          value={search} 
-                          onValueChange={setSearch} 
-                          className="flex-1 pr-16" 
-                          onKeyDown={e => {
-                            if (e.key === 'Enter') handleSearchSubmit();
-                          }} 
-                        />
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 z-50">
-                          <Button 
-                            size="sm" 
-                            className="bg-[#3BFFD3] hover:bg-[#3BFFD3]/90 text-black font-medium rounded-full px-4" 
-                            onClick={handleSearchSubmit}
-                          >
-                            <span className="mr-1">Go</span>
-                            <ArrowRight className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                      
-                      {/* Always render CommandList with fixed dimensions */}
-                      <div className="overflow-hidden">
-                        <CommandList className="max-h-64 overflow-y-auto">
-                          {noResultsFound && <CommandEmpty>No brands found</CommandEmpty>}
-                          
-                          {hasSearchResults && (
-                            <CommandGroup>
-                              {filteredBrands.map(brand => (
-                                <CommandItem
-                                  key={brand.id}
-                                  value={brand.name}
-                                  onSelect={() => handleSelectBrand(brand)}
-                                  className="flex items-center py-3 cursor-pointer border border-transparent hover:border-accent/80 hover:shadow-[0_0_8px_rgba(59,255,211,0.3)] focus:border-accent/80 focus:shadow-[0_0_8px_rgba(59,255,211,0.3)] transition-all duration-200"
-                                >
-                                  <div className="flex items-center gap-3 flex-1">
-                                    <div className="w-10 h-10 bg-slate-800 rounded-md flex items-center justify-center overflow-hidden">
-                                      {brand.logo ? (
-                                        <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
-                                      ) : (
-                                        <span className="text-sm font-medium">
-                                          {brand.name.substring(0, 2)}
-                                        </span>
-                                      )}
-                                    </div>
-                                    <div>
-                                      <p className="font-medium">{brand.name}</p>
-                                      <p className="text-sm text-muted-foreground">{brand.domain}</p>
-                                    </div>
-                                  </div>
-                                  <Check className={cn("h-4 w-4 text-accent", selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0")} />
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          )}
-                        </CommandList>
-                      </div>
-                    </Command>
-                  </div>
-                </div>
-              </div>
+              <SearchBar 
+                brands={mockBrands}
+                selectedBrand={selectedBrand}
+                onSelectBrand={handleSelectBrand}
+              />
               
               <div className="mt-8 text-center">
                 {/* Empty div kept for layout consistency */}
               </div>
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-8">
-              <div className="w-24 h-24 bg-slate-800 rounded-lg flex items-center justify-center overflow-hidden mb-4 shadow-sm">
-                {selectedBrand.logo ? (
-                  <img src={selectedBrand.logo} alt={selectedBrand.name} className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-2xl font-medium">
-                    {selectedBrand.name.substring(0, 2)}
-                  </span>
-                )}
-              </div>
-              <h2 className="text-2xl font-bold mb-1 font-mono tracking-tight">{selectedBrand.name}</h2>
-              <p className="text-sm text-muted-foreground mb-8">{selectedBrand.domain}</p>
-              
-              <Button onClick={handleAnalyze} className="w-full max-w-md text-lg py-6 bg-accent hover:bg-accent/90 text-accent-foreground">
-                Run Audit
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              
-              <Button variant="ghost" size="sm" className="mt-4" onClick={() => setSelectedBrand(null)}>
-                Search for another brand
-              </Button>
-            </div>
+            <BrandCard 
+              brand={selectedBrand} 
+              onAnalyze={handleAnalyze}
+              onBack={() => setSelectedBrand(null)} 
+            />
           )}
         </div>
       </div>
