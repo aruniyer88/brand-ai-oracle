@@ -13,29 +13,51 @@ export const useEmailApproval = () => {
       const normalizedEmail = email.toLowerCase().trim();
       console.log("Checking approval for email:", normalizedEmail);
       
-      const { data, error } = await supabase
+      // First try with exact match
+      let { data, error } = await supabase
         .from('approved_emails')
         .select('*')
-        .ilike('email', normalizedEmail)  // Using ilike for case-insensitive matching
-        .maybeSingle();
+        .eq('email', normalizedEmail);
       
       if (error) {
-        console.error("Error checking approved email:", error);
+        console.error("Error checking approved email with eq:", error);
         return false;
       }
       
-      const isApproved = !!data;
+      // If no exact match found, try with ilike for case-insensitive matching
+      if (!data || data.length === 0) {
+        console.log("No exact match found, trying case-insensitive match");
+        const { data: ilikeData, error: ilikeError } = await supabase
+          .from('approved_emails')
+          .select('*')
+          .ilike('email', normalizedEmail);
+        
+        if (ilikeError) {
+          console.error("Error checking approved email with ilike:", ilikeError);
+          return false;
+        }
+        
+        data = ilikeData;
+      }
+      
+      const isApproved = data && data.length > 0;
       console.log("Email approval status:", isApproved);
       
-      // If not approved, let's check why by logging all approved emails
+      // If not approved, dump all approved emails for debugging
       if (!isApproved) {
+        console.log("Email not found in approved list:", normalizedEmail);
+        
         const { data: allEmails, error: allEmailsError } = await supabase
           .from('approved_emails')
-          .select('email');
+          .select('email, id');
         
         if (!allEmailsError && allEmails) {
           console.log("All approved emails in database:", allEmails);
+        } else if (allEmailsError) {
+          console.error("Error fetching all emails:", allEmailsError);
         }
+      } else {
+        console.log("Email found in approved list!", data[0]);
       }
       
       return isApproved;

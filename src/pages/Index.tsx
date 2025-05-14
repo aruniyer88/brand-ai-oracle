@@ -12,6 +12,7 @@ import { LandingTestimonial } from "@/components/landing/LandingTestimonial";
 import { LandingWalkthrough } from "@/components/landing/LandingWalkthrough";
 import { AnnouncementBar } from "@/components/landing/AnnouncementBar";
 import { AuthDialog } from "@/components/landing/AuthDialog";
+import { EmailVerifier } from "@/components/landing/EmailVerifier";
 
 export default function Index() {
   const location = useLocation();
@@ -69,7 +70,8 @@ export default function Index() {
     answer: "Most customers see meaningful AI visibility improvements within 30 days of implementing our recommendations. Your initial brand audit is ready within 48 hours of setup."
   }];
   
-  return <div className="bg-background min-h-screen flex flex-col">
+  return (
+    <div className="flex flex-col min-h-screen">
       <AnnouncementBar />
 
       <main className="flex-1">
@@ -129,6 +131,11 @@ export default function Index() {
         <LandingCTA />
       </main>
 
+      {/* Add the email verifier for debugging */}
+      <div className="container mx-auto px-4 py-10">
+        <EmailVerifier />
+      </div>
+
       <footer className="bg-primary text-primary-foreground py-12">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid gap-8 md:grid-cols-4">
@@ -184,5 +191,6 @@ export default function Index() {
         onOpenChange={setAuthDialogOpen}
         defaultTab={authDialogTab}
       />
-    </div>;
+    </div>
+  );
 }
