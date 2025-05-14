@@ -79,8 +79,8 @@ export const BookMeetingForm = ({
 
   return <div className="space-y-6">
       <div className="text-center space-y-2">
-        <div className="mx-auto bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center">
-          <Calendar className="h-8 w-8 text-purple-600" />
+        <div className="mx-auto bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center">
+          <Calendar className="h-8 w-8 text-accent" />
         </div>
         <h2 className="text-2xl font-bold tracking-tight">Book a Meeting</h2>
         <p className="text-sm text-muted-foreground">
@@ -146,7 +146,7 @@ export const BookMeetingForm = ({
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back
               </Button>
             )}
-            <Button type="submit" className={`${onBack ? 'flex-1' : 'w-full'} bg-purple-600 hover:bg-purple-700`} disabled={isSubmitting}>
+            <Button type="submit" className={`${onBack ? 'flex-1' : 'w-full'} bg-accent hover:bg-accent/90 text-accent-foreground`} disabled={isSubmitting}>
               {isSubmitting ? "Submitting..." : (
                 <>
                   Book Meeting <ArrowRight className="ml-2 h-4 w-4" />

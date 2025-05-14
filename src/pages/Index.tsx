@@ -103,8 +103,8 @@ export default function Index() {
     };
   }, []);
   
-  const handleBookMeeting = () => {
-    setAuthDialogTab("book");
+  const handleAuthClick = (tab: "login" | "book") => {
+    setAuthDialogTab(tab);
     setAuthDialogOpen(true);
   };
   
@@ -199,13 +199,22 @@ export default function Index() {
             </a>
           </nav>
 
-          {/* CTA button */}
-          <Button 
-            className="bg-accent text-primary-foreground hover:bg-accent/90"
-            onClick={handleBookMeeting}
-          >
-            Book a meeting
-          </Button>
+          {/* CTA buttons */}
+          <div className="flex items-center space-x-4">
+            <Button 
+              variant="outline"
+              className="border-white/20 text-white bg-slate-900 hover:bg-slate-800"
+              onClick={() => handleAuthClick("login")}
+            >
+              Login
+            </Button>
+            <Button 
+              className="bg-accent text-primary-foreground hover:bg-accent/90"
+              onClick={() => handleAuthClick("book")}
+            >
+              Book a meeting
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -241,7 +250,8 @@ export default function Index() {
               <div className="space-y-8 animate-fade-in">
                 <div className="space-y-6">
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-mono font-bold leading-tight tracking-tight">
-                    See exactly how AI search engines talk about your brand today.
+                    AI Has Opinions. <br />
+                    <span className="text-accent">Shape Them.</span>
                   </h1>
                   <p className="text-xl text-foreground/80 max-w-lg">
                     Audit and boost your brand's visibility in answers from ChatGPT, Copilot, Google AI Overviews, and other AI-powered search experiences.
@@ -252,7 +262,7 @@ export default function Index() {
                   <Button 
                     size="lg" 
                     className="bg-accent hover:bg-accent/90 text-primary-foreground font-mono"
-                    onClick={handleBookMeeting}
+                    onClick={() => handleAuthClick("book")}
                   >
                     Book a meeting
                   </Button>
@@ -312,7 +322,7 @@ export default function Index() {
             <div className="mt-12 text-center">
               <Button 
                 className="bg-accent hover:bg-accent/90 text-primary-foreground font-mono"
-                onClick={handleBookMeeting}
+                onClick={() => handleAuthClick("book")}
               >
                 Schedule my audit
                 <ArrowRight className="h-4 w-4 ml-2" />
@@ -385,7 +395,7 @@ export default function Index() {
               <div className="mt-8 text-center">
                 <Button 
                   className="bg-accent hover:bg-accent/90 text-primary-foreground font-mono"
-                  onClick={handleBookMeeting}
+                  onClick={() => handleAuthClick("book")}
                 >
                   Schedule my audit call
                   <ArrowRight className="h-4 w-4 ml-2" />
@@ -406,7 +416,7 @@ export default function Index() {
               <Accordion type="single" collapsible className="w-full">
                 {faqs.map((faq, index) => (
                   <AccordionItem key={index} value={`item-${index}`} className="border-muted">
-                    <AccordionTrigger className="text-lg font-mono font-medium hover:text-accent py-5">
+                    <AccordionTrigger className="text-lg font-mono font-medium hover:text-accent py-5 text-left">
                       {faq.question}
                     </AccordionTrigger>
                     <AccordionContent className="text-foreground/70">
@@ -420,7 +430,7 @@ export default function Index() {
             <div className="mt-12 text-center">
               <Button 
                 className="bg-accent hover:bg-accent/90 text-primary-foreground font-mono"
-                onClick={handleBookMeeting}
+                onClick={() => handleAuthClick("book")}
               >
                 Book a meeting
                 <ArrowRight className="h-4 w-4 ml-2" />
@@ -441,7 +451,7 @@ export default function Index() {
                 <Button 
                   size="lg" 
                   className="bg-primary-foreground text-accent hover:bg-primary-foreground/90 font-mono"
-                  onClick={handleBookMeeting}
+                  onClick={() => handleAuthClick("book")}
                 >
                   Book Your Demo
                 </Button>
@@ -453,7 +463,7 @@ export default function Index() {
 
       <footer className="bg-navy text-foreground/80 py-12">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="grid gap-8 md:grid-cols-4">
+          <div className="grid gap-8 md:grid-cols-3">
             <div>
               <div className="flex items-center gap-2 mb-6">
                 <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-accent">
@@ -467,19 +477,10 @@ export default function Index() {
             </div>
             
             <div>
-              <h4 className="font-mono font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="/features" className="hover:text-accent">Features</a></li>
-                <li><a href="/pricing" className="hover:text-accent">Pricing</a></li>
-              </ul>
-            </div>
-            
-            <div>
               <h4 className="font-mono font-semibold mb-4">Resources</h4>
               <ul className="space-y-2 text-sm">
                 <li><a href="/blog" className="hover:text-accent">Blog</a></li>
                 <li><a href="/support" className="hover:text-accent">Support</a></li>
-                <li><a href="/documentation" className="hover:text-accent">Documentation</a></li>
               </ul>
             </div>
             

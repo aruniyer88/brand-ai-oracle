@@ -100,4 +100,3 @@ export function LandingHero() {
       <AuthDialog isOpen={authDialogOpen} onOpenChange={setAuthDialogOpen} defaultTab={authTab} />
     </div>;
 }
-;
