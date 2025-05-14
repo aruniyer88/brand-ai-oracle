@@ -110,6 +110,21 @@
   opacity: 0;
 }
 
+/* Enhanced section transitions */
+.section-transition {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.section-transition:not(.visible) {
+  opacity: 0.8;
+  transform: translateY(10px);
+}
+
+.section-transition.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Staggered animation delays */
 .stagger-1 { animation-delay: 0.1s; }
 .stagger-2 { animation-delay: 0.2s; }
@@ -161,11 +176,11 @@
 .citation-bloom .line:nth-child(1) { transition-delay: 0.15s; }
 .citation-bloom .line:nth-child(2) { transition-delay: 0.25s; }
 
-/* Scroll-triggered animations */
+/* Enhanced Scroll-triggered animations */
 .scroll-fade-in {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .scroll-fade-in.visible {
@@ -173,13 +188,14 @@
   transform: translateY(0);
 }
 
-/* Hover effects */
+/* Improved hover effects */
 .hover-scale {
-  transition: transform 0.3s ease-out;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 
 .hover-scale:hover {
   transform: scale(1.05);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
 /* Sticky header */
@@ -191,6 +207,33 @@
   @apply bg-navy/90 backdrop-blur-lg shadow-lg;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+/* Added section transitions */
+.section-divider {
+  position: relative;
+  height: 50px;
+  overflow: hidden;
+}
+
+.section-divider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom right, transparent 49.5%, var(--tw-gradient-to) 50%);
+}
+
+/* Enhanced card hover effects */
+.enhanced-card {
+  @apply border border-accent/10 transition-all duration-300;
+}
+
+.enhanced-card:hover {
+  @apply border-accent/30 shadow-lg shadow-accent/5;
+  transform: translateY(-5px);
 }
 
 @media (prefers-reduced-motion) {
