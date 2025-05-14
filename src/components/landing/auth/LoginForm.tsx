@@ -31,15 +31,23 @@ export const LoginForm = ({ onSuccess, onError }: LoginFormProps) => {
   const handleLogin = async (values: z.infer<typeof loginSchema>) => {
     setIsSubmitting(true);
     try {
+      // Normalize email
+      const email = values.email.toLowerCase().trim();
+      console.log("Attempting login with email:", email);
+      
       // Pre-check if email is approved before attempting login
-      const isApproved = await checkEmailApproved(values.email);
+      const isApproved = await checkEmailApproved(email);
+      console.log("Pre-check approval result:", isApproved);
+      
       if (!isApproved) {
         throw new Error("Couldn't find your account");
       }
       
-      await signInWithOtp(values.email);
-      onSuccess(values.email);
+      await signInWithOtp(email);
+      console.log("OTP sent successfully");
+      onSuccess(email);
     } catch (error: any) {
+      console.error("Login form error:", error);
       onError(error);
     } finally {
       setIsSubmitting(false);

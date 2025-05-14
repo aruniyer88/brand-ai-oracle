@@ -17,6 +17,7 @@ export const supabase = createClient<Database>(
       storage: localStorage,
       persistSession: true,
       autoRefreshToken: true,
+      debug: true  // Enable debug mode to see more authentication logs
     }
   }
 );
@@ -38,3 +39,6 @@ export const cleanupAuthState = () => {
     }
   });
 };
+
+// Log initial connection info
+console.log("Supabase client initialized with URL:", SUPABASE_URL);

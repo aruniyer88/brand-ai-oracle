@@ -11,6 +11,7 @@ export const useAuthActions = () => {
     try {
       // Check if email is in approved list
       const isApproved = await checkEmailApproved(email);
+      console.log("Sign up approval check for email", email, ":", isApproved);
       
       if (!isApproved) {
         throw new Error("Couldn't find your account");
@@ -24,6 +25,7 @@ export const useAuthActions = () => {
       });
 
       if (error) {
+        console.error("Supabase OTP error:", error);
         throw error;
       }
 
@@ -32,6 +34,7 @@ export const useAuthActions = () => {
         description: "Please check your email for the login link or OTP code.",
       });
     } catch (error: any) {
+      console.error("Sign up error:", error);
       toast({
         title: "Sign up failed",
         description: error.message,
@@ -45,6 +48,7 @@ export const useAuthActions = () => {
     try {
       // Check if email is in approved list
       const isApproved = await checkEmailApproved(email);
+      console.log("Sign in approval check for email", email, ":", isApproved);
       
       if (!isApproved) {
         throw new Error("Couldn't find your account");
@@ -58,6 +62,7 @@ export const useAuthActions = () => {
       });
 
       if (error) {
+        console.error("Supabase OTP error:", error);
         throw error;
       }
 
@@ -66,6 +71,7 @@ export const useAuthActions = () => {
         description: "Please check your email for the one-time password.",
       });
     } catch (error: any) {
+      console.error("Sign in error:", error);
       toast({
         title: "Sign in failed",
         description: error.message,
@@ -77,6 +83,7 @@ export const useAuthActions = () => {
 
   const verifyOtp = async (email: string, token: string) => {
     try {
+      console.log("Verifying OTP for email:", email);
       const { data, error } = await supabase.auth.verifyOtp({
         email,
         token,
@@ -84,13 +91,16 @@ export const useAuthActions = () => {
       });
 
       if (error) {
+        console.error("OTP verification error:", error);
         throw error;
       }
 
+      console.log("OTP verification successful", data);
       toast({
         title: "Signed in successfully",
       });
     } catch (error: any) {
+      console.error("Verification error:", error);
       toast({
         title: "Verification failed",
         description: error.message,

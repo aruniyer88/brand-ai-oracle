@@ -4,14 +4,19 @@ import { supabase } from "@/integrations/supabase/client";
 export const useEmailApproval = () => {
   const checkEmailApproved = async (email: string): Promise<boolean> => {
     try {
+      if (!email) {
+        console.error("No email provided for approval check");
+        return false;
+      }
+      
       // Ensure email is lowercase for case-insensitive comparison
-      const normalizedEmail = email.toLowerCase();
+      const normalizedEmail = email.toLowerCase().trim();
       console.log("Checking approval for email:", normalizedEmail);
       
       const { data, error } = await supabase
         .from('approved_emails')
         .select('*')
-        .eq('email', normalizedEmail)
+        .ilike('email', normalizedEmail)  // Using ilike for case-insensitive matching
         .maybeSingle();
       
       if (error) {
