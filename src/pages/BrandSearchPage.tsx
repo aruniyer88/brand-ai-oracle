@@ -135,7 +135,13 @@ const BrandSearchPage = () => {
                   {(hasSearchResults || noResultsFound) && <CommandList>
                       {noResultsFound && <CommandEmpty>No brands found</CommandEmpty>}
                       <CommandGroup>
-                        {filteredBrands.map(brand => <CommandItem key={brand.id} value={brand.name} onSelect={() => handleSelectBrand(brand)} className="flex items-center py-3 cursor-pointer border border-transparent hover:border-accent/80 hover:shadow-[0_0_8px_rgba(59,255,211,0.3)] focus:border-accent/80 focus:shadow-[0_0_8px_rgba(59,255,211,0.3)] transition-all duration-200">
+                        {filteredBrands.map(brand => (
+                          <CommandItem 
+                            key={brand.id} 
+                            value={brand.name} 
+                            onSelect={() => handleSelectBrand(brand)} 
+                            className="flex items-center py-3 cursor-pointer border border-transparent hover:border-accent/80 hover:shadow-[0_0_8px_rgba(59,255,211,0.3)] focus:border-accent/80 focus:shadow-[0_0_8px_rgba(59,255,211,0.3)] transition-all duration-200"
+                          >
                             <div className="flex items-center gap-3 flex-1">
                               <div className="w-10 h-10 bg-slate-800 rounded-md flex items-center justify-center overflow-hidden">
                                 {brand.logo ? <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" /> : <span className="text-sm font-medium">
@@ -148,7 +154,8 @@ const BrandSearchPage = () => {
                               </div>
                             </div>
                             <Check className={cn("h-4 w-4 text-accent", selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0")} />
-                          </CommandItem>)}
+                          </CommandItem>
+                        ))}
                       </CommandGroup>
                     </CommandList>}
                 </Command>
