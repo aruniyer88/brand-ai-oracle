@@ -1,15 +1,13 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Play, ChevronDown } from "lucide-react";
-
 interface HeroSectionProps {
   onAuthClick: (tab: "login" | "book") => void;
 }
-
-export const HeroSection = ({ onAuthClick }: HeroSectionProps) => {
-  return (
-    <section id="hero" className="relative min-h-screen flex items-center pt-16 overflow-hidden">
+export const HeroSection = ({
+  onAuthClick
+}: HeroSectionProps) => {
+  return <section id="hero" className="relative min-h-screen flex items-center pt-16 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-navy/90 to-charcoal/90"></div>
         {/* Background grid network animation */}
@@ -48,18 +46,10 @@ export const HeroSection = ({ onAuthClick }: HeroSectionProps) => {
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <Button 
-                size="lg" 
-                className="bg-accent hover:bg-accent/90 text-primary-foreground font-mono"
-                onClick={() => onAuthClick("book")}
-              >
+              <Button size="lg" className="bg-accent hover:bg-accent/90 text-primary-foreground font-mono" onClick={() => onAuthClick("book")}>
                 Book a meeting
               </Button>
-              <Button 
-                size="lg" 
-                variant="link" 
-                className="text-foreground/90 hover:text-accent flex items-center gap-2"
-              >
+              <Button size="lg" variant="link" className="text-foreground/90 hover:text-accent flex items-center gap-2">
                 <Play className="h-4 w-4" />
                 Watch 90-sec demo
               </Button>
@@ -68,7 +58,7 @@ export const HeroSection = ({ onAuthClick }: HeroSectionProps) => {
 
           <div className="relative hidden md:block">
             <div className="animate-float shadow-2xl rounded-xl overflow-hidden border border-white/10 backdrop-blur-sm">
-              <img src="/placeholder.svg" alt="TunnelGrid.ai Dashboard" className="w-full h-auto" />
+              
             </div>
             <div className="absolute -bottom-6 -right-6 p-4 bg-accent/10 backdrop-blur-md border border-accent/30 rounded-lg">
               <p className="text-accent font-mono text-sm">
@@ -86,6 +76,5 @@ export const HeroSection = ({ onAuthClick }: HeroSectionProps) => {
           </a>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
