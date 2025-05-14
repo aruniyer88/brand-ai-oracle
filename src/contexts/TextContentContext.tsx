@@ -70,7 +70,7 @@ const defaultTextContent: TextContentMap = {
   "cta.button": "Book Your Demo",
   
   // Footer section
-  "footer.about": "Helping brands thrive in the AI-first search era by mapping the hidden network of AI answers.",
+  "footer.aboutText": "Helping brands thrive in the AI-first search era by mapping the hidden network of AI answers.",
   "footer.resources": "Resources",
   "footer.company": "Company",
   "footer.blog": "Blog",
@@ -166,7 +166,8 @@ export function EditableText({ contentKey, className, placeholder, as: Component
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === 'Escape') {
       e.preventDefault();
-      e.currentTarget.blur();
+      // Cast to HTMLElement to access blur() method
+      (e.currentTarget as HTMLElement).blur();
     }
   };
 
