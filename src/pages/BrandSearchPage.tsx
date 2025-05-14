@@ -109,61 +109,63 @@ const BrandSearchPage = () => {
 
         <div className="border border-border/30 rounded-xl p-8 shadow-md bg-darkgray w-full max-w-2xl animate-fade-in transition-all relative z-10">
           {!selectedBrand ? <div className="flex flex-col items-center">
-              <div className="w-full max-w-lg mx-auto relative">
-                <Command className="rounded-lg overflow-hidden border-2 bg-background shadow-md">
-                  <div className="flex items-center border-b px-3">
-                    <CommandInput 
-                      placeholder="Type a brand name..." 
-                      value={search} 
-                      onValueChange={setSearch} 
-                      className="flex-1 pr-16"
-                      onKeyDown={e => {
-                        if (e.key === 'Enter') handleSearchSubmit();
-                      }}
-                    />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                      <Button 
-                        size="sm" 
-                        className="bg-accent hover:bg-accent/90 text-accent-foreground" 
-                        onClick={handleSearchSubmit}
-                      >
-                        <span className="mr-1">Go</span>
-                        <ArrowRight className="h-4 w-4" />
-                      </Button>
+              <div className="w-full max-w-lg mx-auto">
+                <div className="relative">
+                  <Command className="rounded-lg overflow-hidden border-2 bg-background shadow-md">
+                    <div className="flex items-center border-b px-3 relative">
+                      <CommandInput 
+                        placeholder="Type a brand name..." 
+                        value={search} 
+                        onValueChange={setSearch} 
+                        className="flex-1 pr-16"
+                        onKeyDown={e => {
+                          if (e.key === 'Enter') handleSearchSubmit();
+                        }}
+                      />
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 z-20">
+                        <Button 
+                          size="sm" 
+                          className="bg-[#3BFFD3] hover:bg-[#3BFFD3]/90 text-black font-medium rounded-full px-4"
+                          onClick={handleSearchSubmit}
+                        >
+                          <span className="mr-1">Go</span>
+                          <ArrowRight className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Always render CommandList to fix the cmdk issue */}
-                  <CommandList>
-                    {noResultsFound && <CommandEmpty>No brands found</CommandEmpty>}
-                    
-                    {hasSearchResults && (
-                      <CommandGroup>
-                        {filteredBrands.map(brand => (
-                          <CommandItem 
-                            key={brand.id} 
-                            value={brand.name} 
-                            onSelect={() => handleSelectBrand(brand)} 
-                            className="flex items-center py-3 cursor-pointer border border-transparent hover:border-accent/80 hover:shadow-[0_0_8px_rgba(59,255,211,0.3)] focus:border-accent/80 focus:shadow-[0_0_8px_rgba(59,255,211,0.3)] transition-all duration-200"
-                          >
-                            <div className="flex items-center gap-3 flex-1">
-                              <div className="w-10 h-10 bg-slate-800 rounded-md flex items-center justify-center overflow-hidden">
-                                {brand.logo ? <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" /> : <span className="text-sm font-medium">
-                                    {brand.name.substring(0, 2)}
-                                  </span>}
+                    {/* Always render CommandList to fix the cmdk issue */}
+                    <CommandList>
+                      {noResultsFound && <CommandEmpty>No brands found</CommandEmpty>}
+                      
+                      {hasSearchResults && (
+                        <CommandGroup>
+                          {filteredBrands.map(brand => (
+                            <CommandItem 
+                              key={brand.id} 
+                              value={brand.name} 
+                              onSelect={() => handleSelectBrand(brand)} 
+                              className="flex items-center py-3 cursor-pointer border border-transparent hover:border-accent/80 hover:shadow-[0_0_8px_rgba(59,255,211,0.3)] focus:border-accent/80 focus:shadow-[0_0_8px_rgba(59,255,211,0.3)] transition-all duration-200"
+                            >
+                              <div className="flex items-center gap-3 flex-1">
+                                <div className="w-10 h-10 bg-slate-800 rounded-md flex items-center justify-center overflow-hidden">
+                                  {brand.logo ? <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" /> : <span className="text-sm font-medium">
+                                      {brand.name.substring(0, 2)}
+                                    </span>}
+                                </div>
+                                <div>
+                                  <p className="font-medium">{brand.name}</p>
+                                  <p className="text-sm text-muted-foreground">{brand.domain}</p>
+                                </div>
                               </div>
-                              <div>
-                                <p className="font-medium">{brand.name}</p>
-                                <p className="text-sm text-muted-foreground">{brand.domain}</p>
-                              </div>
-                            </div>
-                            <Check className={cn("h-4 w-4 text-accent", selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0")} />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    )}
-                  </CommandList>
-                </Command>
+                              <Check className={cn("h-4 w-4 text-accent", selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0")} />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      )}
+                    </CommandList>
+                  </Command>
+                </div>
               </div>
               
               <div className="mt-8 text-center">
