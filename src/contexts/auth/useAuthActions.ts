@@ -12,6 +12,7 @@ export const useAuthActions = () => {
         email,
         options: {
           data: userData,
+          emailRedirectTo: window.location.origin, // Add redirect URL to fix magic link
         }
       });
 
@@ -42,6 +43,7 @@ export const useAuthActions = () => {
         email,
         options: {
           shouldCreateUser: false, // Only allow existing users to sign in
+          emailRedirectTo: window.location.origin, // Add redirect URL to fix magic link
         }
       });
 
