@@ -1,4 +1,3 @@
-
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -111,20 +110,19 @@ const BrandSearchPage = () => {
           {!selectedBrand ? <div className="flex flex-col items-center">
               <div className="w-full max-w-lg mx-auto relative">
                 <Command className="rounded-lg overflow-hidden border-2 bg-background shadow-md">
-                  <CommandInput 
-                    placeholder="Type a brand name..." 
-                    value={search} 
-                    onValueChange={setSearch} 
-                    className="text-base" 
-                    onKeyDown={e => {
-                      if (e.key === 'Enter') handleSearchSubmit();
-                    }}
-                  />
-                  
-                  <div className="flex items-center px-3 py-2 border-t">
+                  <div className="flex items-center border-b">
+                    <CommandInput 
+                      placeholder="Type a brand name..." 
+                      value={search} 
+                      onValueChange={setSearch} 
+                      className="text-base flex-1" 
+                      onKeyDown={e => {
+                        if (e.key === 'Enter') handleSearchSubmit();
+                      }}
+                    />
                     <Button 
                       size="sm" 
-                      className="bg-accent hover:bg-accent/90 text-accent-foreground ml-auto" 
+                      className="bg-accent hover:bg-accent/90 text-accent-foreground mr-2" 
                       onClick={handleSearchSubmit}
                     >
                       <span className="mr-1">Go</span>
