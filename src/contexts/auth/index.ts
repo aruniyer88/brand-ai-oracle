@@ -1,4 +1,4 @@
 
-export { AuthProvider, useAuth } from './AuthProvider';
-export { useAuthActions } from './useAuthActions';
-export type { AuthContextType } from './types';
+// Re-export auth context components
+export { AuthProvider } from './AuthProvider';
+export { useAuth } from './useAuthActions';

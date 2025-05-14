@@ -90,10 +90,14 @@ interface TextContentContextType {
 
 const TextContentContext = createContext<TextContentContextType | undefined>(undefined);
 
+// Check if we're in development mode
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 // Provider component
 export function TextContentProvider({ children }: { children: React.ReactNode }) {
   const [textContent, setTextContent] = useState<TextContentMap>(defaultTextContent);
-  const [isEditMode, setEditMode] = useState<boolean>(false);
+  // Only enable edit mode by default in development
+  const [isEditMode, setEditMode] = useState<boolean>(isDevelopment);
 
   // Load saved content from localStorage on mount
   useEffect(() => {
@@ -194,9 +198,14 @@ export function EditableText({ contentKey, className, placeholder, as: Component
   );
 }
 
-// EditModeToggle component for toggling edit mode
+// EditModeToggle component for toggling edit mode - only visible in development
 export function EditModeToggle() {
   const { isEditMode, setEditMode } = useTextContent();
+  
+  // Only show in development mode
+  const isDev = process.env.NODE_ENV === 'development';
+  
+  if (!isDev) return null;
 
   return (
     <div className="fixed bottom-4 left-4 z-50 bg-accent/90 text-primary-foreground px-3 py-2 rounded-md shadow-lg">

@@ -60,8 +60,9 @@ const App = () => (
               {/* Catch-all route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+            {/* EditModeToggle will only appear in development */}
+            <EditModeToggle />
           </BrowserRouter>
-          <EditModeToggle />
         </TextContentProvider>
       </AuthProvider>
     </TooltipProvider>
