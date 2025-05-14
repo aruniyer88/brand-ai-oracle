@@ -10,11 +10,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 interface MainLayoutProps {
   children: React.ReactNode;
   fullWidth?: boolean;
   requireAuth?: boolean;
 }
+
 export const MainLayout = ({
   children,
   fullWidth = false,
@@ -27,12 +29,13 @@ export const MainLayout = ({
     signOut
   } = useAuth();
 
-  // DEVELOPMENT MODE: Bypass authentication check with import.meta.env.DEV
-  // If authentication is required and the user is not authenticated, redirect to login
-  // This is disabled during development (DEV mode)
-  if (import.meta.env.DEV === false && requireAuth && !loading && !user) {
+  // DEVELOPMENT MODE: Authentication check is completely bypassed
+  // For production: Uncomment the line below and remove the "false &&" to restore authentication
+  // if (requireAuth && !loading && !user) {
+  if (false && requireAuth && !loading && !user) {
     return <Navigate to="/auth" replace />;
   }
+  
   return <SidebarProvider defaultOpen={!isMobile}>
       <div className="flex min-h-screen w-full bg-background">
         <AppSidebar />
