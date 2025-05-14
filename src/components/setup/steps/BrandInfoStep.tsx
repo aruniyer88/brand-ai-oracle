@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { BrandEntity, SocialLink, Product } from "@/types/brandTypes";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { TextCursor } from "lucide-react";
 
 interface BrandInfoStepProps {
   brandInfo: BrandEntity;
@@ -134,17 +136,21 @@ export const BrandInfoStep = ({
               </Label>
             </div>)}
             
-          {/* Integrated custom product option with input field */}
-          <div className="flex items-center space-x-2 rounded-md border border-black/20 bg-charcoal p-4 transition-all hover:border-accent/30 group">
+          {/* Enhanced custom product option with clearer visual cues */}
+          <div className="flex items-center space-x-2 rounded-md border border-black/20 bg-charcoal p-4 transition-all hover:border-accent/30 hover:bg-black/10 group">
             <RadioGroupItem value="custom" id="custom" className="radio-accent" />
-            <div className="flex-grow">
-              <Input 
-                placeholder="Other" 
-                value={customProduct} 
-                onChange={handleCustomProductChange} 
-                onBlur={handleCustomProductBlur} 
-                className="bg-transparent border-0 focus:ring-0 pl-0 text-base placeholder-text-secondary/50" 
-              />
+            <div className="flex-grow relative">
+              <div className="flex items-center border border-dashed border-black/30 rounded p-0.5 pl-2 bg-black/5 hover:border-accent/30 focus-within:border-accent/50 transition-all">
+                <TextCursor className="h-4 w-4 mr-2 text-text-secondary/70" />
+                <Input 
+                  placeholder="Enter your custom product" 
+                  value={customProduct} 
+                  onChange={handleCustomProductChange} 
+                  onBlur={handleCustomProductBlur} 
+                  className="bg-transparent border-0 focus:ring-0 pl-0 text-base placeholder-text-secondary/80" 
+                />
+              </div>
+              <p className="text-xs text-text-secondary/80 mt-1.5 ml-1">Type your product name here</p>
             </div>
           </div>
         </RadioGroup>
