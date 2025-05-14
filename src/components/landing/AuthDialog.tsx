@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -8,11 +9,13 @@ import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { BookMeetingForm } from "./BookMeetingForm";
 import { CheckCircle } from "lucide-react";
+
 interface AuthDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   defaultTab: 'login' | 'book';
 }
+
 export const AuthDialog = ({
   isOpen,
   onOpenChange,
@@ -40,17 +43,21 @@ export const AuthDialog = ({
       setSentMagicLinkEmail(null);
     }
   }, [isOpen]);
+  
   const handleAuthSuccess = () => {
     onOpenChange(false); // Close dialog after successful login
     navigate("/search"); // Redirect to search page
   };
+  
   const handleAuthError = (error: Error) => {
     setAuthError(error.message || "Authentication failed");
   };
+  
   const handleLoginWithMagicLink = (email: string) => {
     setSentMagicLinkEmail(email);
     setAuthError(null);
   };
+  
   const handleResendLink = async () => {
     if (!sentMagicLinkEmail) return;
     setAuthError(null);
@@ -64,6 +71,7 @@ export const AuthDialog = ({
       setAuthError(error.message || "Failed to resend verification link");
     }
   };
+  
   const handleBookingSuccess = () => {
     toast({
       title: "Meeting request submitted",
@@ -71,13 +79,18 @@ export const AuthDialog = ({
     });
     onOpenChange(false); // Close dialog after successful booking
   };
-  return <Dialog open={isOpen} onOpenChange={onOpenChange}>
+  
+  return (
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
+        <DialogTitle className="flex items-center gap-2 mb-4">
+          <img src="/logo.png" alt="TunnelGrid.ai Logo" className="w-6 h-6" />
+          <span className="font-mono">TunnelGrid.ai</span>
+        </DialogTitle>
         
-        
-        {sentMagicLinkEmail ?
-      // Show confirmation message after magic link is sent
-      <div className="text-center space-y-4">
+        {sentMagicLinkEmail ? (
+          // Show confirmation message after magic link is sent
+          <div className="text-center space-y-4">
             <div className="flex justify-center">
               <CheckCircle className="h-12 w-12 text-green-500" />
             </div>
@@ -94,20 +107,24 @@ export const AuthDialog = ({
                 Resend Link
               </Button>
             </div>
-          </div> : authMode === "book" ?
-      // Book a meeting form
-      <div className="space-y-6">
+          </div>
+        ) : authMode === "book" ? (
+          // Book a meeting form
+          <div className="space-y-6">
             <Button onClick={() => setAuthMode("login")} variant="ghost" className="mb-4">
               Back to Login
             </Button>
             
             <BookMeetingForm onSuccess={handleBookingSuccess} onBack={() => setAuthMode("login")} />
-          </div> :
-      // Login form
-      <div className="space-y-6">
-            {authError && <Alert variant="destructive" className="mb-6">
+          </div>
+        ) : (
+          // Login form
+          <div className="space-y-6">
+            {authError && (
+              <Alert variant="destructive" className="mb-6">
                 <AlertDescription>{authError}</AlertDescription>
-              </Alert>}
+              </Alert>
+            )}
 
             <LoginForm onSuccess={handleLoginWithMagicLink} onError={handleAuthError} />
             
@@ -125,7 +142,9 @@ export const AuthDialog = ({
             <Button onClick={() => setAuthMode("book")} variant="outline" className="w-full">
               Book a Meeting
             </Button>
-          </div>}
+          </div>
+        )}
       </DialogContent>
-    </Dialog>;
+    </Dialog>
+  );
 };
