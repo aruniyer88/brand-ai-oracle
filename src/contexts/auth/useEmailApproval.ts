@@ -21,6 +21,18 @@ export const useEmailApproval = () => {
       
       const isApproved = !!data;
       console.log("Email approval status:", isApproved);
+      
+      // If not approved, let's check why by logging all approved emails
+      if (!isApproved) {
+        const { data: allEmails, error: allEmailsError } = await supabase
+          .from('approved_emails')
+          .select('email');
+        
+        if (!allEmailsError && allEmails) {
+          console.log("All approved emails in database:", allEmails);
+        }
+      }
+      
       return isApproved;
     } catch (error) {
       console.error("Error in checkEmailApproved:", error);
