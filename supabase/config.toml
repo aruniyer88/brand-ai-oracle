@@ -1,1 +1,5 @@
+
 project_id = "tdaosoupsxmrextxdqbn"
+
+[functions.send-meeting-notification]
+verify_jwt = false

@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar, Clock, User, Mail, Building, ArrowRight, MessageSquare, ArrowLeft } from "lucide-react";
+import { Calendar, User, Mail, Building, ArrowRight, MessageSquare, ArrowLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const meetingSchema = z.object({
   fullName: z.string().min(2, "Please enter your full name"),
@@ -43,15 +44,26 @@ export const BookMeetingForm = ({
   const handleSubmit = async (data: MeetingFormValues) => {
     setIsSubmitting(true);
     try {
-      // Here you would typically send this data to your backend
-      console.log("Meeting request data:", data);
+      // Format the data for the database
+      const meetingData = {
+        full_name: data.fullName,
+        email: data.email,
+        company: data.company,
+        message: data.message || null
+      };
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Call our edge function to store data and send email notification
+      const { error } = await supabase.functions.invoke('send-meeting-notification', {
+        body: { meetingData }
+      });
+
+      if (error) throw new Error(error.message);
+      
       toast({
         title: "Request submitted",
         description: "We'll be in touch with you shortly to schedule a meeting."
       });
+      
       if (onSuccess) onSuccess();
     } catch (error) {
       console.error("Error submitting meeting request:", error);

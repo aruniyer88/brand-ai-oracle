@@ -1,14 +1,14 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { LoginForm } from "./auth/LoginForm";
 import { toast } from "@/hooks/use-toast";
 import { OtpVerificationForm } from "./auth/OtpVerificationForm";
 import { useAuth } from "@/contexts/AuthContext";
+import { BookMeetingForm } from "./BookMeetingForm";
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -82,11 +82,9 @@ export const AuthDialog = ({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <div className="flex justify-center mb-4">
-            
-          </div>
-        </DialogHeader>
+        <div className="flex justify-center mb-4">
+          {/* Logo could go here */}
+        </div>
         
         {sentOtpEmail ? (
           // Show OTP verification form if OTP has been sent
@@ -104,11 +102,10 @@ export const AuthDialog = ({
               Back to Login
             </Button>
             
-            {/* Your existing BookMeetingForm component */}
-            <p className="text-center">Please fill out this form to request a meeting.</p>
-            <Button onClick={handleBookingSuccess} className="w-full">
-              Submit Request
-            </Button>
+            <BookMeetingForm 
+              onSuccess={handleBookingSuccess}
+              onBack={() => setAuthMode("login")}
+            />
           </div>
         ) : (
           // Login form

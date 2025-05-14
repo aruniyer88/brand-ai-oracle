@@ -142,6 +142,33 @@ export type Database = {
           },
         ]
       }
+      meeting_requests: {
+        Row: {
+          company: string
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          message: string | null
+        }
+        Insert: {
+          company: string
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          message?: string | null
+        }
+        Update: {
+          company?: string
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          message?: string | null
+        }
+        Relationships: []
+      }
       personas: {
         Row: {
           advertiser_id: string | null
