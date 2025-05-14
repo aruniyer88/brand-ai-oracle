@@ -1,3 +1,4 @@
+
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -122,7 +123,7 @@ const BrandSearchPage = () => {
                     />
                     <Button 
                       size="sm" 
-                      className="bg-accent hover:bg-accent/90 text-accent-foreground mr-2" 
+                      className="bg-accent hover:bg-accent/90 text-accent-foreground mr-3" 
                       onClick={handleSearchSubmit}
                     >
                       <span className="mr-1">Go</span>
