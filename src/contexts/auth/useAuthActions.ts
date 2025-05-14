@@ -1,22 +1,13 @@
 
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useEmailApproval } from "./useEmailApproval";
 
 export const useAuthActions = () => {
   const { toast } = useToast();
-  const { checkEmailApproved } = useEmailApproval();
 
   const signUp = async (email: string, userData?: { full_name?: string }) => {
     try {
-      // Check if email is in approved list
-      const isApproved = await checkEmailApproved(email);
-      console.log("Sign up approval check for email", email, ":", isApproved);
-      
-      if (!isApproved) {
-        throw new Error("Couldn't find your account");
-      }
-
+      // Use Supabase's native signInWithOtp with appropriate options
       const { data, error } = await supabase.auth.signInWithOtp({
         email,
         options: {
@@ -46,18 +37,11 @@ export const useAuthActions = () => {
 
   const signInWithOtp = async (email: string) => {
     try {
-      // Check if email is in approved list
-      const isApproved = await checkEmailApproved(email);
-      console.log("Sign in approval check for email", email, ":", isApproved);
-      
-      if (!isApproved) {
-        throw new Error("Couldn't find your account");
-      }
-      
+      // Directly use Supabase's native signInWithOtp without custom email verification
       const { data, error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          shouldCreateUser: false, // Don't create a new user if one doesn't exist
+          shouldCreateUser: false, // Only allow existing users to sign in
         }
       });
 
@@ -72,11 +56,21 @@ export const useAuthActions = () => {
       });
     } catch (error: any) {
       console.error("Sign in error:", error);
-      toast({
-        title: "Sign in failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      // Provide a more user-friendly error message for non-existing users
+      if (error.message?.includes("User not found") || 
+          error.message?.includes("Email not found")) {
+        toast({
+          title: "Account not found",
+          description: "No account exists with this email address.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Sign in failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
       throw error;
     }
   };

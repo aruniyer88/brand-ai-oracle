@@ -3,7 +3,6 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthActions } from "./useAuthActions";
-import { useEmailApproval } from "./useEmailApproval";
 import { AuthContextType } from "./types";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,8 +18,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     verifyOtp, 
     signOut 
   } = useAuthActions();
-  
-  const { checkEmailApproved } = useEmailApproval();
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -58,7 +55,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signInWithOtp,
         verifyOtp,
         signOut,
-        checkEmailApproved,
       }}
     >
       {children}

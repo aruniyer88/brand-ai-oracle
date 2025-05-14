@@ -9,5 +9,4 @@ export type AuthContextType = {
   signInWithOtp: (email: string) => Promise<void>;
   verifyOtp: (email: string, token: string) => Promise<void>;
   signOut: () => Promise<void>;
-  checkEmailApproved: (email: string) => Promise<boolean>;
 };

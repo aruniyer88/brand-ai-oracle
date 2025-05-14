@@ -19,7 +19,7 @@ interface SignupFormProps {
 }
 
 export const SignupForm = ({ onSuccess, onError }: SignupFormProps) => {
-  const { signUp, checkEmailApproved } = useAuth();
+  const { signUp } = useAuth();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   
   const form = useForm<z.infer<typeof signupSchema>>({
@@ -33,12 +33,6 @@ export const SignupForm = ({ onSuccess, onError }: SignupFormProps) => {
   const handleSignup = async (values: z.infer<typeof signupSchema>) => {
     setIsSubmitting(true);
     try {
-      // Check if email is approved for signup
-      const isApproved = await checkEmailApproved(values.email);
-      if (!isApproved) {
-        throw new Error("Access denied. Your email is not approved to register for this application.");
-      }
-      
       await signUp(values.email, { full_name: values.full_name });
       onSuccess(values.email);
     } catch (error: any) {
