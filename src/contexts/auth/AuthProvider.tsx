@@ -17,7 +17,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signUp, 
     signInWithOtp, 
     verifyOtp, 
-    resetPassword, 
     signOut 
   } = useAuthActions();
   
@@ -59,7 +58,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signInWithOtp,
         verifyOtp,
         signOut,
-        resetPassword,
         checkEmailApproved,
       }}
     >

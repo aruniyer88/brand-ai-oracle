@@ -13,7 +13,7 @@ export const useAuthActions = () => {
       const isApproved = await checkEmailApproved(email);
       
       if (!isApproved) {
-        throw new Error("Access denied. Your email is not approved to register for this application.");
+        throw new Error("Couldn't find your account");
       }
 
       const { data, error } = await supabase.auth.signInWithOtp({
@@ -47,7 +47,7 @@ export const useAuthActions = () => {
       const isApproved = await checkEmailApproved(email);
       
       if (!isApproved) {
-        throw new Error("Access denied. Your email is not approved to use this application.");
+        throw new Error("Couldn't find your account");
       }
       
       const { data, error } = await supabase.auth.signInWithOtp({
@@ -100,30 +100,6 @@ export const useAuthActions = () => {
     }
   };
 
-  const resetPassword = async (email: string) => {
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth?reset=true`,
-      });
-      
-      if (error) {
-        throw error;
-      }
-      
-      toast({
-        title: "Reset link sent",
-        description: "Check your email for the password reset link",
-      });
-    } catch (error: any) {
-      toast({
-        title: "Failed to send reset email",
-        description: error.message,
-        variant: "destructive",
-      });
-      throw error;
-    }
-  };
-
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -143,7 +119,6 @@ export const useAuthActions = () => {
     signUp,
     signInWithOtp,
     verifyOtp,
-    resetPassword,
-    signOut,
+    signOut
   };
 };

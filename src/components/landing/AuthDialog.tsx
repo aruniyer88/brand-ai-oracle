@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { LoginForm } from "./auth/LoginForm";
@@ -82,9 +82,10 @@ export const AuthDialog = ({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
-        <div className="flex justify-center mb-4">
-          {/* Logo could go here */}
-        </div>
+        <DialogTitle className="text-center">
+          {sentOtpEmail ? "Verify your email" : 
+           authMode === "book" ? "Book a Meeting" : "Sign in or create an account"}
+        </DialogTitle>
         
         {sentOtpEmail ? (
           // Show OTP verification form if OTP has been sent
@@ -118,8 +119,7 @@ export const AuthDialog = ({
 
             <LoginForm 
               onSuccess={handleLoginWithOtp} 
-              onError={handleAuthError} 
-              onForgotPassword={() => {}} 
+              onError={handleAuthError}
             />
             
             <div className="relative">

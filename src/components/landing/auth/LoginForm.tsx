@@ -16,10 +16,9 @@ const loginSchema = z.object({
 interface LoginFormProps {
   onSuccess: (email: string) => void;
   onError: (error: Error) => void;
-  onForgotPassword: () => void;
 }
 
-export const LoginForm = ({ onSuccess, onError, onForgotPassword }: LoginFormProps) => {
+export const LoginForm = ({ onSuccess, onError }: LoginFormProps) => {
   const { signInWithOtp, checkEmailApproved } = useAuth();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   
@@ -36,7 +35,7 @@ export const LoginForm = ({ onSuccess, onError, onForgotPassword }: LoginFormPro
       // Pre-check if email is approved before attempting login
       const isApproved = await checkEmailApproved(values.email);
       if (!isApproved) {
-        throw new Error("Access denied. Your email is not approved to use this application.");
+        throw new Error("Couldn't find your account");
       }
       
       await signInWithOtp(values.email);
@@ -64,17 +63,6 @@ export const LoginForm = ({ onSuccess, onError, onForgotPassword }: LoginFormPro
             </FormItem>
           )}
         />
-        
-        <div className="flex justify-end">
-          <Button 
-            type="button" 
-            variant="link" 
-            className="p-0 h-auto text-sm text-primary"
-            onClick={() => onForgotPassword()}
-          >
-            Forgot password?
-          </Button>
-        </div>
         
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? "Sending verification code..." : "Send Verification Code"}
