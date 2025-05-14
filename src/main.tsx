@@ -10,6 +10,6 @@ favicon.href = '/logo.png';
 document.head.appendChild(favicon);
 
 // Set page title
-document.title = 'Rabbit Hole Analytics';
+document.title = 'TunnelGrid.ai - Map the Hidden Network of AI Search';
 
 createRoot(document.getElementById("root")!).render(<App />);

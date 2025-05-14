@@ -128,46 +128,46 @@ export default function Index() {
     }
   ];
   
-  // How it works steps data
+  // How it works steps data - Updated to follow the Narrative Arc
   const howItWorksSteps = [
     {
       icon: <div className="w-12 h-12 rounded-full bg-muted text-accent flex items-center justify-center">1</div>,
-      title: "Enter your brand",
-      description: "Input your brand name and key competitors to establish monitoring scope"
+      title: "The Maze",
+      description: "AI search results feel random; brands can't see how or why they appear in responses"
     },
     {
       icon: <div className="w-12 h-12 rounded-full bg-muted text-accent flex items-center justify-center">2</div>,
-      title: "Multi-model queries",
-      description: "Our platform queries major AI models using standardized prompts"
+      title: "The Descent",
+      description: "TunnelGrid.ai drills into multiple AI models, capturing every answer, citation, and nuance"
     },
     {
       icon: <div className="w-12 h-12 rounded-full bg-muted text-accent flex items-center justify-center">3</div>,
-      title: "Visibility scoring",
-      description: "Receive comprehensive visibility and sentiment analysis across models"
+      title: "The Grid",
+      description: "Raw chaos turns into a visual grid: nodes = sources, lines = influence pathways"
     },
     {
       icon: <div className="w-12 h-12 rounded-full bg-muted text-accent flex items-center justify-center">4</div>,
-      title: "Action plan",
-      description: "Get actionable recommendations to improve AI visibility and citations"
+      title: "The Control Room",
+      description: "Shift from reaction to orchestration—optimizing content and steering AI narratives"
     }
   ];
 
-  // Benefits data
+  // Benefits data - Updated with new metaphors
   const benefits = [
     {
       icon: <LineChart className="h-8 w-8 text-accent" />,
-      title: "Comprehensive AI Visibility Tracking",
-      description: "Monitor your brand's presence across all major AI models in one dashboard with side-by-side comparisons."
+      title: "AI Visibility Mapping",
+      description: "Map your brand's presence across all major AI models in one dashboard with a visual grid of connections."
     },
     {
       icon: <Shield className="h-8 w-8 text-accent" />,
       title: "Citation Intelligence",
-      description: "Identify which sources AI models rely on when discussing your brand and optimize those critical touchpoints."
+      description: "Identify which sources AI models rely on when discussing your brand and optimize those critical pathways."
     },
     {
       icon: <Zap className="h-8 w-8 text-accent" />,
-      title: "Strategic Optimization",
-      description: "Follow prioritized recommendations that have the highest impact on improving AI visibility and perception."
+      title: "Strategic Orchestration",
+      description: "Follow prioritized recommendations to shift from reacting to actively orchestrating your AI narratives."
     }
   ];
 
@@ -179,10 +179,8 @@ export default function Index() {
           {/* Logo */}
           <div className="flex items-center">
             <a href="#" className="flex items-center gap-2">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-accent">
-                <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2zm0 5a3 3 0 110 6 3 3 0 010-6zm5 15c-2.757 0-5-2.243-5-5a1 1 0 012 0c0 1.654 1.346 3 3 3s3-1.346 3-3a1 1 0 012 0c0 2.757-2.243 5-5 5zm-5-4a1 1 0 01-1-1v-3a1 1 0 012 0v3a1 1 0 01-1 1z" fill="currentColor" />
-              </svg>
-              <span className="font-mono font-bold text-xl">Rabbit Hole</span>
+              <img src="/logo.png" alt="TunnelGrid.ai Logo" className="w-8 h-8" />
+              <span className="font-mono font-bold text-xl">TunnelGrid.ai</span>
             </a>
           </div>
 
@@ -223,7 +221,7 @@ export default function Index() {
         <section id="hero" className="relative min-h-screen flex items-center pt-16 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-b from-charcoal via-navy/90 to-charcoal/90"></div>
-            {/* Background network animation */}
+            {/* Background grid network animation */}
             <div className="absolute inset-0 opacity-20">
               <svg width="100%" height="100%" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
                 <g className="citation-bloom">
@@ -250,11 +248,11 @@ export default function Index() {
               <div className="space-y-8 animate-fade-in">
                 <div className="space-y-6">
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-mono font-bold leading-tight tracking-tight">
-                    AI Has Opinions. <br />
-                    <span className="text-accent">Shape Them.</span>
+                    Map the hidden <br /> 
+                    <span className="text-accent">network of AI search.</span>
                   </h1>
                   <p className="text-xl text-foreground/80 max-w-lg">
-                    Audit and boost your brand's visibility in answers from ChatGPT, Copilot, Google AI Overviews, and other AI-powered search experiences.
+                    TunnelGrid.ai maps the hidden network of AI answers so brands can turn mystery into measurable strategy.
                   </p>
                 </div>
 
@@ -279,7 +277,7 @@ export default function Index() {
 
               <div className="relative hidden md:block">
                 <div className="animate-float shadow-2xl rounded-xl overflow-hidden border border-white/10 backdrop-blur-sm">
-                  <img src="/placeholder.svg" alt="AI Visibility Dashboard" className="w-full h-auto" />
+                  <img src="/placeholder.svg" alt="TunnelGrid.ai Dashboard" className="w-full h-auto" />
                 </div>
                 <div className="absolute -bottom-6 -right-6 p-4 bg-accent/10 backdrop-blur-md border border-accent/30 rounded-lg">
                   <p className="text-accent font-mono text-sm">
@@ -299,11 +297,11 @@ export default function Index() {
           </div>
         </section>
 
-        {/* How It Works Section */}
+        {/* How It Works Section - Updated with Narrative Arc */}
         <section id="how-it-works" ref={howItWorksRef} className="py-20 md:py-24 bg-navy">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-12 scroll-fade-in">
-              <h2 className="text-3xl md:text-4xl font-mono font-bold mb-4">How It Works</h2>
+              <h2 className="text-3xl md:text-4xl font-mono font-bold mb-4">From Maze to Control Room</h2>
               <p className="text-lg text-foreground/80">Our platform gives you unprecedented visibility into how AI models perceive and present your brand.</p>
             </div>
             
@@ -324,7 +322,7 @@ export default function Index() {
                 className="bg-accent hover:bg-accent/90 text-primary-foreground font-mono"
                 onClick={() => handleAuthClick("book")}
               >
-                Schedule my audit
+                Map your brand today
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </div>
@@ -335,7 +333,7 @@ export default function Index() {
         <section id="benefits" ref={benefitsRef} className="py-20 md:py-24 bg-charcoal">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-12 scroll-fade-in">
-              <h2 className="text-3xl md:text-4xl font-mono font-bold mb-4">Unlock AI Visibility</h2>
+              <h2 className="text-3xl md:text-4xl font-mono font-bold mb-4">Turn Mystery Into Strategy</h2>
               <p className="text-lg text-foreground/80">
                 Don't leave your brand's AI presence to chance. Our platform helps you take control.
               </p>
@@ -365,9 +363,9 @@ export default function Index() {
         <section id="screenshot" ref={screenshotRef} className="py-20 md:py-24 bg-navy">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-12 scroll-fade-in">
-              <h2 className="text-3xl md:text-4xl font-mono font-bold mb-4">See It In Action</h2>
+              <h2 className="text-3xl md:text-4xl font-mono font-bold mb-4">The TunnelGrid in Action</h2>
               <p className="text-lg text-foreground/80">
-                Visualize your brand's AI presence with our comprehensive dashboard
+                Visualize your brand's AI presence with our comprehensive grid mapping technology
               </p>
             </div>
             
@@ -376,7 +374,7 @@ export default function Index() {
                 <div className="aspect-video bg-darkgray rounded-md overflow-hidden">
                   <img 
                     src="/placeholder.svg" 
-                    alt="Rabbit Hole Analytics Dashboard" 
+                    alt="TunnelGrid.ai Dashboard" 
                     className="w-full h-full object-cover"
                   />
                   
@@ -397,7 +395,7 @@ export default function Index() {
                   className="bg-accent hover:bg-accent/90 text-primary-foreground font-mono"
                   onClick={() => handleAuthClick("book")}
                 >
-                  Schedule my audit call
+                  Schedule my grid map
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </div>
@@ -443,9 +441,9 @@ export default function Index() {
         <section className="py-16 md:py-20 bg-accent text-primary-foreground">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-3xl mx-auto space-y-6">
-              <h2 className="text-3xl md:text-4xl font-mono font-bold">Ready to see your brand through AI's eyes?</h2>
+              <h2 className="text-3xl md:text-4xl font-mono font-bold">Ready to map your brand's AI network?</h2>
               <p className="text-xl">
-                Join the 250+ companies already gaining an advantage with Rabbit Hole Analytics.
+                Join the 250+ companies already gaining an advantage with TunnelGrid.ai
               </p>
               <div className="pt-4">
                 <Button 
@@ -463,38 +461,38 @@ export default function Index() {
 
       <footer className="bg-navy text-foreground/80 py-12">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-2">
             <div>
               <div className="flex items-center gap-2 mb-6">
-                <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-accent">
-                  <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2zm0 5a3 3 0 110 6 3 3 0 010-6zm5 15c-2.757 0-5-2.243-5-5a1 1 0 012 0c0 1.654 1.346 3 3 3s3-1.346 3-3a1 1 0 012 0c0 2.757-2.243 5-5 5zm-5-4a1 1 0 01-1-1v-3a1 1 0 012 0v3a1 1 0 01-1 1z" fill="currentColor" />
-                </svg>
-                <span className="font-mono font-bold">Rabbit Hole Analytics</span>
+                <img src="/logo.png" alt="TunnelGrid.ai Logo" className="w-6 h-6" />
+                <span className="font-mono font-bold">TunnelGrid.ai</span>
               </div>
               <p className="text-sm text-foreground/60 mb-4">
-                Helping brands thrive in the AI-first search era.
+                Helping brands thrive in the AI-first search era by mapping the hidden network of AI answers.
               </p>
             </div>
             
-            <div>
-              <h4 className="font-mono font-semibold mb-4">Resources</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="/blog" className="hover:text-accent">Blog</a></li>
-                <li><a href="/support" className="hover:text-accent">Support</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-mono font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="/about" className="hover:text-accent">About</a></li>
-                <li><a href="/contact" className="hover:text-accent">Contact</a></li>
-              </ul>
+            <div className="grid grid-cols-2">
+              <div>
+                <h4 className="font-mono font-semibold mb-4">Resources</h4>
+                <ul className="space-y-2 text-sm">
+                  <li><a href="/blog" className="hover:text-accent">Blog</a></li>
+                  <li><a href="/support" className="hover:text-accent">Support</a></li>
+                  <li><a href="/contact" className="hover:text-accent">Contact</a></li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="font-mono font-semibold mb-4">Company</h4>
+                <ul className="space-y-2 text-sm">
+                  <li><a href="/about" className="hover:text-accent">About</a></li>
+                </ul>
+              </div>
             </div>
           </div>
           
           <div className="border-t border-muted mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-foreground/60">© 2025 Rabbit Hole Analytics. All rights reserved.</p>
+            <p className="text-sm text-foreground/60">© 2025 TunnelGrid.ai. All rights reserved.</p>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <a href="https://twitter.com" className="text-foreground/60 hover:text-accent">
                 <span className="sr-only">Twitter</span>

@@ -25,10 +25,8 @@ export function LandingHero() {
         {/* Logo on the left */}
         <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-accent">
-              <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2zm0 5a3 3 0 110 6 3 3 0 010-6zm5 15c-2.757 0-5-2.243-5-5a1 1 0 012 0c0 1.654 1.346 3 3 3s3-1.346 3-3a1 1 0 012 0c0 2.757-2.243 5-5 5zm-5-4a1 1 0 01-1-1v-3a1 1 0 012 0v3a1 1 0 01-1 1z" fill="currentColor" />
-            </svg>
-            <span className="font-bold text-xl">Rabbit Hole Analytics</span>
+            <img src="/logo.png" alt="TunnelGrid.ai Logo" className="w-8 h-8" />
+            <span className="font-bold text-xl">TunnelGrid.ai</span>
           </Link>
         </div>
 
@@ -71,11 +69,10 @@ export function LandingHero() {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight lg:text-7xl">
-                AI Has Opinions. <br />
-                <span className="gradient-text">Shape Them.</span>
+                Map the <span className="gradient-text">hidden network</span> <br /> of AI search.
               </h1>
               <p className="text-xl text-primary-foreground/90 max-w-lg">
-                Audit your brand's AI presence, measure your share of voice, and learn how to top the ranks in machine-generated content.
+                TunnelGrid.ai maps the hidden network of AI answers so brands can turn mystery into measurable strategy.
               </p>
             </div>
 
@@ -90,7 +87,12 @@ export function LandingHero() {
 
           <div className="relative">
             <div className="animate-float shadow-2xl rounded-xl overflow-hidden border border-white/20">
-              <img src="/placeholder.svg" alt="Rabbit Hole Analytics Dashboard" className="w-full h-auto" />
+              <img src="/placeholder.svg" alt="TunnelGrid.ai Dashboard" className="w-full h-auto" />
+            </div>
+            <div className="absolute -bottom-6 -right-6 p-4 bg-accent/10 backdrop-blur-md border border-accent/30 rounded-lg">
+              <p className="text-accent font-mono text-sm">
+                <span className="font-bold">73%</span> of users now find brands through AI search
+              </p>
             </div>
           </div>
         </div>
