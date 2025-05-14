@@ -6,9 +6,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { LoginForm } from "./auth/LoginForm";
 import { toast } from "@/hooks/use-toast";
-import { OtpVerificationForm } from "./auth/OtpVerificationForm";
 import { useAuth } from "@/contexts/AuthContext";
 import { BookMeetingForm } from "./BookMeetingForm";
+import { CheckCircle } from "lucide-react";
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -24,7 +24,7 @@ export const AuthDialog = ({
   const { signInWithOtp } = useAuth();
   const [authMode, setAuthMode] = useState<"login" | "book">(defaultTab);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [sentOtpEmail, setSentOtpEmail] = useState<string | null>(null);
+  const [sentMagicLinkEmail, setSentMagicLinkEmail] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Update tab when defaultTab prop changes
@@ -38,7 +38,7 @@ export const AuthDialog = ({
   useEffect(() => {
     if (!isOpen) {
       setAuthError(null);
-      setSentOtpEmail(null);
+      setSentMagicLinkEmail(null);
     }
   }, [isOpen]);
 
@@ -51,23 +51,23 @@ export const AuthDialog = ({
     setAuthError(error.message || "Authentication failed");
   };
 
-  const handleLoginWithOtp = (email: string) => {
-    setSentOtpEmail(email);
+  const handleLoginWithMagicLink = (email: string) => {
+    setSentMagicLinkEmail(email);
     setAuthError(null);
   };
 
-  const handleResendOtp = async () => {
-    if (!sentOtpEmail) return;
+  const handleResendLink = async () => {
+    if (!sentMagicLinkEmail) return;
     
     setAuthError(null);
     try {
-      await signInWithOtp(sentOtpEmail);
+      await signInWithOtp(sentMagicLinkEmail);
       toast({
-        title: "Verification code resent",
-        description: "Please check your email for the new code"
+        title: "Verification link resent",
+        description: "Please check your email for the magic link"
       });
     } catch (error: any) {
-      setAuthError(error.message || "Failed to resend verification code");
+      setAuthError(error.message || "Failed to resend verification link");
     }
   };
 
@@ -83,19 +83,36 @@ export const AuthDialog = ({
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogTitle className="text-center">
-          {sentOtpEmail ? "Verify your email" : 
+          {sentMagicLinkEmail ? "Verification link sent" : 
            authMode === "book" ? "Book a Meeting" : "Sign in or create an account"}
         </DialogTitle>
         
-        {sentOtpEmail ? (
-          // Show OTP verification form if OTP has been sent
-          <OtpVerificationForm
-            email={sentOtpEmail}
-            onSuccess={handleAuthSuccess}
-            onError={handleAuthError}
-            onBack={() => setSentOtpEmail(null)}
-            onResend={handleResendOtp}
-          />
+        {sentMagicLinkEmail ? (
+          // Show confirmation message after magic link is sent
+          <div className="text-center space-y-4">
+            <div className="flex justify-center">
+              <CheckCircle className="h-12 w-12 text-green-500" />
+            </div>
+            <p className="text-lg font-medium">Verification link sent!</p>
+            <p className="text-muted-foreground">
+              We've sent a magic link to <span className="font-medium">{sentMagicLinkEmail}</span>. 
+              Please check your email and click the link to sign in.
+            </p>
+            <div className="flex flex-col space-y-2 mt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setSentMagicLinkEmail(null)}
+              >
+                Back to Login
+              </Button>
+              <Button 
+                variant="ghost" 
+                onClick={handleResendLink}
+              >
+                Resend Link
+              </Button>
+            </div>
+          </div>
         ) : authMode === "book" ? (
           // Book a meeting form
           <div className="space-y-6">
@@ -118,7 +135,7 @@ export const AuthDialog = ({
             )}
 
             <LoginForm 
-              onSuccess={handleLoginWithOtp} 
+              onSuccess={handleLoginWithMagicLink} 
               onError={handleAuthError}
             />
             

@@ -37,7 +37,7 @@ export const LoginForm = ({ onSuccess, onError }: LoginFormProps) => {
       
       // Use Supabase's native signInWithOtp
       await signInWithOtp(email);
-      console.log("OTP sent successfully");
+      console.log("Magic link sent successfully");
       onSuccess(email);
     } catch (error: any) {
       console.error("Login form error:", error);
@@ -65,7 +65,7 @@ export const LoginForm = ({ onSuccess, onError }: LoginFormProps) => {
         />
         
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Sending verification code..." : "Send Verification Code"}
+          {isSubmitting ? "Sending verification link..." : "Send Verification Link"}
         </Button>
       </form>
     </Form>

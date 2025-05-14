@@ -22,8 +22,8 @@ export const useAuthActions = () => {
       }
 
       toast({
-        title: "Verification email sent",
-        description: "Please check your email for the login link or OTP code.",
+        title: "Verification link sent",
+        description: "Please check your email for the login link.",
       });
     } catch (error: any) {
       console.error("Sign up error:", error);
@@ -53,8 +53,8 @@ export const useAuthActions = () => {
       }
 
       toast({
-        title: "Verification code sent",
-        description: "Please check your email for the one-time password.",
+        title: "Verification link sent",
+        description: "Please check your email for the login link.",
       });
     } catch (error: any) {
       console.error("Sign in error:", error);
