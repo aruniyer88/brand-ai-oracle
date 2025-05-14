@@ -1,4 +1,3 @@
-
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -6,7 +5,6 @@ import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem, Command
 import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
 interface Brand {
   id: string;
   name: string;
@@ -46,7 +44,6 @@ const mockBrands: Brand[] = [{
   domain: "ecosmart.com",
   logo: "https://placehold.co/100x100?text=Eco"
 }];
-
 const BrandSearchPage = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -57,11 +54,9 @@ const BrandSearchPage = () => {
   const filteredBrands = search ? mockBrands.filter(brand => brand.name.toLowerCase().includes(search.toLowerCase()) || brand.domain.toLowerCase().includes(search.toLowerCase())) : [];
   const hasSearchResults = search !== "" && filteredBrands.length > 0;
   const noResultsFound = search !== "" && filteredBrands.length === 0;
-
   const handleSelectBrand = useCallback((brand: Brand) => {
     setSelectedBrand(brand);
   }, []);
-
   const handleAnalyze = useCallback(() => {
     if (selectedBrand) {
       navigate("/setup", {
@@ -71,7 +66,6 @@ const BrandSearchPage = () => {
       });
     }
   }, [navigate, selectedBrand]);
-
   const handleSearchSubmit = () => {
     if (filteredBrands.length > 0 && !selectedBrand) {
       handleSelectBrand(filteredBrands[0]);
@@ -88,7 +82,6 @@ const BrandSearchPage = () => {
 
   // Check for reduced motion preference
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
   return <MainLayout>
       <div className="max-w-3xl mx-auto h-[calc(100vh-6rem)] flex flex-col justify-center items-center px-4 relative">
         {/* Grid background - ultra-subtle */}
@@ -113,21 +106,11 @@ const BrandSearchPage = () => {
                 <div className="relative">
                   <Command className="rounded-lg overflow-hidden border-2 bg-background shadow-md">
                     <div className="flex items-center border-b px-3 relative">
-                      <CommandInput 
-                        placeholder="Type a brand name..." 
-                        value={search} 
-                        onValueChange={setSearch} 
-                        className="flex-1 pr-16"
-                        onKeyDown={e => {
-                          if (e.key === 'Enter') handleSearchSubmit();
-                        }}
-                      />
+                      <CommandInput placeholder="Type a brand name..." value={search} onValueChange={setSearch} className="flex-1 pr-16" onKeyDown={e => {
+                    if (e.key === 'Enter') handleSearchSubmit();
+                  }} />
                       <div className="absolute right-3 top-1/2 -translate-y-1/2 z-20">
-                        <Button 
-                          size="sm" 
-                          className="bg-[#3BFFD3] hover:bg-[#3BFFD3]/90 text-black font-medium rounded-full px-4"
-                          onClick={handleSearchSubmit}
-                        >
+                        <Button size="sm" className="bg-[#3BFFD3] hover:bg-[#3BFFD3]/90 text-black font-medium rounded-full px-4" onClick={handleSearchSubmit}>
                           <span className="mr-1">Go</span>
                           <ArrowRight className="h-4 w-4" />
                         </Button>
@@ -138,15 +121,8 @@ const BrandSearchPage = () => {
                     <CommandList>
                       {noResultsFound && <CommandEmpty>No brands found</CommandEmpty>}
                       
-                      {hasSearchResults && (
-                        <CommandGroup>
-                          {filteredBrands.map(brand => (
-                            <CommandItem 
-                              key={brand.id} 
-                              value={brand.name} 
-                              onSelect={() => handleSelectBrand(brand)} 
-                              className="flex items-center py-3 cursor-pointer border border-transparent hover:border-accent/80 hover:shadow-[0_0_8px_rgba(59,255,211,0.3)] focus:border-accent/80 focus:shadow-[0_0_8px_rgba(59,255,211,0.3)] transition-all duration-200"
-                            >
+                      {hasSearchResults && <CommandGroup>
+                          {filteredBrands.map(brand => <CommandItem key={brand.id} value={brand.name} onSelect={() => handleSelectBrand(brand)} className="flex items-center py-3 cursor-pointer border border-transparent hover:border-accent/80 hover:shadow-[0_0_8px_rgba(59,255,211,0.3)] focus:border-accent/80 focus:shadow-[0_0_8px_rgba(59,255,211,0.3)] transition-all duration-200">
                               <div className="flex items-center gap-3 flex-1">
                                 <div className="w-10 h-10 bg-slate-800 rounded-md flex items-center justify-center overflow-hidden">
                                   {brand.logo ? <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" /> : <span className="text-sm font-medium">
@@ -159,19 +135,15 @@ const BrandSearchPage = () => {
                                 </div>
                               </div>
                               <Check className={cn("h-4 w-4 text-accent", selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0")} />
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      )}
+                            </CommandItem>)}
+                        </CommandGroup>}
                     </CommandList>
                   </Command>
                 </div>
               </div>
               
               <div className="mt-8 text-center">
-                <p className="text-muted-foreground">
-                  Find out how your brand is perceived by AI systems and get actionable insights.
-                </p>
+                
               </div>
             </div> : <div className="flex flex-col items-center justify-center py-8">
               <div className="w-24 h-24 bg-slate-800 rounded-lg flex items-center justify-center overflow-hidden mb-4 shadow-sm">
@@ -195,5 +167,4 @@ const BrandSearchPage = () => {
       </div>
     </MainLayout>;
 };
-
 export default BrandSearchPage;
