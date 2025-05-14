@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,14 +7,12 @@ import { PlusCircle, X } from "lucide-react";
 import { BrandEntity, SocialLink, Product } from "@/types/brandTypes";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
 interface BrandInfoStepProps {
   brandInfo: BrandEntity;
   setBrandInfo: (brandInfo: BrandEntity) => void;
   products: Product[];
   setProducts: (products: Product[]) => void;
 }
-
 export const BrandInfoStep = ({
   brandInfo,
   setBrandInfo,
@@ -47,7 +44,6 @@ export const BrandInfoStep = ({
     name: "Analytics Platform",
     category: "SaaS"
   }];
-
   const handleProductSelection = (productId: string) => {
     setSelectedProductId(productId);
 
@@ -66,7 +62,6 @@ export const BrandInfoStep = ({
       setCustomProduct(customProduct || "");
     }
   };
-
   const handleCustomProductAdd = () => {
     if (customProduct.trim()) {
       setProducts([{
@@ -94,13 +89,10 @@ export const BrandInfoStep = ({
       handleCustomProductAdd();
     }
   };
-
   return <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-heading tracking-tight font-semibold mb-2">Brand Information</h2>
-        <p className="text-text-secondary">
-          Review your brand's information and select a product.
-        </p>
+        <h2 className="text-xl font-heading tracking-tight font-semibold mb-2">How AI models describe your Brand</h2>
+        
       </div>
 
       {/* Non-editable brand information */}
@@ -128,8 +120,7 @@ export const BrandInfoStep = ({
         </p>
         
         <RadioGroup value={selectedProductId || ""} onValueChange={handleProductSelection} className="space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0">
-          {sampleProducts.map(product => (
-            <div key={product.id} className="flex items-center space-x-2 rounded-md border border-black/20 bg-charcoal p-4 transition-all hover:border-accent/30 group">
+          {sampleProducts.map(product => <div key={product.id} className="flex items-center space-x-2 rounded-md border border-black/20 bg-charcoal p-4 transition-all hover:border-accent/30 group">
               <RadioGroupItem value={product.id} id={product.id} className="radio-accent" />
               <Label htmlFor={product.id} className="font-medium flex-grow cursor-pointer">
                 {product.name}
@@ -137,8 +128,7 @@ export const BrandInfoStep = ({
                   {product.category}
                 </span>
               </Label>
-            </div>
-          ))}
+            </div>)}
             
           {/* Custom product option as a radio button */}
           <div className="flex items-center space-x-2 rounded-md border border-black/20 bg-charcoal p-4 transition-all hover:border-accent/30">
@@ -151,28 +141,12 @@ export const BrandInfoStep = ({
         <div className="relative mt-3 pl-6">
           <div className="flex space-x-2">
             <div className="relative flex-grow">
-              <Input 
-                placeholder="Enter custom product name" 
-                value={customProduct} 
-                onChange={handleCustomProductChange} 
-                onBlur={handleCustomProductBlur}
-                className="bg-charcoal border-black/20 focus:border-accent"
-                id="custom-product"
-              />
-              <Label
-                htmlFor="custom-product"
-                className={`absolute left-2 transition-all duration-200 pointer-events-none ${
-                  customProduct ? 'text-xs -top-2 text-accent' : 'text-text-secondary top-2.5'
-                }`}
-              >
+              <Input placeholder="Enter custom product name" value={customProduct} onChange={handleCustomProductChange} onBlur={handleCustomProductBlur} className="bg-charcoal border-black/20 focus:border-accent" id="custom-product" />
+              <Label htmlFor="custom-product" className={`absolute left-2 transition-all duration-200 pointer-events-none ${customProduct ? 'text-xs -top-2 text-accent' : 'text-text-secondary top-2.5'}`}>
                 Custom Product
               </Label>
             </div>
-            <Button 
-              onClick={handleCustomProductAdd} 
-              disabled={!customProduct.trim()}
-              className="ripple-effect"
-            >
+            <Button onClick={handleCustomProductAdd} disabled={!customProduct.trim()} className="ripple-effect">
               <PlusCircle className="h-4 w-4 mr-2" /> Add
             </Button>
           </div>
