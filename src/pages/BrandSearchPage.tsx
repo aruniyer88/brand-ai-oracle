@@ -1,3 +1,4 @@
+
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -104,11 +105,14 @@ const BrandSearchPage = () => {
           {!selectedBrand ? <div className="flex flex-col items-center">
               <div className="w-full max-w-lg mx-auto relative">
                 <Command className="rounded-lg overflow-hidden border-2 bg-background shadow-md">
-                  <div className="flex items-center border-b px-4 py-2">
-                    <CommandInput placeholder="Type a brand name..." value={search} onValueChange={setSearch} className="flex-1 text-base border-0 focus:outline-none focus:ring-0" onKeyDown={e => {
-                  if (e.key === 'Enter') handleSearchSubmit();
-                }} />
-                    <Button size="sm" className="bg-accent hover:bg-accent/90 text-accent-foreground ml-2" onClick={handleSearchSubmit}>
+                  <div className="flex items-center border-b px-4 py-2 justify-between">
+                    <div className="flex items-center flex-1">
+                      <SearchIcon className="h-4 w-4 mr-2 text-muted-foreground" />
+                      <CommandInput placeholder="Type a brand name..." value={search} onValueChange={setSearch} className="border-0 text-base focus:outline-none focus:ring-0" onKeyDown={e => {
+                        if (e.key === 'Enter') handleSearchSubmit();
+                      }} />
+                    </div>
+                    <Button size="sm" className="bg-accent hover:bg-accent/90 text-accent-foreground" onClick={handleSearchSubmit}>
                       <span className="mr-1">Go</span>
                       <ArrowRight className="h-4 w-4" />
                     </Button>
@@ -117,7 +121,7 @@ const BrandSearchPage = () => {
                   {(hasSearchResults || noResultsFound) && <CommandList>
                       {noResultsFound && <CommandEmpty>No brands found</CommandEmpty>}
                       <CommandGroup>
-                        {filteredBrands.map(brand => <CommandItem key={brand.id} value={brand.name} onSelect={() => handleSelectBrand(brand)} className="flex items-center py-3 cursor-pointer hover:bg-accent/10">
+                        {filteredBrands.map(brand => <CommandItem key={brand.id} value={brand.name} onSelect={() => handleSelectBrand(brand)} className="flex items-center py-3 cursor-pointer border border-transparent hover:border-accent/80 hover:shadow-[0_0_8px_rgba(59,255,211,0.3)] focus:border-accent/80 focus:shadow-[0_0_8px_rgba(59,255,211,0.3)] transition-all duration-200">
                             <div className="flex items-center gap-3 flex-1">
                               <div className="w-10 h-10 bg-slate-800 rounded-md flex items-center justify-center overflow-hidden">
                                 {brand.logo ? <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" /> : <span className="text-sm font-medium">
