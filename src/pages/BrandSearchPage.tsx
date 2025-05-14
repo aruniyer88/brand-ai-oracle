@@ -115,11 +115,12 @@ const BrandSearchPage = () => {
                     placeholder="Type a brand name..." 
                     value={search} 
                     onValueChange={setSearch} 
-                    className="flex-1 border-0 text-base" 
+                    className="text-base" 
                     onKeyDown={e => {
                       if (e.key === 'Enter') handleSearchSubmit();
                     }}
                   />
+                  
                   <div className="flex items-center px-3 py-2 border-t">
                     <Button 
                       size="sm" 
