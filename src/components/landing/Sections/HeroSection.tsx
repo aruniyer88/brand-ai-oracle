@@ -2,7 +2,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Play, ChevronDown } from "lucide-react";
-import { EditableText } from "@/contexts/TextContentContext";
 
 interface HeroSectionProps {
   onAuthClick: (tab: "login" | "book") => void;
@@ -40,13 +39,11 @@ export const HeroSection = ({ onAuthClick }: HeroSectionProps) => {
           <div className="space-y-8 animate-fade-in">
             <div className="space-y-6">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-mono font-bold leading-tight tracking-tight">
-                <EditableText contentKey="hero.title" as="span" /> <br /> 
-                <span className="text-accent">
-                  <EditableText contentKey="hero.titleAccent" />
-                </span>
+                Map the hidden <br /> 
+                <span className="text-accent">network of AI search.</span>
               </h1>
               <p className="text-xl text-foreground/80 max-w-lg">
-                <EditableText contentKey="hero.subtitle" />
+                TunnelGrid.ai maps the hidden network of AI answers so brands can turn mystery into measurable strategy.
               </p>
             </div>
 
@@ -56,7 +53,7 @@ export const HeroSection = ({ onAuthClick }: HeroSectionProps) => {
                 className="bg-accent hover:bg-accent/90 text-primary-foreground font-mono"
                 onClick={() => onAuthClick("book")}
               >
-                <EditableText contentKey="hero.cta" />
+                Book a meeting
               </Button>
               <Button 
                 size="lg" 
@@ -64,7 +61,7 @@ export const HeroSection = ({ onAuthClick }: HeroSectionProps) => {
                 className="text-foreground/90 hover:text-accent flex items-center gap-2"
               >
                 <Play className="h-4 w-4" />
-                <EditableText contentKey="hero.watchDemo" />
+                Watch 90-sec demo
               </Button>
             </div>
           </div>
@@ -75,7 +72,7 @@ export const HeroSection = ({ onAuthClick }: HeroSectionProps) => {
             </div>
             <div className="absolute -bottom-6 -right-6 p-4 bg-accent/10 backdrop-blur-md border border-accent/30 rounded-lg">
               <p className="text-accent font-mono text-sm">
-                <EditableText contentKey="hero.stat" />
+                <span className="font-bold">73%</span> of users now find brands through AI search
               </p>
             </div>
           </div>
@@ -84,9 +81,7 @@ export const HeroSection = ({ onAuthClick }: HeroSectionProps) => {
         {/* Scroll indicator */}
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
           <a href="#how-it-works" className="flex flex-col items-center text-foreground/50 hover:text-accent">
-            <span className="text-xs mb-2 font-mono">
-              <EditableText contentKey="hero.scroll" />
-            </span>
+            <span className="text-xs mb-2 font-mono">Scroll</span>
             <ChevronDown className="h-6 w-6" />
           </a>
         </div>
