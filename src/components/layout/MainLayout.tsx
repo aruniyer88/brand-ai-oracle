@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -26,8 +27,10 @@ export const MainLayout = ({
     signOut
   } = useAuth();
 
+  // DEVELOPMENT MODE: Bypass authentication check with import.meta.env.DEV
   // If authentication is required and the user is not authenticated, redirect to login
-  if (requireAuth && !loading && !user) {
+  // This is disabled during development (DEV mode)
+  if (import.meta.env.DEV === false && requireAuth && !loading && !user) {
     return <Navigate to="/auth" replace />;
   }
   return <SidebarProvider defaultOpen={!isMobile}>
