@@ -41,7 +41,6 @@ export const AuthTabs = ({ onLoginSuccess, onSignupSuccess, onError }: AuthTabsP
         <LoginForm
           onSuccess={onLoginSuccess}
           onError={handleError}
-          onForgotPassword={() => {}} // We can implement this later if needed
         />
       </TabsContent>
       
