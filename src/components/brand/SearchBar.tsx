@@ -1,9 +1,11 @@
 
-import { useState, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
-import { Check, ArrowRight } from "lucide-react";
+import { Check, ArrowRight, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useDebounce } from "@/hooks/use-debounce";
+import { toast } from "@/hooks/use-toast";
 
 interface Brand {
   id: string;
@@ -20,86 +22,226 @@ interface SearchBarProps {
 
 export const SearchBar = ({ brands, selectedBrand, onSelectBrand }: SearchBarProps) => {
   const [search, setSearch] = useState("");
-
-  // Filter brands based on search
-  const filteredBrands = search ? brands.filter(brand => 
-    brand.name.toLowerCase().includes(search.toLowerCase()) || 
-    brand.domain.toLowerCase().includes(search.toLowerCase())
-  ) : [];
+  const [filteredBrands, setFilteredBrands] = useState<Brand[]>([]);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const resultsListRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   
-  const hasSearchResults = search !== "" && filteredBrands.length > 0;
-  const noResultsFound = search !== "" && filteredBrands.length === 0;
+  const debouncedSearch = useDebounce(search, 300);
+  
+  // Filter brands based on debounced search term
+  useEffect(() => {
+    if (debouncedSearch) {
+      const filtered = brands.filter(brand => 
+        brand.name.toLowerCase().includes(debouncedSearch.toLowerCase()) || 
+        brand.domain.toLowerCase().includes(debouncedSearch.toLowerCase())
+      );
+      setFilteredBrands(filtered);
+      setActiveIndex(-1); // Reset active index when results change
+    } else {
+      setFilteredBrands([]);
+    }
+  }, [debouncedSearch, brands]);
+
+  const hasSearchResults = filteredBrands.length > 0;
+  const noResultsFound = debouncedSearch !== "" && filteredBrands.length === 0;
+  
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchContainerRef.current && 
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownVisible(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Auto-focus input on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      inputRef.current?.focus();
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!filteredBrands.length) return;
+    
+    switch(e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setActiveIndex(prev => {
+          const newIndex = prev < filteredBrands.length - 1 ? prev + 1 : prev;
+          scrollActiveItemIntoView(newIndex);
+          return newIndex;
+        });
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setActiveIndex(prev => {
+          const newIndex = prev > 0 ? prev - 1 : 0;
+          scrollActiveItemIntoView(newIndex);
+          return newIndex;
+        });
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (activeIndex >= 0) {
+          handleSelectBrand(filteredBrands[activeIndex]);
+        } else if (filteredBrands.length > 0) {
+          handleSelectBrand(filteredBrands[0]);
+        }
+        break;
+      case 'Escape':
+        e.preventDefault();
+        setSearch("");
+        setIsDropdownVisible(false);
+        break;
+      default:
+        break;
+    }
+  };
+  
+  // Scroll active item into view
+  const scrollActiveItemIntoView = (index: number) => {
+    if (resultsListRef.current && index >= 0) {
+      const items = resultsListRef.current.querySelectorAll('[role="option"]');
+      if (items[index]) {
+        items[index].scrollIntoView({ block: 'nearest' });
+      }
+    }
+  };
+  
+  const handleSelectBrand = (brand: Brand) => {
+    setSearch("");
+    setIsDropdownVisible(false);
+    onSelectBrand(brand);
+    toast({
+      title: "Brand selected",
+      description: `You've selected ${brand.name}`,
+    });
+  };
   
   const handleSearchSubmit = () => {
     if (filteredBrands.length > 0) {
-      onSelectBrand(filteredBrands[0]);
+      handleSelectBrand(filteredBrands[0]);
+    } else if (debouncedSearch) {
+      toast({
+        title: "No brands found",
+        description: "Please try a different search term",
+        variant: "destructive",
+      });
     }
   };
 
   return (
     <div className="w-full max-w-lg mx-auto">
-      <div className="relative">
-        <div className="rounded-lg overflow-hidden border-2 bg-background shadow-md">
-          <Command className="rounded-lg overflow-visible border-none">
-            <div className="relative h-[52px]">
-              <CommandInput 
-                placeholder="Type a brand name..." 
-                value={search} 
-                onValueChange={setSearch} 
-                className="flex-1 pr-16" 
-                onKeyDown={e => {
-                  if (e.key === 'Enter') handleSearchSubmit();
-                }} 
-              />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 z-50">
-                <Button 
-                  size="sm" 
-                  className="bg-[#3BFFD3] hover:bg-[#3BFFD3]/90 text-black font-medium rounded-full px-4" 
-                  onClick={handleSearchSubmit}
-                >
-                  <span className="mr-1">Go</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
+      {/* Fixed position container */}
+      <div 
+        ref={searchContainerRef}
+        className="search-bar-fixed"
+      >
+        {/* Relative positioned shell */}
+        <div 
+          className="search-shell relative"
+          aria-haspopup="listbox"
+          aria-expanded={isDropdownVisible}
+          aria-owns="search-results-list"
+        >
+          <div className="rounded-lg overflow-hidden border-2 bg-background border-border/30 shadow-md">
+            <Command className="rounded-lg overflow-visible border-none">
+              <div className="relative h-[52px]">
+                <div className="flex items-center border-b px-3 h-[52px] min-h-[52px]">
+                  <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+                  <CommandInput 
+                    ref={inputRef}
+                    placeholder="Type a brand name..." 
+                    value={search} 
+                    onValueChange={setSearch} 
+                    className="flex-1 pr-16" 
+                    onKeyDown={handleKeyDown}
+                    onFocus={() => setIsDropdownVisible(true)}
+                    role="combobox"
+                    aria-controls="search-results-list"
+                    aria-activedescendant={activeIndex >= 0 ? `brand-item-${filteredBrands[activeIndex].id}` : undefined}
+                  />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 z-10">
+                    <Button 
+                      size="sm" 
+                      className="bg-[#3BFFD3] hover:bg-[#3BFFD3]/90 text-black font-medium rounded-full px-4" 
+                      onClick={handleSearchSubmit}
+                    >
+                      <span className="mr-1">Go</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </div>
-            </div>
-            
-            {/* Always render CommandList with fixed dimensions */}
-            <div className="overflow-hidden">
-              <CommandList className="max-h-64 overflow-y-auto">
-                {noResultsFound && <CommandEmpty>No brands found</CommandEmpty>}
-                
-                {hasSearchResults && (
-                  <CommandGroup>
-                    {filteredBrands.map(brand => (
-                      <CommandItem
-                        key={brand.id}
-                        value={brand.name}
-                        onSelect={() => onSelectBrand(brand)}
-                        className="flex items-center py-3 cursor-pointer border border-transparent hover:border-accent/80 hover:shadow-[0_0_8px_rgba(59,255,211,0.3)] focus:border-accent/80 focus:shadow-[0_0_8px_rgba(59,255,211,0.3)] transition-all duration-200"
-                      >
-                        <div className="flex items-center gap-3 flex-1">
-                          <div className="w-10 h-10 bg-slate-800 rounded-md flex items-center justify-center overflow-hidden">
-                            {brand.logo ? (
-                              <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <span className="text-sm font-medium">
-                                {brand.name.substring(0, 2)}
-                              </span>
+              
+              {/* Absolutely positioned dropdown */}
+              {(isDropdownVisible && (hasSearchResults || noResultsFound)) && (
+                <div className="search-dropdown">
+                  <CommandList 
+                    ref={resultsListRef}
+                    className="max-h-64 overflow-y-auto py-1"
+                    id="search-results-list"
+                    role="listbox"
+                  >
+                    {noResultsFound && <CommandEmpty>No brands found</CommandEmpty>}
+                    
+                    {hasSearchResults && (
+                      <CommandGroup>
+                        {filteredBrands.map((brand, index) => (
+                          <CommandItem
+                            key={brand.id}
+                            id={`brand-item-${brand.id}`}
+                            value={brand.name}
+                            onSelect={() => handleSelectBrand(brand)}
+                            className={cn(
+                              "flex items-center py-3 cursor-pointer border border-transparent transition-all duration-200",
+                              activeIndex === index 
+                                ? "border-accent/80 shadow-[0_0_8px_rgba(59,255,211,0.3)] bg-accent/5" 
+                                : "hover:border-accent/80 hover:shadow-[0_0_8px_rgba(59,255,211,0.3)] focus:border-accent/80 focus:shadow-[0_0_8px_rgba(59,255,211,0.3)]"
                             )}
-                          </div>
-                          <div>
-                            <p className="font-medium">{brand.name}</p>
-                            <p className="text-sm text-muted-foreground">{brand.domain}</p>
-                          </div>
-                        </div>
-                        <Check className={cn("h-4 w-4 text-accent", selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0")} />
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                )}
-              </CommandList>
-            </div>
-          </Command>
+                            role="option"
+                            aria-selected={activeIndex === index}
+                          >
+                            <div className="flex items-center gap-3 flex-1">
+                              <div className="w-10 h-10 bg-slate-800 rounded-md flex items-center justify-center overflow-hidden">
+                                {brand.logo ? (
+                                  <img src={brand.logo} alt={brand.name} className="w-full h-full object-cover" />
+                                ) : (
+                                  <span className="text-sm font-medium">
+                                    {brand.name.substring(0, 2)}
+                                  </span>
+                                )}
+                              </div>
+                              <div>
+                                <p className="font-medium">{brand.name}</p>
+                                <p className="text-sm text-muted-foreground">{brand.domain}</p>
+                              </div>
+                            </div>
+                            <Check className={cn("h-4 w-4 text-accent", selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0")} />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    )}
+                  </CommandList>
+                </div>
+              )}
+            </Command>
+          </div>
         </div>
       </div>
     </div>

@@ -120,7 +120,8 @@ const BrandSearchPage = () => {
                 onSelectBrand={handleSelectBrand}
               />
               
-              <div className="mt-8 text-center">
+              {/* Add extra space to ensure layout doesn't shift when dropdown appears */}
+              <div className="mt-16 text-center">
                 {/* Empty div kept for layout consistency */}
               </div>
             </div>
