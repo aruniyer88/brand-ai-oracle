@@ -39,7 +39,7 @@ export const BrandSetupWizard = () => {
           isComplete={isComplete}
         />
 
-        <TabsContent value="brand-info" className="p-6">
+        <TabsContent value="brand-info" className="p-6 md:p-8">
           <BrandInfoStep 
             brandInfo={brandInfo} 
             setBrandInfo={setBrandInfo} 
@@ -48,7 +48,7 @@ export const BrandSetupWizard = () => {
           />
         </TabsContent>
 
-        <TabsContent value="topics" className="p-6">
+        <TabsContent value="topics" className="p-6 md:p-8">
           <TopicsStep 
             topics={topics} 
             setTopics={setTopics} 
@@ -56,7 +56,7 @@ export const BrandSetupWizard = () => {
           />
         </TabsContent>
 
-        <TabsContent value="personas" className="p-6">
+        <TabsContent value="personas" className="p-6 md:p-8">
           <PersonasStep 
             personas={personas} 
             setPersonas={setPersonas} 
@@ -65,7 +65,7 @@ export const BrandSetupWizard = () => {
           />
         </TabsContent>
 
-        <TabsContent value="questions" className="p-6">
+        <TabsContent value="questions" className="p-6 md:p-8">
           <QuestionsStep 
             questions={questions} 
             setQuestions={setQuestions} 
@@ -73,7 +73,7 @@ export const BrandSetupWizard = () => {
           />
         </TabsContent>
 
-        <TabsContent value="review" className="p-6">
+        <TabsContent value="review" className="p-6 md:p-8">
           <ReviewStep 
             brandInfo={brandInfo}
             products={products}

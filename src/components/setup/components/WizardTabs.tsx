@@ -47,7 +47,7 @@ export const WizardTabs = ({
             onClick={() => setCurrentStep(step)}
             disabled={false}
             className={`
-              relative font-heading tracking-tight text-xs md:text-sm py-3 flex items-center justify-center gap-2
+              relative font-heading tracking-tight text-sm md:text-base py-4 px-4 flex items-center justify-center gap-3
               transition-all duration-300
               ${isActive ? "text-white" : stepIndex < currentIndex ? "text-accent/70" : "text-muted-foreground"}
               ${animateStep === step ? "animate-pulse-subtle" : ""}
@@ -55,7 +55,7 @@ export const WizardTabs = ({
           >
             <span 
               className={`
-                flex items-center justify-center w-5 h-5 rounded-full border
+                flex items-center justify-center w-6 h-6 rounded-full border
                 ${isActive ? "border-accent bg-accent/10 text-accent" : 
                   isCompleted ? "border-accent bg-accent text-black" : 
                   "border-muted-foreground bg-transparent"}
@@ -63,9 +63,9 @@ export const WizardTabs = ({
               `}
             >
               {isCompleted ? (
-                <CheckCircle className="h-3.5 w-3.5" />
+                <CheckCircle className="h-4 w-4" />
               ) : (
-                <span className="text-xs">{index + 1}</span>
+                <span className="text-sm">{index + 1}</span>
               )}
             </span>
             <span className="hidden md:inline">{stepLabels[step]}</span>
