@@ -1,12 +1,10 @@
+
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { BrandEntity, SocialLink, Product } from "@/types/brandTypes";
-import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { TextCursor } from "lucide-react";
 
 interface BrandInfoStepProps {
   brandInfo: BrandEntity;
@@ -96,14 +94,16 @@ export const BrandInfoStep = ({
 
   return <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-heading tracking-tight font-semibold mb-6">How AI models describe your Brand</h2>
+        <p className="text-sm text-muted-foreground mb-1">Step 1 of 5</p>
+        <h2 className="text-2xl font-heading font-semibold bg-gradient-to-r from-brand-blue via-brand-purple to-brand-cyan bg-clip-text text-transparent mb-6">
+          Brand & Product
+        </h2>
       </div>
 
       {/* Non-editable brand information */}
-      <div className="p-6 bg-charcoal rounded-lg border border-black/20">
+      <div className="p-6 rounded-lg border border-border bg-card shadow-sm hover:shadow-md transition">
         <div className="flex items-center space-x-4 mb-4">
-          {/* We could add a logo here if available */}
-          <div className="w-16 h-16 bg-card-dark rounded-full flex items-center justify-center text-2xl font-heading">
+          <div className="w-16 h-16 rounded-full border border-border/40 flex items-center justify-center text-2xl font-heading">
             {brandInfo.name.charAt(0)}
           </div>
           <div>
@@ -123,29 +123,38 @@ export const BrandInfoStep = ({
           Choose one product or service you want to analyze consumer perception for.
         </p>
         
-        <RadioGroup value={selectedProductId || ""} onValueChange={handleProductSelection} className="space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
-          {sampleProducts.map(product => <div key={product.id} className="flex items-center space-x-3 rounded-md border border-black/20 bg-charcoal p-4 transition-all hover:border-accent/30 group">
+        <RadioGroup 
+          value={selectedProductId || ""} 
+          onValueChange={handleProductSelection} 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        >
+          {sampleProducts.map(product => (
+            <div 
+              key={product.id} 
+              className="flex items-center space-x-3 p-4 rounded-lg border border-border bg-card transition-shadow hover:shadow-md hover:border-brand-purple/40 cursor-pointer"
+            >
               <RadioGroupItem value={product.id} id={product.id} className="radio-accent" />
-              <Label htmlFor={product.id} className="font-medium flex-grow cursor-pointer">
+              <Label htmlFor={product.id} className="flex-grow font-medium cursor-pointer">
                 {product.name}
-                <span className="ml-2 text-xs font-heading text-text-secondary py-0.5 px-2 rounded bg-black/20">
+                <span className="inline-block ml-2 text-xs rounded bg-border/40 px-2 py-0.5">
                   {product.category}
                 </span>
               </Label>
-            </div>)}
+            </div>
+          ))}
             
           {/* Simplified custom product option */}
-          <div className="flex items-start space-x-3 rounded-md border border-black/20 bg-charcoal p-4 transition-all hover:border-accent/30 cursor-pointer">
-            <RadioGroupItem value="custom" id="custom" className="radio-accent mt-1" />
-            <div className="flex flex-col flex-1">
-              <Label htmlFor="custom-input" className="font-medium mb-2 cursor-pointer">Custom Product</Label>
+          <div className="flex items-center space-x-3 p-4 rounded-lg border border-border bg-card hover:shadow-md">
+            <RadioGroupItem value="custom" id="custom" className="radio-accent" />
+            <div className="flex-1 space-y-1">
+              <Label htmlFor="custom-input" className="font-medium">Custom Product</Label>
               <Input 
                 id="custom-input"
+                className="bg-background border border-input rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-brand-purple/40"
                 placeholder="Enter your custom product" 
                 value={customProduct} 
                 onChange={handleCustomProductChange} 
                 onBlur={handleCustomProductBlur} 
-                className="bg-background/30 border-input" 
               />
             </div>
           </div>

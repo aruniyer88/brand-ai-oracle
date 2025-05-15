@@ -31,8 +31,8 @@ export const BrandSetupWizard = () => {
   } = useWizardState();
 
   return (
-    <div className="bg-card-dark rounded-lg shadow-lg border border-black/20">
-      <Tabs value={currentStep} className="w-full">
+    <div className="bg-charcoal rounded-lg shadow-lg border border-black/20">
+      <Tabs value={currentStep} className="w-full animate-fade-in">
         <WizardTabs
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}

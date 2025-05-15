@@ -18,7 +18,9 @@ const BrandSetupPage = () => {
 
   return <MainLayout>
       <div className="max-w-4xl mx-auto py-8 px-4">
-        <h1 className="text-3xl font-heading font-bold mb-6 text-white tracking-tight">Brand Setup</h1>
+        <h1 className="text-3xl font-heading font-bold mb-6 text-white tracking-tight bg-gradient-to-r from-brand-blue via-brand-purple to-brand-cyan bg-clip-text text-transparent">
+          Brand Setup
+        </h1>
         
         <div className="relative">
           {/* Grid background overlay */}
