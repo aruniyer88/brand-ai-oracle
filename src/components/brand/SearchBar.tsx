@@ -147,14 +147,14 @@ export const SearchBar = ({ brands, selectedBrand, onSelectBrand }: SearchBarPro
 
   return (
     <div className="w-full max-w-lg mx-auto">
-      {/* Fixed position container */}
+      {/* Relative positioned container */}
       <div 
         ref={searchContainerRef}
-        className="search-bar-fixed"
+        className="relative"
       >
         {/* Relative positioned shell */}
         <div 
-          className="search-shell relative"
+          className="relative"
           aria-haspopup="listbox"
           aria-expanded={isDropdownVisible}
           aria-owns="search-results-list"
@@ -164,12 +164,13 @@ export const SearchBar = ({ brands, selectedBrand, onSelectBrand }: SearchBarPro
               <div className="relative h-[52px]">
                 <div className="flex items-center border-b px-3 h-[52px] min-h-[52px]">
                   <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
-                  <CommandInput 
+                  <input 
                     ref={inputRef}
+                    type="text"
                     placeholder="Type a brand name..." 
                     value={search} 
-                    onValueChange={setSearch} 
-                    className="flex-1 pr-16" 
+                    onChange={(e) => setSearch(e.target.value)} 
+                    className="flex-1 bg-transparent border-none outline-none pr-16"
                     onKeyDown={handleKeyDown}
                     onFocus={() => setIsDropdownVisible(true)}
                     role="combobox"
@@ -191,25 +192,30 @@ export const SearchBar = ({ brands, selectedBrand, onSelectBrand }: SearchBarPro
               
               {/* Absolutely positioned dropdown */}
               {(isDropdownVisible && (hasSearchResults || noResultsFound)) && (
-                <div className="search-dropdown">
-                  <CommandList 
+                <div 
+                  className="absolute top-full left-0 w-full z-50 bg-background border-2 border-t-0 border-border/30 rounded-b-lg shadow-lg mt-[-1px]" 
+                  style={{
+                    maxHeight: '300px',
+                    overflowY: 'auto',
+                  }}
+                >
+                  <div 
                     ref={resultsListRef}
-                    className="max-h-64 overflow-y-auto py-1"
+                    className="py-1"
                     id="search-results-list"
                     role="listbox"
                   >
-                    {noResultsFound && <CommandEmpty>No brands found</CommandEmpty>}
+                    {noResultsFound && <div className="py-6 text-center text-sm">No brands found</div>}
                     
                     {hasSearchResults && (
-                      <CommandGroup>
+                      <div>
                         {filteredBrands.map((brand, index) => (
-                          <CommandItem
+                          <div
                             key={brand.id}
                             id={`brand-item-${brand.id}`}
-                            value={brand.name}
-                            onSelect={() => handleSelectBrand(brand)}
+                            onClick={() => handleSelectBrand(brand)}
                             className={cn(
-                              "flex items-center py-3 cursor-pointer border border-transparent transition-all duration-200",
+                              "flex items-center py-3 px-3 cursor-pointer border border-transparent transition-all duration-200",
                               activeIndex === index 
                                 ? "border-accent/80 shadow-[0_0_8px_rgba(59,255,211,0.3)] bg-accent/5" 
                                 : "hover:border-accent/80 hover:shadow-[0_0_8px_rgba(59,255,211,0.3)] focus:border-accent/80 focus:shadow-[0_0_8px_rgba(59,255,211,0.3)]"
@@ -233,11 +239,11 @@ export const SearchBar = ({ brands, selectedBrand, onSelectBrand }: SearchBarPro
                               </div>
                             </div>
                             <Check className={cn("h-4 w-4 text-accent", selectedBrand?.id === brand.id ? "opacity-100" : "opacity-0")} />
-                          </CommandItem>
+                          </div>
                         ))}
-                      </CommandGroup>
+                      </div>
                     )}
-                  </CommandList>
+                  </div>
                 </div>
               )}
             </Command>
