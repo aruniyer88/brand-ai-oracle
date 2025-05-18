@@ -7,30 +7,65 @@ interface QuestionsReviewProps {
   personas: Persona[];
 }
 
+// The same dummy personas used in other components
+const dummyPersonas: Persona[] = [
+  {
+    id: "dummy-1",
+    name: "Tech Professional",
+    description: "Technology professionals who are looking for advanced solutions.",
+    painPoints: ["Limited time", "Complex requirements"],
+    motivators: ["Productivity", "Time savings"]
+  },
+  {
+    id: "dummy-2",
+    name: "Small Business Owner",
+    description: "Entrepreneurs seeking cost-effective solutions.",
+    painPoints: ["Budget constraints", "Limited technical knowledge"],
+    motivators: ["Cost savings", "Easy implementation"]
+  },
+  {
+    id: "dummy-3",
+    name: "Creative Professional",
+    description: "Designers and content creators who need creative tools.",
+    painPoints: ["Deadline pressures", "Technical limitations"],
+    motivators: ["Creative freedom", "Collaboration features"]
+  }
+];
+
+// Simplified dummy questions generator
+const getDummyQuestions = (personaId: string): Question[] => {
+  return [
+    { id: `${personaId}-1`, text: "What features are most important to you?", personaId },
+    { id: `${personaId}-2`, text: "How do you evaluate solutions before purchasing?", personaId },
+    { id: `${personaId}-3`, text: "What are your biggest pain points with current tools?", personaId },
+    { id: `${personaId}-4`, text: "What's your budget range for this type of solution?", personaId },
+    { id: `${personaId}-5`, text: "How quickly do you need to implement a new solution?", personaId }
+  ];
+};
+
 export const QuestionsReview = ({ questions, personas }: QuestionsReviewProps) => {
+  // Use provided personas or fallback to dummy personas if empty
+  const displayPersonas = personas.length > 0 ? personas : dummyPersonas;
+  
+  // Use provided questions or generate dummy ones if empty
+  const displayQuestions = questions.length > 0 ? questions : 
+    displayPersonas.flatMap(persona => getDummyQuestions(persona.id as string));
+  
   // Group questions by persona
   const questionsByPersona: Record<string, Question[]> = {};
   
-  personas.forEach(persona => {
-    questionsByPersona[persona.id as string] = questions.filter(
+  displayPersonas.forEach(persona => {
+    questionsByPersona[persona.id as string] = displayQuestions.filter(
       q => q.personaId === persona.id
     );
   });
   
   // Also collect questions without a persona
-  const unassignedQuestions = questions.filter(q => !q.personaId);
+  const unassignedQuestions = displayQuestions.filter(q => !q.personaId);
   
-  if (questions.length === 0) {
-    return (
-      <div className="text-center p-4 bg-card-dark rounded-md border border-black/20">
-        <p className="text-text-secondary">No questions added yet.</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-4">
-      {personas.map(persona => {
+      {displayPersonas.map(persona => {
         const personaQuestions = questionsByPersona[persona.id as string];
         
         if (!personaQuestions || personaQuestions.length === 0) {

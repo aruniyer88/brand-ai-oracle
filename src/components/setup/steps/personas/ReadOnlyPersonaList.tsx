@@ -14,18 +14,56 @@ interface ReadOnlyPersonaListProps {
   products: Product[];
 }
 
-export const ReadOnlyPersonaList = ({ personas, topics, products }: ReadOnlyPersonaListProps) => {
-  const [defaultValue, setDefaultValue] = useState<string | undefined>(
-    personas.length > 0 ? personas[0].id as string : undefined
-  );
-
-  if (personas.length === 0) {
-    return (
-      <div className="border border-black/20 rounded-lg p-6 text-center bg-card-dark">
-        <p className="text-text-secondary">No personas available for this brand.</p>
-      </div>
-    );
+// Dummy personas for testing
+const dummyPersonas: Persona[] = [
+  {
+    id: "dummy-1",
+    name: "Tech Professional",
+    description: "Technology professionals who are looking for advanced solutions to improve workflow efficiency.",
+    painPoints: ["Limited time for research", "Complex integration requirements", "Need for reliable support"],
+    motivators: ["Productivity improvements", "Time savings", "Cutting-edge features"],
+    demographics: {
+      ageRange: "28-45",
+      gender: "All genders",
+      location: "Urban areas",
+      goals: ["Streamline workflows", "Reduce overhead costs"]
+    }
+  },
+  {
+    id: "dummy-2",
+    name: "Small Business Owner",
+    description: "Entrepreneurs and small business owners seeking cost-effective solutions.",
+    painPoints: ["Budget constraints", "Limited technical knowledge", "Need for simple solutions"],
+    motivators: ["Cost savings", "Easy implementation", "Growth opportunities"],
+    demographics: {
+      ageRange: "30-55",
+      gender: "All genders",
+      location: "Nationwide",
+      goals: ["Expand customer base", "Optimize operations"]
+    }
+  },
+  {
+    id: "dummy-3",
+    name: "Creative Professional",
+    description: "Designers, writers, and content creators who need tools to enhance their creative output.",
+    painPoints: ["Deadline pressures", "Need for inspiration", "Technical limitations"],
+    motivators: ["Enhanced creative freedom", "Collaboration features", "Portfolio showcase options"],
+    demographics: {
+      ageRange: "25-40",
+      gender: "All genders",
+      location: "Urban creative hubs",
+      goals: ["Improve creative output", "Find new clients"]
+    }
   }
+];
+
+export const ReadOnlyPersonaList = ({ personas, topics, products }: ReadOnlyPersonaListProps) => {
+  // Use provided personas or fallback to dummy personas if empty
+  const displayPersonas = personas.length > 0 ? personas : dummyPersonas;
+  
+  const [defaultValue, setDefaultValue] = useState<string | undefined>(
+    displayPersonas.length > 0 ? displayPersonas[0].id as string : undefined
+  );
 
   return (
     <Accordion
@@ -34,7 +72,7 @@ export const ReadOnlyPersonaList = ({ personas, topics, products }: ReadOnlyPers
       defaultValue={defaultValue}
       className="w-full space-y-2"
     >
-      {personas.map((persona) => (
+      {displayPersonas.map((persona) => (
         <AccordionItem
           key={persona.id}
           value={persona.id as string}

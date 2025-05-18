@@ -1,8 +1,54 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Persona, Question } from "@/types/brandTypes";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { QuestionsHeader } from "./questions/QuestionsHeader";
+import { PersonaNavigation } from "./questions/PersonaNavigation";
+import { QuestionsList } from "./questions/QuestionsList";
+import { getDummyQuestions } from "./questions/getDummyQuestions";
+
+// Dummy personas for testing (matching the ones from ReadOnlyPersonaList)
+const dummyPersonas: Persona[] = [
+  {
+    id: "dummy-1",
+    name: "Tech Professional",
+    description: "Technology professionals who are looking for advanced solutions to improve workflow efficiency.",
+    painPoints: ["Limited time for research", "Complex integration requirements", "Need for reliable support"],
+    motivators: ["Productivity improvements", "Time savings", "Cutting-edge features"],
+    demographics: {
+      ageRange: "28-45",
+      gender: "All genders",
+      location: "Urban areas",
+      goals: ["Streamline workflows", "Reduce overhead costs"]
+    }
+  },
+  {
+    id: "dummy-2",
+    name: "Small Business Owner",
+    description: "Entrepreneurs and small business owners seeking cost-effective solutions.",
+    painPoints: ["Budget constraints", "Limited technical knowledge", "Need for simple solutions"],
+    motivators: ["Cost savings", "Easy implementation", "Growth opportunities"],
+    demographics: {
+      ageRange: "30-55",
+      gender: "All genders",
+      location: "Nationwide",
+      goals: ["Expand customer base", "Optimize operations"]
+    }
+  },
+  {
+    id: "dummy-3",
+    name: "Creative Professional",
+    description: "Designers, writers, and content creators who need tools to enhance their creative output.",
+    painPoints: ["Deadline pressures", "Need for inspiration", "Technical limitations"],
+    motivators: ["Enhanced creative freedom", "Collaboration features", "Portfolio showcase options"],
+    demographics: {
+      ageRange: "25-40",
+      gender: "All genders",
+      location: "Urban creative hubs",
+      goals: ["Improve creative output", "Find new clients"]
+    }
+  }
+];
 
 interface QuestionsStepProps {
   questions: Question[];
@@ -15,14 +61,32 @@ export const QuestionsStep = ({
   setQuestions,
   personas,
 }: QuestionsStepProps) => {
+  // Use provided personas or fallback to dummy personas if empty
+  const displayPersonas = personas.length > 0 ? personas : dummyPersonas;
+  
   const [selectedPersonaId, setSelectedPersonaId] = useState<string>(
-    personas.length > 0 ? personas[0].id as string : ""
+    displayPersonas.length > 0 ? displayPersonas[0].id as string : ""
   );
   const isMobile = useIsMobile();
 
+  // Generate dummy questions if none provided
+  useEffect(() => {
+    if (questions.length === 0 && displayPersonas.length > 0) {
+      const dummyQuestionsArray: Question[] = [];
+      
+      // Generate 10 questions for each persona
+      displayPersonas.forEach(persona => {
+        const personaQuestions = getDummyQuestions(persona.id as string);
+        dummyQuestionsArray.push(...personaQuestions);
+      });
+      
+      setQuestions(dummyQuestionsArray);
+    }
+  }, [displayPersonas, questions.length, setQuestions]);
+
   // Group questions by persona
   const questionsByPersona: Record<string, Question[]> = {};
-  personas.forEach(persona => {
+  displayPersonas.forEach(persona => {
     const personaQuestions = questions.filter(q => q.personaId === persona.id);
     questionsByPersona[persona.id as string] = personaQuestions.slice(0, 10);
   });
@@ -34,87 +98,24 @@ export const QuestionsStep = ({
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-heading font-semibold mb-2">Customer Questions</h2>
-        <p className="text-text-secondary">
-          Review the 10 key questions we will ask AI models for each customer persona.
-        </p>
-      </div>
+      <QuestionsHeader />
 
       <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-4`}>
         {/* Persona navigation */}
-        {isMobile ? (
-          <ScrollArea className="w-full overflow-x-auto">
-            <div className="flex space-x-2 pb-2">
-              {personas.map((persona) => (
-                <button
-                  key={persona.id}
-                  onClick={() => handlePersonaSelect(persona.id as string)}
-                  className={`shrink-0 px-4 py-2 rounded-lg border-2 transition-all duration-300 ${
-                    selectedPersonaId === persona.id
-                      ? "bg-[#00FFC2] border-[#00FFC2] text-black font-medium"
-                      : "bg-transparent border-[#00FFC2] text-white"
-                  }`}
-                >
-                  {persona.name}
-                </button>
-              ))}
-            </div>
-          </ScrollArea>
-        ) : (
-          <div className="w-1/4 min-w-[200px]">
-            <ScrollArea className="h-[400px] pr-4">
-              <div className="space-y-2">
-                {personas.map((persona) => (
-                  <button
-                    key={persona.id}
-                    onClick={() => handlePersonaSelect(persona.id as string)}
-                    className={`w-full text-left px-4 py-2 rounded-lg border-2 transition-all duration-300 ${
-                      selectedPersonaId === persona.id
-                        ? "bg-[#00FFC2] border-[#00FFC2] text-black font-medium"
-                        : "bg-transparent border-[#00FFC2] text-white"
-                    }`}
-                  >
-                    {persona.name}
-                  </button>
-                ))}
-              </div>
-            </ScrollArea>
-          </div>
-        )}
+        <PersonaNavigation
+          personas={displayPersonas}
+          selectedPersonaId={selectedPersonaId}
+          onPersonaSelect={handlePersonaSelect}
+          isMobile={isMobile}
+        />
 
         {/* Questions list */}
         <div className={`${isMobile ? 'w-full' : 'w-3/4'}`}>
-          <div 
-            className={`bg-card-dark rounded-lg border-2 border-[#00FFC2] p-4 h-[400px] overflow-auto`}
-          >
-            {selectedPersonaId && personas.find(p => p.id === selectedPersonaId) ? (
-              <div className="space-y-4">
-                <h3 className="font-medium text-white">
-                  Questions for {personas.find(p => p.id === selectedPersonaId)?.name}
-                </h3>
-                
-                {questionsByPersona[selectedPersonaId] && 
-                 questionsByPersona[selectedPersonaId].length > 0 ? (
-                  <ol className="space-y-3 list-decimal pl-6">
-                    {questionsByPersona[selectedPersonaId].map((question, index) => (
-                      <li key={question.id || index} className="text-sm text-white">
-                        {question.text}
-                      </li>
-                    ))}
-                  </ol>
-                ) : (
-                  <p className="text-text-secondary text-center py-8">
-                    No questions available for this persona.
-                  </p>
-                )}
-              </div>
-            ) : (
-              <p className="text-text-secondary text-center py-8">
-                Select a persona to view questions.
-              </p>
-            )}
-          </div>
+          <QuestionsList 
+            selectedPersonaId={selectedPersonaId}
+            personas={displayPersonas}
+            questionsByPersona={questionsByPersona}
+          />
         </div>
       </div>
     </div>
