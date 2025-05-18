@@ -1,7 +1,7 @@
 
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle } from "lucide-react";
-import { STEPS, SetupStep, stepLabels } from "../constants/wizardSteps";
+import { STEPS, SetupStep, stepLabels } from "./constants/wizardSteps";
 import { useEffect, useState } from "react";
 
 interface WizardTabsProps {
