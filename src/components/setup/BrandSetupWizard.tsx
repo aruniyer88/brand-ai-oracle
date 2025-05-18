@@ -6,7 +6,7 @@ import { PersonasStep } from "./steps/PersonasStep";
 import { QuestionsStep } from "./steps/QuestionsStep";
 import { ReviewStep } from "./steps/ReviewStep";
 import { WizardNavigation } from "./components/WizardNavigation";
-import { WizardTabs } from "./components/WizardTabs";
+import { WizardProgress } from "./components/WizardProgress";
 import { useWizardState } from "./hooks/useWizardState";
 
 export const BrandSetupWizard = () => {
@@ -32,14 +32,15 @@ export const BrandSetupWizard = () => {
 
   return (
     <div className="bg-charcoal rounded-lg shadow-lg border border-black/20">
-      <Tabs value={currentStep} className="w-full animate-fade-in">
-        <WizardTabs
+      <div className="px-6 pt-6 md:pt-8 md:px-8">
+        <WizardProgress 
           currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
           isComplete={isComplete}
         />
-
-        <TabsContent value="brand-info" className="p-6 md:p-8">
+      </div>
+      
+      <Tabs value={currentStep} className="w-full animate-fade-in">
+        <TabsContent value="brand-info" className="p-6 md:p-8 pt-0">
           <BrandInfoStep 
             brandInfo={brandInfo} 
             setBrandInfo={setBrandInfo} 
@@ -48,7 +49,7 @@ export const BrandSetupWizard = () => {
           />
         </TabsContent>
 
-        <TabsContent value="topics" className="p-6 md:p-8">
+        <TabsContent value="topics" className="p-6 md:p-8 pt-0">
           <TopicsStep 
             topics={topics} 
             setTopics={setTopics} 
@@ -56,7 +57,7 @@ export const BrandSetupWizard = () => {
           />
         </TabsContent>
 
-        <TabsContent value="personas" className="p-6 md:p-8">
+        <TabsContent value="personas" className="p-6 md:p-8 pt-0">
           <PersonasStep 
             personas={personas} 
             setPersonas={setPersonas} 
@@ -65,7 +66,7 @@ export const BrandSetupWizard = () => {
           />
         </TabsContent>
 
-        <TabsContent value="questions" className="p-6 md:p-8">
+        <TabsContent value="questions" className="p-6 md:p-8 pt-0">
           <QuestionsStep 
             questions={questions} 
             setQuestions={setQuestions} 
@@ -73,7 +74,7 @@ export const BrandSetupWizard = () => {
           />
         </TabsContent>
 
-        <TabsContent value="review" className="p-6 md:p-8">
+        <TabsContent value="review" className="p-6 md:p-8 pt-0">
           <ReviewStep 
             brandInfo={brandInfo}
             products={products}

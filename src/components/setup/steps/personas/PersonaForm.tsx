@@ -8,6 +8,13 @@ import { Product, Topic, Persona } from "@/types/brandTypes";
 import { PainPointsInput } from "./PainPointsInput";
 import { MotivatorsInput } from "./MotivatorsInput";
 import { DemographicsInput } from "./DemographicsInput";
+import { 
+  Accordion, 
+  AccordionItem, 
+  AccordionTrigger, 
+  AccordionContent 
+} from "@/components/ui/accordion";
+import { ChevronDown } from "lucide-react";
 
 interface PersonaFormProps {
   editingPersonaId: string | null;
