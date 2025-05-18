@@ -20,7 +20,7 @@ export const TopicsGrid: React.FC<TopicsGridProps> = ({ topics, onUpdateTopic })
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <div className="flex flex-wrap gap-4">
       {topics.map((topic) => (
         <TopicChip
           key={topic.id}

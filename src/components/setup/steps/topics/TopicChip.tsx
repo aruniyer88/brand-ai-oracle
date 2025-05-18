@@ -5,6 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Edit } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface TopicChipProps {
   topic: Topic;
@@ -45,33 +51,49 @@ export const TopicChip = ({ topic, onUpdate }: TopicChipProps) => {
     }
   };
 
+  // Check if the topic name is longer than 48 characters
+  const isLongName = topic.name.length > 48;
+  const displayName = isLongName ? `${topic.name.substring(0, 45)}...` : topic.name;
+
   return (
     <div className="relative inline-block">
       {isEditing ? (
-        <div className="min-w-[120px]">
+        <div className="min-w-[120px] max-w-full">
           <Input
             ref={inputRef}
             value={editValue}
             onChange={(e) => setEditValue(e.target.value)}
             onBlur={handleSave}
             onKeyDown={handleKeyDown}
-            className="py-1 h-8 text-sm focus:ring-brand-purple"
+            className="py-1 h-8 text-sm focus:ring-[#00FFC2] focus:border-[#00FFC2]"
             autoFocus
           />
         </div>
       ) : (
-        <Badge
-          variant="outline"
-          className={cn(
-            "px-4 py-2 text-sm cursor-pointer transition-all hover:bg-brand-purple/10",
-            "border-brand-purple/30 hover:border-brand-purple",
-            "group flex items-center gap-1.5 min-w-[80px]"
-          )}
-          onClick={handleEdit}
-        >
-          <span className="truncate">{topic.name}</span>
-          <Edit className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity ml-1" />
-        </Badge>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Badge
+                variant="outline"
+                className={cn(
+                  "px-4 py-2 text-sm cursor-pointer transition-all hover:bg-[#00FFC2]/10",
+                  "border-[#00FFC2]/30 hover:border-[#00FFC2]",
+                  "group flex items-center gap-1.5 whitespace-nowrap max-w-full",
+                  "min-w-[80px]"
+                )}
+                onClick={handleEdit}
+              >
+                <span className="truncate">{displayName}</span>
+                <Edit className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity ml-1 flex-shrink-0" />
+              </Badge>
+            </TooltipTrigger>
+            {isLongName && (
+              <TooltipContent side="top" className="max-w-xs">
+                <p>{topic.name}</p>
+              </TooltipContent>
+            )}
+          </Tooltip>
+        </TooltipProvider>
       )}
     </div>
   );
