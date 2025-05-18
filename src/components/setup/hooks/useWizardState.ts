@@ -72,14 +72,7 @@ export const useWizardState = () => {
         }
         return true;
       case "personas":
-        if (personas.length === 0) {
-          toast({
-            title: "No personas selected",
-            description: "Please select or add at least one persona.",
-            variant: "destructive",
-          });
-          return false;
-        }
+        // Remove validation for personas since this step is now read-only
         return true;
       case "questions":
         if (questions.length === 0) {
@@ -109,7 +102,8 @@ export const useWizardState = () => {
       case "topics":
         return topics.length > 0;
       case "personas":
-        return personas.length > 0;
+        // Always mark personas step as complete since it's read-only
+        return true;
       case "questions":
         return questions.length > 0;
       case "review":
