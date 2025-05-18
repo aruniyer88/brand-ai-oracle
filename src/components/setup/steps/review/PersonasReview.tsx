@@ -16,8 +16,8 @@ interface PersonasReviewProps {
 export const PersonasReview = ({ personas, topics, products }: PersonasReviewProps) => {
   if (personas.length === 0) {
     return (
-      <div className="text-center p-4 bg-slate-50 rounded-md">
-        <p className="text-muted-foreground">No personas added yet.</p>
+      <div className="text-center p-4 bg-card-dark rounded-md border border-black/20">
+        <p className="text-text-secondary">No personas available.</p>
       </div>
     );
   }
@@ -34,14 +34,14 @@ export const PersonasReview = ({ personas, topics, products }: PersonasReviewPro
           <AccordionItem
             key={persona.id}
             value={persona.id as string}
-            className="border rounded-md bg-slate-50"
+            className="border border-black/20 rounded-lg bg-card-dark"
           >
-            <AccordionTrigger className="px-4 py-3 text-left font-semibold hover:no-underline">
+            <AccordionTrigger className="px-4 py-3 text-left font-semibold text-base hover:no-underline">
               {persona.name}
             </AccordionTrigger>
             <AccordionContent className="px-4 pb-4">
               <div className="space-y-3">
-                <p className="text-sm">{persona.description}</p>
+                <p className="text-sm text-text-secondary">{persona.description}</p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
