@@ -1,4 +1,3 @@
-
 import { STEPS, SetupStep, stepLabels } from "../constants/wizardSteps";
 import { CheckCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
@@ -21,6 +20,7 @@ export const WizardProgress = ({ currentStep, isComplete }: WizardProgressProps)
         />
       </div>
       
+      {/*
       <div className="flex justify-between items-center text-xs font-medium gap-1">
         {STEPS.map((step, idx) => {
           const stepComplete = isComplete(step);
@@ -46,6 +46,7 @@ export const WizardProgress = ({ currentStep, isComplete }: WizardProgressProps)
           );
         })}
       </div>
+      */}
     </div>
   );
 };

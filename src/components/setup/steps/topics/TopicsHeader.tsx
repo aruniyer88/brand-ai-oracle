@@ -12,11 +12,11 @@ export const TopicsHeader: React.FC<TopicsHeaderProps> = ({
 }) => {
   return (
     <div>
-      <div className="flex items-center gap-2 mb-2">
+      {/*<div className="flex items-center gap-2 mb-2">
         <span className="bg-brand-purple/20 text-brand-purple text-xs font-medium px-2.5 py-1 rounded-full">
           Step {step} of {totalSteps}
         </span>
-      </div>
+      </div>*/}
       <h2 className="text-2xl font-heading mb-2 text-white tracking-tight bg-gradient-to-r from-brand-blue via-brand-purple to-brand-cyan bg-clip-text text-transparent">
         Brand Topics
       </h2>

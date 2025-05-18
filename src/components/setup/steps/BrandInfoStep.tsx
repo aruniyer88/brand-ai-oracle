@@ -94,8 +94,8 @@ export const BrandInfoStep = ({
 
   return <div className="space-y-8">
       <div>
-        <p className="text-sm text-muted-foreground mb-1">Step 1 of 5</p>
-        <h2 className="text-2xl font-heading font-semibold bg-gradient-to-r from-brand-blue via-brand-purple to-brand-cyan bg-clip-text text-transparent mb-6">
+        {/*<p className="text-sm text-muted-foreground mb-1">Step 1 of 5</p>*/}
+        <h2 className="text-2xl font-heading font-semibold text-white mb-6">
           Brand & Product
         </h2>
       </div>
