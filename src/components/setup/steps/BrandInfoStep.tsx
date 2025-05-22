@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -131,10 +130,21 @@ export const BrandInfoStep = ({
           {sampleProducts.map(product => (
             <div 
               key={product.id} 
-              className="flex items-center space-x-3 p-4 rounded-lg border border-border bg-card transition-shadow hover:shadow-md hover:border-brand-purple/40 cursor-pointer"
+              className={`flex items-center space-x-3 p-4 rounded-lg border ${
+                selectedProductId === product.id 
+                  ? 'border-brand-purple bg-brand-purple/10' 
+                  : 'border-border hover:border-brand-purple/40'
+              } bg-card transition-shadow hover:shadow-md cursor-pointer`}
             >
-              <RadioGroupItem value={product.id} id={product.id} className="radio-accent" />
-              <Label htmlFor={product.id} className="flex-grow font-medium cursor-pointer">
+              <RadioGroupItem 
+                value={product.id} 
+                id={product.id} 
+                className="radio-accent" 
+              />
+              <Label 
+                htmlFor={product.id} 
+                className="flex-grow font-medium cursor-pointer"
+              >
                 {product.name}
                 <span className="inline-block ml-2 text-xs rounded bg-border/40 px-2 py-0.5">
                   {product.category}
@@ -144,7 +154,11 @@ export const BrandInfoStep = ({
           ))}
             
           {/* Simplified custom product option */}
-          <div className="flex items-center space-x-3 p-4 rounded-lg border border-border bg-card hover:shadow-md">
+          <div className={`flex items-center space-x-3 p-4 rounded-lg border ${
+            selectedProductId === "custom" 
+              ? 'border-brand-purple bg-brand-purple/10' 
+              : 'border-border hover:border-brand-purple/40'
+          } bg-card hover:shadow-md`}>
             <RadioGroupItem value="custom" id="custom" className="radio-accent" />
             <div className="flex-1 space-y-1">
               <Label htmlFor="custom-input" className="font-medium">Custom Product</Label>
